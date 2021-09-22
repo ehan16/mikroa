@@ -2,7 +2,6 @@ import fs from 'fs';
 import { showError } from './logger.util';
 
 export function createDirectory(path: string) {
-  console.log('cwd', process.cwd());
   const dirPath = process.cwd() + path;
 
   try {
@@ -15,10 +14,8 @@ export function createDirectory(path: string) {
 }
 
 export function removeDirectory(path: string) {
-  try {
-    fs.rmdirSync(path, { recursive: true });
-    console.log(`${path} is deleted!`);
-  } catch (err) {
-    showError(`${path} couldn't be deleted, try again`);
-  }
+  const dirPath = process.cwd() + path;
+  fs.rm(dirPath, { recursive: true }, (err) => {
+    if (err) showError(`${path} couldn't be deleted, try again`);
+  });
 }
