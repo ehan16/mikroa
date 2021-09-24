@@ -1,19 +1,19 @@
 # Mikroa - CLI
 
-Complete a brief description
+Mikroa es una interfaz de línea de comando, conocida como CLI por sus siglas en inglés, realizada como trabajo de grado por [Erika Han](https://github.com/ehan16) y [Reichel Larez](https://github.com/Alexa1904) bajo la tutoría de [José Roberto Quevedo Gabizón](https://github.com/Zoomelectrico) para optar por el título de Ingeniero de Sistemas en la Universidad Metropolitana.
 
-## Table of contents
+## Tabla de contenidos
 
-- [Commands] (#commands)
-- [License] (#license)
+- [Commandos](#commands)
+- [Licencia](#license)
 
-## CLI Commands
+## Comandos del CLI
 
-1. [init] (#init)
-2. [generate] (#generate)
-3. [build] (#build)
-4. [migrate] (#migrate)
-5. [start] (#start)
+1. [init](#init)
+2. [generate](#generate)
+3. [build](#build)
+4. [migrate](#migrate)
+5. [start](#start)
 
 ### `init`
 
@@ -28,6 +28,6 @@ Complete a brief description
 ### `migrate`
 
 ### `start`
-## License
+## Licencia
 
 MIT © Erika Han and Reichel Larez

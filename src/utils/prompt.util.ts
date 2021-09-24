@@ -24,6 +24,8 @@ export async function promptForOptions() {
     choices: ['Express', 'Fastify', 'Koa.js'],
   });
 
+  // Inicializar repo git
+
   const answers = await inquirer.prompt(questions);
   return answers;
 }

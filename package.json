@@ -2,9 +2,9 @@
   "name": "mikroa",
   "version": "1.0.0",
   "description": "A CLI to create microservices projects",
-  "main": "./src/index.ts",
+  "main": "./build/index.js",
   "bin": {
-    "mikroa": "./src/index.ts"
+    "mikroa": "./build/index.js"
   },
   "preferGlobal": true,
   "publishConfig": {
