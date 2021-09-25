@@ -1,4 +1,5 @@
 import inquirer from 'inquirer';
+import execa from 'execa';
 
 export async function promptForOptions() {
   const questions = [];
@@ -24,8 +25,23 @@ export async function promptForOptions() {
     choices: ['Express', 'Fastify', 'Koa.js'],
   });
 
-  // Inicializar repo git
+  questions.push({
+    type: 'confirm',
+    name: 'git',
+    message: 'Initialize a git repository?',
+    default: false,
+  });
 
   const answers = await inquirer.prompt(questions);
   return answers;
+}
+
+async function initGit(targetDirectory: string) {
+  const result = await execa('git', ['init'], {
+    cwd: targetDirectory,
+  });
+  if (result.failed) {
+    return Promise.reject(new Error('Failed to initialize git'));
+  }
+  return;
 }
