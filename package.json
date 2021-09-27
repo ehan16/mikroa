@@ -2,93 +2,57 @@
   "name": "mikroa",
   "version": "1.0.0",
   "description": "A CLI to create microservices projects",
-  "main": "./build/index.js",
+  "main": "./build/cli.js",
   "bin": {
-    "mikroa": "./build/index.js"
+    "mikroa": "./build/cli.js"
   },
-  "preferGlobal": true,
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "src/",
-    "build/"
-  ],
   "scripts": {
-    "start": "npm run build && node build/index.js",
+    "start": "npm run build && node dist/index.js",
     "clean": "rimraf ./build/",
-    "build": "npm run clean && tsc -p .",
+    "build": "npm run clean && tsc",
     "test": "jasmine",
     "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ehan16/mikroa.git"
   },
   "keywords": [
     "cli",
     "microservices",
-    "mikroa",
-    "template"
+    "mikroa"
   ],
-  "author": "Erika Han & Reichel Larez",
   "license": "MIT",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehan16/mikroa.git"
+  },
   "bugs": {
     "url": "https://github.com/ehan16/mikroa/issues"
   },
   "homepage": "https://github.com/ehan16/mikroa#readme",
-  "dependencies": {
-    "ansi-regex": "^5.0.1",
-    "ansi-styles": "^4.3.0",
-    "chai": "^4.3.4",
-    "clear": "^0.1.0",
-    "cliui": "^7.0.4",
-    "color-convert": "^2.0.1",
-    "color-name": "^1.1.4",
-    "emoji-regex": "^8.0.0",
-    "escalade": "^3.1.1",
-    "esm": "^3.2.25",
-    "execa": "^5.1.1",
-    "figlet": "^1.5.2",
-    "fs-extra": "^10.0.0",
-    "get-caller-file": "^2.0.5",
-    "inquirer": "^8.1.5",
-    "inversify": "^5.1.1",
-    "is-fullwidth-code-point": "^3.0.0",
-    "is-valid-path": "^0.1.1",
-    "kleur": "^4.1.4",
-    "ncp": "^2.0.0",
-    "reflect-metadata": "^0.1.13",
-    "require-directory": "^2.1.1",
-    "sinon": "^11.1.2",
-    "string-width": "^4.2.2",
-    "strip-ansi": "^6.0.0",
-    "tslib": "^2.3.1",
-    "wrap-ansi": "^7.0.0",
-    "y18n": "^5.0.8",
-    "yargs": "^17.1.1",
-    "yargs-parser": "^20.2.9"
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.22",
     "@types/figlet": "^1.5.4",
-    "@types/fs-extra": "^9.0.12",
+    "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^8.1.2",
-    "@types/sinon": "^10.0.3",
+    "@types/node": "^16.10.1",
     "@types/yargs": "^17.0.3",
-    "@typescript-eslint/eslint-plugin": "^4.31.2",
-    "@typescript-eslint/parser": "^4.31.2",
-    "autoprefixer": "^10.3.4",
-    "babel-eslint": "^10.1.0",
+    "autoprefixer": "^10.3.6",
     "eslint": "^7.32.0",
     "eslint-config-avilatek": "^1.7.0",
     "eslint-config-avilatek-typescript": "^1.7.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
     "jasmine": "^3.9.0",
     "prettier": "^2.4.1",
-    "rimraf": "^3.0.2",
     "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "esm": "^3.2.25",
+    "execa": "^5.1.1",
+    "figlet": "^1.5.2",
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.5",
+    "kleur": "^4.1.4",
+    "ncp": "^2.0.0",
+    "yargs": "^17.2.1"
   }
 }

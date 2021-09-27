@@ -43,5 +43,4 @@ async function initGit(targetDirectory: string) {
   if (result.failed) {
     return Promise.reject(new Error('Failed to initialize git'));
   }
-  return;
 }

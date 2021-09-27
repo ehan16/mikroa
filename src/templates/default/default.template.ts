@@ -1,15 +1,5 @@
 import fs from 'fs-extra';
-import {
-  showGenerate,
-  showCreate,
-  showUpdate,
-  showError,
-} from '../../utils/logger.util';
-import {
-  checkIfDirExistElseMakeDir,
-  checkExistence,
-  fileAlreadyExist,
-} from '../../utils/checker.util';
+import { showCreate, showUpdate, showError } from '../../utils/logger.util';
 
 // export function defaultTemplate(fileNameWithExt: string, fileContent: string, hasPath = false, filePath = ''): void | Promise<void> {
 //     showGenerate(fileNameWithExt);
@@ -27,7 +17,7 @@ function createFile(
   fileContent: string,
   fileAlreadyExists = false
 ): void {
-  const filepath: string = process.cwd() + `${filePath}/${fileName}`;
+  const filepath = `${process.cwd()}${filePath}/${fileName}`;
   fs.writeFile(filepath, fileContent, (error: Error) => {
     if (!error && !fileAlreadyExists) return showCreate(fileName, filePath);
     if (!error && fileAlreadyExists) return showUpdate(fileName, filePath);
