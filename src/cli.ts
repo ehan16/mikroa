@@ -9,24 +9,25 @@ yargs(hideBin(process.argv))
   .commandDir('commands')
   // Enable strict mode.
   .strict()
-  .usage('Usage: mikroa <command> [options]')
+  .usage('Usage: $0 <command> [options]')
   .demandCommand(1, 'Pass --help to see all available commands and options.')
   .help('h')
   .alias('h', 'help')
   .recommendCommands()
-  .example('mikroa init my-project', 'Initialize `my-project` directory')
+  .showHelpOnFail(false, 'Specify --help for available options')
+  .example('$0 init my-project', 'Initialize `my-project` directory')
   .example(
-    'mikroa generate `my-microservice`',
+    '$0 generate `my-microservice`',
     'Generate a new microservice `my-microservice`'
   )
   .example(
-    'mikroa generate',
+    '$0 generate',
     "Read root's config file and generate new microservices"
   )
-  .example('mikroa start', 'Start development server')
-  .example('mikroa build', 'Build a Mikroa project')
+  .example('$0 start', 'Start development server')
+  .example('$0 build', 'Build a Mikroa project')
   .example(
-    'mikroa migrate',
+    '$0 migrate',
     'Read the microservice config file and migrate all the models to the database'
   )
   .epilogue(
