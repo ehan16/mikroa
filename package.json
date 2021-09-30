@@ -11,7 +11,8 @@
     "clean": "rimraf ./build/",
     "build": "npm run clean && tsc",
     "test": "jasmine",
-    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\""
+    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\"",
+    "publish-package": "npm run build && npm publish"
   },
   "keywords": [
     "cli",
