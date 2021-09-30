@@ -1,4 +1,5 @@
 import type { Arguments, CommandBuilder } from 'yargs';
+import { showTitle } from '../utils/logger.util';
 
 type Options = {
   name: string | undefined;
@@ -18,6 +19,8 @@ export const handler = (argv: Arguments<Options>): void => {
   const { name } = argv;
   const message = `Initializing ${name} project!`;
   console.log(message);
+
+  showTitle();
 
   // 1. Ask git repository?
 
