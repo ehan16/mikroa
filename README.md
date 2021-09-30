@@ -4,8 +4,8 @@ Mikroa es una interfaz de línea de comando, conocida como CLI por sus siglas en
 
 ## Tabla de contenidos
 
-- [Commandos](#commands)
-- [Licencia](#license)
+- [Comandos](#comandos-del-cli)
+- [Licencia](#licencia)
 
 ## Comandos del CLI
 

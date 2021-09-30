@@ -5,7 +5,8 @@ type Options = {
 };
 
 export const command: string = 'init <name>';
-export const desc: string = 'Init a project folder with <name>';
+export const aliases: string[] = ['i', 'initialize'];
+export const desc: string = 'Init <name> project folder';
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs.options({
