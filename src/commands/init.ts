@@ -6,7 +6,8 @@ type Options = {
 
 export const command: string = 'init <name>';
 export const aliases: string[] = ['i', 'initialize'];
-export const desc: string = 'Init <name> project folder';
+export const desc: string =
+  'Init <name> project folder with the config file and api getway';
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs.options({

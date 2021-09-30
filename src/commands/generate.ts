@@ -5,14 +5,15 @@ type Options = {
   microservice: string | undefined;
 };
 
-export const command: string = 'generate';
-export const desc: string = 'Generate a new microservice';
+export const command: string = 'generate [microservice]';
+export const desc: string = 'Create a new microservice';
+export const aliases: string[] = ['gen'];
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs.options({
     microservice: {
       type: 'string',
-      desc: 'Generate a new microservice <microservice>',
+      describe: 'Generate a new microservice [microservice]',
     },
   });
 
