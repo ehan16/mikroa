@@ -7,11 +7,12 @@
     "mikroa": "./build/cli.js"
   },
   "scripts": {
-    "start": "npm run build && node dist/index.js",
+    "start": "npm run build && node build/index.js",
     "clean": "rimraf ./build/",
     "build": "npm run clean && tsc",
     "test": "jasmine",
-    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\""
+    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\"",
+    "publish-package": "npm run build && npm publish"
   },
   "keywords": [
     "cli",

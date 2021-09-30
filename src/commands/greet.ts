@@ -1,5 +1,5 @@
 import type { Arguments, CommandBuilder } from 'yargs';
-import {showSuccess} from '../utils/logger.util';
+import { showSuccess } from '../utils/logger.util';
 
 type Options = {
   name: string;
