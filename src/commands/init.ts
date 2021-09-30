@@ -18,4 +18,14 @@ export const handler = (argv: Arguments<Options>): void => {
   const { name } = argv;
   const message = `Initializing ${name} project!`;
   console.log(message);
+
+  // 1. Ask git repository?
+
+  // 2. Receive the new directory name and generate it
+
+  // 3. Generate the config file
+
+  // 4. Generate the api gateway
+
+  // 5. Generate cache file
 };
