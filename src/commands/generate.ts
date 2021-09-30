@@ -20,13 +20,24 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = (argv: Arguments<Options>): void => {
   const { microservice } = argv;
   const message = `New microservice, ${microservice || 'none'}!`;
-  // console.log(upper ? greeting.toUpperCase() : greeting);
   showSuccess(message);
-};
 
-// yargs
-//     .command(['generate [microservice]', 'gen'], 'Generate a new microservice')
-//     .example(
-//       'mikroa generate my-microservice',
-//       'Generate a new microservice `my-microservice`'
-//     );
+  // 1. Check if microservice name was provided (for now it doesn't matter)
+
+  // 1. In case the microservice name is passed, ask the user for language, orm, etc and then create the new microservice
+
+  // 2. If not, then read root's config file with all the microservices config, a JSON that looks like this
+  // {
+  //   'microservice-name': {
+  //     name: 'Microservice Name',
+  //     route: './microservice-name',
+  //     language: 'javascript',
+  //     orm: 'mongoose',
+  //     framework: 'express',
+  //   },
+  // };
+
+  // 3. Check in the cache which microservices haven't been created yet
+
+  // 4. Create the ones that are not in the cache
+};
