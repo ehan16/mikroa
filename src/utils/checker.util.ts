@@ -1,8 +1,8 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import { showError } from './logger.util';
 
 // eslint-disable-next-line arrow-body-style
-export const checkExistence = (path: string): boolean => {
+export const directoryExists = (path: string): boolean => {
   return fs.existsSync(process.cwd() + path);
 };
 
@@ -11,7 +11,7 @@ export const checkIfDirExistElseMakeDir = (
   path: string
 ): void => {
   if (hasPath) {
-    const dir = checkExistence(path);
+    const dir = directoryExists(path);
     if (!dir) {
       fs.mkdirSync(process.cwd() + path, { recursive: true });
     }

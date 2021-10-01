@@ -1,10 +1,13 @@
 import type { Arguments, CommandBuilder } from 'yargs';
+import inquirer from 'inquirer';
 import {
   createDirectory,
   createFile,
   generateApiGateway,
 } from '../templates/default/default.template';
-import { showTitle } from '../utils/logger.util';
+import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
+import { directoryExists } from '../utils/checker.util';
+import { initGit } from '../utils/git.util';
 
 type Options = {
   name: string | undefined;
@@ -20,24 +23,43 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
     name: { type: 'string' },
   });
 
-export const handler = async (argv: Arguments<Options>): Promise<void> => {
+export const handler = async (argv: Arguments<Options>) => {
   const { name } = argv;
   const message = `Initializing ${name} project!`;
   console.log(message);
 
   showTitle();
 
-  // 1. Ask git repository?
-
-  // 2. Receive the new directory name and generate it
-
-  // 3. Create the project directory
+  // 1. Create the project directory
   await createDirectory(`/${name}`);
 
-  // 4. Generate the config file
+  // 2. Initialize git folder
+  const questions = [];
+  questions.push({
+    type: 'confirm',
+    name: 'git',
+    message: 'Initialize a git folder?',
+    default: false,
+  });
+
+  const answers = await inquirer.prompt(questions);
+
+  if (answers.git) {
+    if (directoryExists(`/${name}/.git`)) {
+      showWarning('the git repository already exists');
+    } else {
+      showGenerate('Creating git file');
+      await initGit(`/${name || ''}`);
+    }
+  }
+
+  // 4. Generate the config file and package.json
   await createFile(`/${name}`, 'package.json', '// here goes the json');
   await createFile(`/${name}`, 'config.json', '// here goes the json');
+
   // 5. Generate the api gateway
   await generateApiGateway(`/${name}`, name ?? '');
+
   // 6. Generate cache file
+  createFile(`/${name}`, '.cache', '');
 };

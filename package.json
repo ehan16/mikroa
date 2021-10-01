@@ -47,6 +47,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "clui": "^0.3.6",
     "esm": "^3.2.25",
     "execa": "^5.1.1",
     "figlet": "^1.5.2",
@@ -54,6 +55,7 @@
     "inquirer": "^8.1.5",
     "kleur": "^4.1.4",
     "ncp": "^2.0.0",
+    "simple-git": "^2.46.0",
     "yargs": "^17.2.1"
   }
 }

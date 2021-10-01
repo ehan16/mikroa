@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import { string } from 'yargs';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
 import { initPackageJson, installPackage } from '../../utils/npm.util';
 import {
@@ -8,17 +7,6 @@ import {
   routerJs,
   serviceExampleJs,
 } from '../filesTemplate/api-gateway-files';
-import { packageJsonContent } from '../filesTemplate/package-json';
-
-// export function defaultTemplate(fileNameWithExt: string, fileContent: string, hasPath = false, filePath = ''): void | Promise<void> {
-//     showGenerate(fileNameWithExt);
-//     checkIfDirExistElseMakeDir(hasPath, filePath);
-
-//     const fileExists = checkExistence(`${filePath}/${fileNameWithExt}`)
-
-//     if (!fileExists) return createFile(filePath, fileNameWithExt, fileContent);
-//     return overwriteFileOrThrowError(filePath, fileNameWithExt, fileContent);
-// }
 
 export function createFile(
   filePath: string,
@@ -45,12 +33,6 @@ export function createFiles(
     await createFile(file?.filePath, file?.fileName, file?.fileContent);
   });
 }
-
-// async function overwriteFileOrThrowError(filePath: string, fileNameWithExt: string, fileContent: string): Promise<void> {
-//     const overwriteAnswer: Answer = await overwriteFileQuestion();
-//     if (overwriteAnswer.overwrite === true) return createFile(filePath, fileNameWithExt, fileContent, true);
-//     return fileAlreadyExist(fileNameWithExt);
-// }
 
 // creates a new file named `target` in case the file didn't exist
 export function copy(src: string, target: string) {
