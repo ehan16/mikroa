@@ -137,45 +137,49 @@ export async function generateApiGateway(
   name: string
 ): Promise<void> {
   const path = `${process.cwd()}${filePath}/Api-Gateway`;
-  await createDirectory(path);
-  await initPackageJson(path);
-  await installPackage(path, 'express', '--save');
-  await installPackage(path, 'body-parser', '--save');
-  await installPackage(path, 'axios', '--save');
-  await createDirectories([
-    {
-      path,
-    },
-    {
-      path: `${path}/routers`,
-    },
-    {
-      path: `${path}/models`,
-    },
-    {
-      path: `${path}/controllers`,
-    },
-  ]);
-  await createFiles([
-    {
-      fileName: 'index.js',
-      filePath: path,
-      fileContent: indexJs(name),
-    },
-    {
-      fileName: 'router.js',
-      filePath: `${path}/routers`,
-      fileContent: routerJs(),
-    },
-    {
-      fileName: 'apiAdapter.js',
-      filePath: `${path}/routers`,
-      fileContent: apiAdapterJs(),
-    },
-    {
-      fileName: 'serviceExample.js',
-      filePath: `${path}/routers`,
-      fileContent: serviceExampleJs(),
-    },
-  ]);
+  try {
+    await createDirectory(path);
+    await initPackageJson(path);
+    await installPackage(path, 'express', '--save');
+    await installPackage(path, 'body-parser', '--save');
+    await installPackage(path, 'axios', '--save');
+    await createDirectories([
+      {
+        path,
+      },
+      {
+        path: `${path}/routers`,
+      },
+      {
+        path: `${path}/models`,
+      },
+      {
+        path: `${path}/controllers`,
+      },
+    ]);
+    await createFiles([
+      {
+        fileName: 'index.js',
+        filePath: path,
+        fileContent: indexJs(name),
+      },
+      {
+        fileName: 'router.js',
+        filePath: `${path}/routers`,
+        fileContent: routerJs(),
+      },
+      {
+        fileName: 'apiAdapter.js',
+        filePath: `${path}/routers`,
+        fileContent: apiAdapterJs(),
+      },
+      {
+        fileName: 'serviceExample.js',
+        filePath: `${path}/routers`,
+        fileContent: serviceExampleJs(),
+      },
+    ]);
+  } catch (err) {
+    showError('Error creando el archivo');
+  }
 }
