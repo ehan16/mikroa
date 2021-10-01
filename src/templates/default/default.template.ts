@@ -43,7 +43,7 @@ export async function createDirectory(path: string) {
   try {
     if (!fs.existsSync(dirPath)) {
       await fs.mkdir(dirPath, { recursive: true });
-      // console.log(`File created at: ${dirPath}`);
+      console.log(`File created at: ${dirPath}`);
     }
   } catch (err) {
     showError('An error has ocurred while creating the directory');
