@@ -1,6 +1,11 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
-import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
+import {
+  showTitle,
+  showWarning,
+  showGenerate,
+  showCreate,
+} from '../utils/logger.util';
 import { directoryExists } from '../utils/checker.util';
 import { initGit } from '../utils/git.util';
 
@@ -35,7 +40,6 @@ export const handler = async (argv: Arguments<Options>) => {
   });
 
   const answers = await inquirer.prompt(questions);
-  console.log(answers);
 
   if (answers.git) {
     if (directoryExists('.git')) {
@@ -43,7 +47,7 @@ export const handler = async (argv: Arguments<Options>) => {
       // ? process.exit(1);
     } else {
       showGenerate('Creating git file');
-      await initGit();
+      await initGit(name || '');
     }
   }
 
