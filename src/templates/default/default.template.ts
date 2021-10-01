@@ -40,10 +40,10 @@ export function copy(src: string, target: string) {
 
 export async function createDirectory(path: string) {
   const dirPath = process.cwd() + path;
-
   try {
     if (!fs.existsSync(dirPath)) {
       await fs.mkdir(dirPath, { recursive: true });
+      // console.log(`File created at: ${dirPath}`);
     }
   } catch (err) {
     showError('An error has ocurred while creating the directory');

@@ -1,4 +1,5 @@
 import type { Arguments, CommandBuilder } from 'yargs';
+import { createDirectory } from '../templates/default/default.template';
 import { showTitle } from '../utils/logger.util';
 
 type Options = {
@@ -15,7 +16,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
     name: { type: 'string' },
   });
 
-export const handler = (argv: Arguments<Options>): void => {
+export const handler = async (argv: Arguments<Options>): Promise<void> => {
   const { name } = argv;
   const message = `Initializing ${name} project!`;
   console.log(message);
@@ -26,9 +27,12 @@ export const handler = (argv: Arguments<Options>): void => {
 
   // 2. Receive the new directory name and generate it
 
-  // 3. Generate the config file
+  // 3. Create the project directory
+  await createDirectory(name ?? '');
+  console.log('success');
+  // 4. Generate the config file
 
-  // 4. Generate the api gateway
+  // 5. Generate the api gateway
 
-  // 5. Generate cache file
+  // 6. Generate cache file
 };
