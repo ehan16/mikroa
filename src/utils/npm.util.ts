@@ -1,5 +1,4 @@
 import execa from 'execa';
-import { options } from 'yargs';
 
 export async function initPackageJson(path: string) {
   const res = await execa('npm', ['init', '-y'], {
