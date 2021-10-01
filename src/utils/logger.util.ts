@@ -12,7 +12,7 @@ export const showTitle = (): void => {
 };
 
 export const showError = (message: string | Error): void => {
-  console.error(red('ERROR:') + message);
+  console.error(red('❌🤬 ERROR:') + message);
 };
 
 export const showWarning = (message: string | Error): void => {

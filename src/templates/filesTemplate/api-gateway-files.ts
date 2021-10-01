@@ -17,7 +17,7 @@ export function indexJs(name: string) {
 
     app.use(router);
 
-    console.log("${name} API Gateway on http://localhost:3000");
+    console.log("🚀 ${name} API Gateway on http://localhost:3000");
     app.listen(3000);
       `;
 }
