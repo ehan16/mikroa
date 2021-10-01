@@ -136,7 +136,7 @@ export async function generateApiGateway(
   filePath: string,
   name: string
 ): Promise<void> {
-  const path = `${process.cwd()}${filePath}/Api-Gateway`;
+  const path = `${filePath}/Api-Gateway`;
   try {
     await createDirectory(path);
     await initPackageJson(path);
