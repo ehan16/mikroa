@@ -8,6 +8,11 @@ import {
   serviceExampleJs,
 } from '../filesTemplate/api-gateway-files';
 
+// eslint-disable-next-line arrow-body-style
+export const directoryExists = (path: string): boolean => {
+  return fs.existsSync(process.cwd() + path);
+};
+
 export function createFile(
   filePath: string,
   fileName: string,

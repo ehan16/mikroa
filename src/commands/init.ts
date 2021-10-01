@@ -1,13 +1,13 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
 import {
+  directoryExists,
   createDirectory,
   createFile,
   createFiles,
   generateApiGateway,
 } from '../templates/default/default.template';
 import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
-import { directoryExists } from '../utils/checker.util';
 import { initGit } from '../utils/git.util';
 
 type Options = {
