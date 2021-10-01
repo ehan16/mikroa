@@ -4,11 +4,11 @@ import {
   directoryExists,
   createDirectory,
   createFile,
-  createFiles,
   generateApiGateway,
 } from '../templates/default/default.template';
 import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
 import { initGit } from '../utils/git.util';
+import { initPackageJson } from '../utils/npm.util';
 
 type Options = {
   name: string | undefined;
@@ -55,17 +55,9 @@ export const handler = async (argv: Arguments<Options>) => {
   }
 
   // 4. Generate the config file and package.json
-  await createFiles([
-    {
-      fileName: 'package.json',
-      filePath: `/${name}`,
-      fileContent: '// here goes the json',
-    },
-    {
-      fileName: 'config.json',
-      filePath: `/${name}`,
-      fileContent: '// here goes the json',
-    },
+  await Promise.all([
+    initPackageJson(`/${name}`),
+    createFile(`/${name}`, 'config.json', '{}'),
   ]);
 
   // 5. Generate the api gateway
