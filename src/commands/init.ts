@@ -1,13 +1,9 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
-import {
-  showTitle,
-  showWarning,
-  showGenerate,
-  showCreate,
-} from '../utils/logger.util';
+import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
 import { directoryExists } from '../utils/checker.util';
 import { initGit } from '../utils/git.util';
+import { createFile } from '../templates/default/default.template';
 
 type Options = {
   name: string | undefined;
@@ -42,12 +38,11 @@ export const handler = async (argv: Arguments<Options>) => {
   const answers = await inquirer.prompt(questions);
 
   if (answers.git) {
-    if (directoryExists('.git')) {
+    if (directoryExists(`/${name}/.git`)) {
       showWarning('the git repository already exists');
-      // ? process.exit(1);
     } else {
       showGenerate('Creating git file');
-      await initGit(name || '');
+      await initGit(`/${name || ''}`);
     }
   }
 
@@ -58,4 +53,5 @@ export const handler = async (argv: Arguments<Options>) => {
   // 4. Generate the api gateway
 
   // 5. Generate cache file
+  createFile(`/${name}`, '.cache', '');
 };
