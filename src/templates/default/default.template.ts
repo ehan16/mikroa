@@ -1,5 +1,14 @@
 import fs from 'fs-extra';
+import { string } from 'yargs';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
+import { initPackageJson, installPackage } from '../../utils/npm.util';
+import {
+  apiAdapterJs,
+  indexJs,
+  routerJs,
+  serviceExampleJs,
+} from '../filesTemplate/api-gateway-files';
+import { packageJsonContent } from '../filesTemplate/package-json';
 
 // export function defaultTemplate(fileNameWithExt: string, fileContent: string, hasPath = false, filePath = ''): void | Promise<void> {
 //     showGenerate(fileNameWithExt);
@@ -22,6 +31,18 @@ export function createFile(
     if (!error && !fileAlreadyExists) return showCreate(fileName, filePath);
     if (!error && fileAlreadyExists) return showUpdate(fileName, filePath);
     return showError(error);
+  });
+}
+
+export function createFiles(
+  files: Array<{
+    filePath: string;
+    fileName: string;
+    fileContent: string;
+  }>
+): void {
+  files.forEach(async (file) => {
+    await createFile(file?.filePath, file?.fileName, file?.fileContent);
   });
 }
 
@@ -48,6 +69,12 @@ export async function createDirectory(path: string) {
   } catch (err) {
     showError('An error has ocurred while creating the directory');
   }
+}
+
+export function createDirectories(directories: Array<{ path: string }>) {
+  directories?.forEach(async (directory) => {
+    await createDirectory(directory?.path);
+  });
 }
 
 export function removeDirectory(path: string) {
@@ -103,4 +130,52 @@ export async function readFile(file: string) {
   } catch (err) {
     showError('An error has ocurred while reading the file');
   }
+}
+
+export async function generateApiGateway(
+  filePath: string,
+  name: string
+): Promise<void> {
+  const path = `${process.cwd()}${filePath}/Api-Gateway`;
+  await createDirectory(path);
+  await initPackageJson(path);
+  await installPackage(path, 'express', '--save');
+  await installPackage(path, 'body-parser', '--save');
+  await installPackage(path, 'axios', '--save');
+  await createDirectories([
+    {
+      path,
+    },
+    {
+      path: `${path}/routers`,
+    },
+    {
+      path: `${path}/models`,
+    },
+    {
+      path: `${path}/controllers`,
+    },
+  ]);
+  await createFiles([
+    {
+      fileName: 'index.js',
+      filePath: path,
+      fileContent: indexJs(name),
+    },
+    {
+      fileName: 'router.js',
+      filePath: `${path}/routers`,
+      fileContent: routerJs(),
+    },
+    {
+      fileName: 'apiAdapter.js',
+      filePath: `${path}/routers`,
+      fileContent: apiAdapterJs(),
+    },
+    {
+      fileName: 'serviceExample.js',
+      filePath: `${path}/routers`,
+      fileContent: serviceExampleJs(),
+    },
+  ]);
 }

@@ -2,6 +2,7 @@ import type { Arguments, CommandBuilder } from 'yargs';
 import {
   createDirectory,
   createFile,
+  generateApiGateway,
 } from '../templates/default/default.template';
 import { showTitle } from '../utils/logger.util';
 
@@ -34,8 +35,9 @@ export const handler = async (argv: Arguments<Options>): Promise<void> => {
   await createDirectory(`/${name}`);
 
   // 4. Generate the config file
-  await createFile(`/${name}`, 'package.json', 'here goes the json');
+  await createFile(`/${name}`, 'package.json', '// here goes the json');
+  await createFile(`/${name}`, 'config.json', '// here goes the json');
   // 5. Generate the api gateway
-
+  await generateApiGateway(`/${name}`, name ?? '');
   // 6. Generate cache file
 };
