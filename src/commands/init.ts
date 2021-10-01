@@ -2,7 +2,7 @@ import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
 import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
 import { directoryExists } from '../utils/checker.util';
-import { askGithubCredentials } from '../utils/git.util';
+import { askGithubCredentials, getPersonalAccessToken } from '../utils/git.util';
 
 type Options = {
   name: string | undefined;
@@ -45,6 +45,7 @@ export const handler = async (argv: Arguments<Options>) => {
       showGenerate('Github repository');
       const credentials = await askGithubCredentials();
       console.log(credentials);
+      getPersonalAccessToken(credentials);
     }
   }
 

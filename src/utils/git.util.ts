@@ -1,12 +1,16 @@
 import inquirer from 'inquirer';
 import { Octokit } from '@octokit/rest';
 import { createBasicAuth } from '@octokit/auth-basic';
+// import Configstore from 'configstore';
 import { showWarning } from './logger.util';
 
 type Credential = {
   username: string;
   password: string;
 };
+
+// export const conf = new Configstore('mikroa');
+export let octokit: any;
 
 export function askGithubCredentials() {
   const questions = [];
@@ -39,15 +43,19 @@ export function askGithubCredentials() {
 }
 
 export function getInstance() {
-  return Octokit;
+  return octokit;
 }
+
+// export function getStoredGithubToken() {
+//   return conf.get('github.token');
+// }
 
 export async function getPersonalAccessToken(credentials: Credential) {
   const auth = createBasicAuth({
     username: credentials.username,
     password: credentials.password,
     async on2Fa() {
-      // TBD
+      return '';
     },
     token: {
       scopes: ['user', 'public_repo', 'repo', 'repo:status'],
@@ -57,5 +65,15 @@ export async function getPersonalAccessToken(credentials: Credential) {
 
   try {
     const res = await auth();
+
+    console.log(res);
+    // if (res.token) {
+    //   conf.set('github.token', res.token);
+    //   return res.token;
+    // } else {
+    //   throw new Error("GitHub token was not found in the response");
+    // }
+  } catch (err) {
+    console.log(err);
   }
 }
