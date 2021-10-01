@@ -5,7 +5,10 @@ import * as figlet from 'figlet';
 const newLine = '\n';
 
 export const showTitle = (): void => {
-  console.log(cyan(figlet.textSync('Mikroa', { horizontalLayout: 'fitted' })));
+  console.log(
+    cyan(figlet.textSync('>_ | Mikroa', { horizontalLayout: 'fitted' })) +
+      newLine
+  );
 };
 
 export const showError = (message: string | Error): void => {

@@ -1,5 +1,8 @@
 import type { Arguments, CommandBuilder } from 'yargs';
-import { showTitle } from '../utils/logger.util';
+import inquirer from 'inquirer';
+import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
+import { directoryExists } from '../utils/checker.util';
+import { askGithubCredentials } from '../utils/git.util';
 
 type Options = {
   name: string | undefined;
@@ -15,7 +18,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
     name: { type: 'string' },
   });
 
-export const handler = (argv: Arguments<Options>): void => {
+export const handler = async (argv: Arguments<Options>) => {
   const { name } = argv;
   const message = `Initializing ${name} project!`;
   console.log(message);
@@ -23,6 +26,27 @@ export const handler = (argv: Arguments<Options>): void => {
   showTitle();
 
   // 1. Ask git repository?
+  const questions = [];
+  questions.push({
+    type: 'confirm',
+    name: 'git',
+    message: 'Initialize a git repository?',
+    default: false,
+  });
+
+  const answers = await inquirer.prompt(questions);
+  console.log(answers);
+
+  if (answers.git) {
+    if (directoryExists('.git')) {
+      showWarning('the git repository already exists');
+      // ? process.exit(1);
+    } else {
+      showGenerate('Github repository');
+      const credentials = await askGithubCredentials();
+      console.log(credentials);
+    }
+  }
 
   // 2. Receive the new directory name and generate it
 
