@@ -6,7 +6,12 @@ import {
   createFile,
   generateApiGateway,
 } from '../templates/default/default.template';
-import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
+import {
+  showTitle,
+  showWarning,
+  showGenerate,
+  showError,
+} from '../utils/logger.util';
 import { initGit } from '../utils/git.util';
 import { initPackageJson } from '../utils/npm.util';
 
@@ -26,13 +31,19 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 
 export const handler = async (argv: Arguments<Options>) => {
   const { name } = argv;
-  const message = `Initializing ${name} project!`;
-  console.log(message);
+  const dirName = name?.toLowerCase();
+
+  if (/[^A-Za-z0-9-]+/.test(String(dirName)) || /\s/.test(String(dirName))) {
+    showError('invalid name');
+    process.exit();
+  }
 
   showTitle();
+  const message = `Initializing ${dirName} project!`;
+  console.log(message);
 
   // 1. Create the project directory
-  await createDirectory(`/${name}`);
+  await createDirectory(`/${dirName}`);
 
   // 2. Initialize git folder
   const questions = [];
@@ -46,23 +57,23 @@ export const handler = async (argv: Arguments<Options>) => {
   const answers = await inquirer.prompt(questions);
 
   if (answers.git) {
-    if (directoryExists(`/${name}/.git`)) {
+    if (directoryExists(`/${dirName}/.git`)) {
       showWarning('the git repository already exists');
     } else {
-      showGenerate('Creating git file');
-      await initGit(`/${name || ''}`);
+      showGenerate('creating git file');
+      await initGit(`/${dirName || ''}`);
     }
   }
 
   // 4. Generate the config file and package.json
   await Promise.all([
-    initPackageJson(`/${name}`),
-    createFile(`/${name}`, 'config.json', '{}'),
+    initPackageJson(`/${dirName}`),
+    createFile(`/${dirName}`, 'config.json', '{}'),
   ]);
 
   // 5. Generate the api gateway
-  await generateApiGateway(`/${name}`, name ?? '');
+  await generateApiGateway(`/${dirName}`, dirName ?? '');
 
   // 6. Generate cache file
-  createFile(`/${name}`, '.cache', '');
+  createFile(`/${dirName}`, '.cache', '');
 };

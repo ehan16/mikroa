@@ -29,7 +29,6 @@ export const handler = (argv: Arguments<Options>): void => {
   // 2. If not, then read root's config file with all the microservices config, a JSON that looks like this
   // {
   //   'microservice-name': {
-  //     name: 'Microservice Name',
   //     route: './microservice-name',
   //     language: 'javascript',
   //     orm: 'mongoose',
