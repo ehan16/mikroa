@@ -118,7 +118,7 @@ export async function generateApiGateway(
   filePath: string,
   name: string
 ): Promise<void> {
-  const path = `${filePath}/Api-Gateway`;
+  const path = `${filePath}/api-gateway`;
   try {
     await createDirectory(path);
     await initPackageJson(path);
