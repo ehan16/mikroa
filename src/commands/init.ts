@@ -3,6 +3,7 @@ import inquirer from 'inquirer';
 import {
   createDirectory,
   createFile,
+  createFiles,
   generateApiGateway,
 } from '../templates/default/default.template';
 import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
@@ -54,8 +55,18 @@ export const handler = async (argv: Arguments<Options>) => {
   }
 
   // 4. Generate the config file and package.json
-  await createFile(`/${name}`, 'package.json', '// here goes the json');
-  await createFile(`/${name}`, 'config.json', '// here goes the json');
+  await createFiles([
+    {
+      fileName: 'package.json',
+      filePath: `/${name}`,
+      fileContent: '// here goes the json',
+    },
+    {
+      fileName: 'config.json',
+      filePath: `/${name}`,
+      fileContent: '// here goes the json',
+    },
+  ]);
 
   // 5. Generate the api gateway
   await generateApiGateway(`/${name}`, name ?? '');
