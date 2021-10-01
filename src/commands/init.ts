@@ -2,7 +2,7 @@ import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
 import { showTitle, showWarning, showGenerate } from '../utils/logger.util';
 import { directoryExists } from '../utils/checker.util';
-import { askGithubCredentials, getPersonalAccessToken } from '../utils/git.util';
+import { initGit } from '../utils/git.util';
 
 type Options = {
   name: string | undefined;
@@ -42,10 +42,8 @@ export const handler = async (argv: Arguments<Options>) => {
       showWarning('the git repository already exists');
       // ? process.exit(1);
     } else {
-      showGenerate('Github repository');
-      const credentials = await askGithubCredentials();
-      console.log(credentials);
-      getPersonalAccessToken(credentials);
+      showGenerate('Creating git file');
+      await initGit();
     }
   }
 

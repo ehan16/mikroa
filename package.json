@@ -32,7 +32,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/configstore": "^5.0.1",
     "@types/figlet": "^1.5.4",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^8.1.2",
@@ -48,10 +47,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "@octokit/auth-basic": "^1.4.8",
-    "@octokit/rest": "^18.11.4",
     "clui": "^0.3.6",
-    "configstore": "^6.0.0",
     "esm": "^3.2.25",
     "execa": "^5.1.1",
     "figlet": "^1.5.2",
