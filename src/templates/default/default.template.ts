@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
 import { initPackageJson, installPackage } from '../../utils/npm.util';
+import { OptionsAnswer } from '../../utils/prompt.util';
 import {
   apiAdapterJs,
   indexJs,
@@ -58,7 +59,7 @@ export async function createDirectory(path: string) {
   }
 }
 
-export function createDirectories(directories: Array<{ path: string }>) {
+export function createDirectories(directories: { path: string }[]) {
   directories?.forEach(async (directory) => {
     await createDirectory(directory?.path);
   });
@@ -167,6 +168,100 @@ export async function generateApiGateway(
       },
     ]);
   } catch (err) {
-    showError('Error creando el archivo');
+    showError('An error has ocurred while creating the API Gateway');
+  }
+}
+
+// microservice-name/
+//   config.json
+//   src/
+//     app.ts
+//     server.ts
+//     router.ts
+//     controllers/
+//     models/
+//       index.ts
+//   eslintignore
+//   eslintrc.js
+//   prettierrc
+//   prettierignore
+//   package.json
+//   Dockerfile
+//   dockerignore
+//   example.env
+
+async function createMicroserviceFolder(
+  microserviceName: string,
+  answers: OptionsAnswer
+) {
+  const path = `${process.cwd()}/${microserviceName}`;
+  const { framework, language, orm } = answers;
+
+  try {
+    // create the microservice root folder and init the package.json
+    await createDirectory(path);
+    await initPackageJson(path);
+
+    // install all the dependencies according to the provided answers
+    const packages: { path: string; package: string; option: string }[] = [];
+    await installPackage(path, 'prettier', '-D');
+    await installPackage(path, 'autoprefixer', '-D');
+    await installPackage(path, 'eslint', '-D');
+    await installPackage(path, 'eslint-config-avilatek', '-D');
+    await installPackage(path, 'eslint-config-prettier', '-D');
+
+    if (language === 'typescript') {
+      console.log('hola');
+    }
+
+    switch (orm) {
+      case 'mongoose':
+        console.log('mongo');
+        break;
+      default:
+        break;
+    }
+
+    switch (framework) {
+      case 'express':
+        console.log('Express');
+        break;
+      default:
+        break;
+    }
+
+    // create all the folders
+    await createDirectories([
+      {
+        path: `${path}/src`,
+      },
+      {
+        path: `${path}/src/controllers`,
+      },
+      {
+        path: `${path}/src/models`,
+      },
+    ]);
+
+    // create all the folders
+    await createFiles([
+      {
+        fileName: 'router.js',
+        filePath: `${path}/routers`,
+        fileContent: routerJs(),
+      },
+      {
+        fileName: 'apiAdapter.js',
+        filePath: `${path}/routers`,
+        fileContent: apiAdapterJs(),
+      },
+      {
+        fileName: 'serviceExample.js',
+        filePath: `${path}/routers`,
+        fileContent: serviceExampleJs(),
+      },
+    ]);
+  } catch (err) {
+    showError('An error has ocurred while creating the microservice');
   }
 }
