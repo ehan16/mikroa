@@ -17,7 +17,7 @@ export const directoryExists = (path: string): boolean => {
 export function createFile(
   filePath: string,
   fileName: string,
-  fileContent: string,
+  fileContent: string = '',
   fileAlreadyExists = false
 ): void {
   const filepath = `${process.cwd()}${filePath}/${fileName}`;
@@ -32,11 +32,11 @@ export function createFiles(
   files: Array<{
     filePath: string;
     fileName: string;
-    fileContent: string;
+    fileContent?: string;
   }>
 ): void {
   files.forEach(async (file) => {
-    await createFile(file?.filePath, file?.fileName, file?.fileContent);
+    await createFile(file?.filePath, file?.fileName, file?.fileContent ?? '');
   });
 }
 
@@ -128,9 +128,11 @@ export async function generateApiGateway(
   try {
     await createDirectory(path);
     await initPackageJson(path);
+
     await installPackage(path, 'express', '--save');
     await installPackage(path, 'body-parser', '--save');
     await installPackage(path, 'axios', '--save');
+
     await createDirectories([
       {
         path,
@@ -145,6 +147,7 @@ export async function generateApiGateway(
         path: `${path}/controllers`,
       },
     ]);
+
     await createFiles([
       {
         fileName: 'index.js',
@@ -172,24 +175,6 @@ export async function generateApiGateway(
   }
 }
 
-// microservice-name/
-//   config.json
-//   src/
-//     app.ts
-//     server.ts
-//     router.ts
-//     controllers/
-//     models/
-//       index.ts
-//   eslintignore
-//   eslintrc.js
-//   prettierrc
-//   prettierignore
-//   package.json
-//   Dockerfile
-//   dockerignore
-//   example.env
-
 async function createMicroserviceFolder(
   microserviceName: string,
   answers: OptionsAnswer
@@ -202,14 +187,15 @@ async function createMicroserviceFolder(
     await createDirectory(path);
     await initPackageJson(path);
 
-    // install all the dependencies according to the provided answers
-    const packages: { path: string; package: string; option: string }[] = [];
+    // install base dependencies
+    await installPackage(path, 'dotenv', '');
     await installPackage(path, 'prettier', '-D');
     await installPackage(path, 'autoprefixer', '-D');
     await installPackage(path, 'eslint', '-D');
     await installPackage(path, 'eslint-config-avilatek', '-D');
     await installPackage(path, 'eslint-config-prettier', '-D');
 
+    // install all the dependencies according to the provided answers
     if (language === 'typescript') {
       console.log('hola');
     }
@@ -243,22 +229,51 @@ async function createMicroserviceFolder(
       },
     ]);
 
-    // create all the folders
+    // microservice-name/
+    //   config.json
+    //   src/
+    //     app.ts
+    //     server.ts
+    //     router.ts
+    //     controllers/
+    //     models/
+    //       index.ts
+    //   .eslintignore
+    //   .eslintrc.js
+    //   .prettierrc
+    //   .prettierignore
+    //   package.json
+    //   Dockerfile
+    //   .dockerignore
+    //   example.env
+
+    await Promise.all([
+      copy('/template/template.Dockerfile', `${path}/Dockerfile`),
+      copy('/template/template.dockerignore', `${path}/.dockerignore`),
+      copy('/template/template.env', `${path}/example.env`),
+      copy('/template/template.eslintignore', `${path}/.eslintignore`),
+      copy('/template/template.eslintrc.js', `${path}/.eslintrc.js`),
+      copy('/template/template.prettierrc', `${path}/.prettierrc`),
+      copy('/template/template.prettierignore', `${path}/.prettierignore`),
+    ]);
+
+    // create all the files, it'll depend on the selected language
     await createFiles([
       {
+        fileName: 'app.js',
+        filePath: `${path}/src`,
+      },
+      {
+        fileName: 'server.js',
+        filePath: `${path}/src`,
+      },
+      {
         fileName: 'router.js',
-        filePath: `${path}/routers`,
-        fileContent: routerJs(),
+        filePath: `${path}/src`,
       },
       {
-        fileName: 'apiAdapter.js',
-        filePath: `${path}/routers`,
-        fileContent: apiAdapterJs(),
-      },
-      {
-        fileName: 'serviceExample.js',
-        filePath: `${path}/routers`,
-        fileContent: serviceExampleJs(),
+        fileName: 'index.js',
+        filePath: `${path}/src/models`,
       },
     ]);
   } catch (err) {

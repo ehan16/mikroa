@@ -21,6 +21,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
 export const handler = async (argv: Arguments<Options>) => {
   const { microservice } = argv;
   const microserviceName = microservice?.toLocaleLowerCase() ?? '';
+  const microservices = [];
 
   // 1. Check if microservice name was provided
   if (microserviceName) {
@@ -37,9 +38,17 @@ export const handler = async (argv: Arguments<Options>) => {
 
     // 1.1 In case the microservice name is passed, ask the user for language, orm, etc and then create the new microservice
     const answers = await promptForOptions();
+    microservices.push({
+      name: microserviceName,
+      language: answers.language,
+      orm: answers.orm,
+      framework: answers.framework,
+    });
   }
 
-  // 2. If not, then read root's config file with all the microservices config, a JSON that looks like this
+  // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
+
+  // The JSON that looks like this
   // {
   //   'microservice-name': {
   //     route: './microservice-name',
@@ -52,4 +61,7 @@ export const handler = async (argv: Arguments<Options>) => {
   // 3. Check in the cache which microservices haven't been created yet
 
   // 4. Create the ones that are not in the cache
+  microservices.forEach((_microservice) => {
+    console.log('Hey');
+  });
 };
