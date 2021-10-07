@@ -1,7 +1,7 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import { showError, showGenerate } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
-import { readJson } from '../templates/default/default.template';
+import { readJson, readFile } from '../templates/default/default.template';
 
 type Options = {
   microservice: string | undefined;
@@ -57,11 +57,12 @@ export const handler = async (argv: Arguments<Options>) => {
     //     framework: 'express',
     //   },
     // };
-    const configFile = readJson('config.json');
+    const configFile = await readJson('config.json');
     console.log('CONFIG FILE', configFile);
   }
 
-  // 3. Check in the cache which microservices haven't been created yet
+  // 3. Check in the cache which microservices haven't been created yet and filter them out
+  const cache = await readFile('.cache');
 
   // 4. Create the ones that are not in the cache
   microservices.forEach((_microservice) => {
