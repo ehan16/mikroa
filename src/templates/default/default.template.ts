@@ -262,19 +262,19 @@ async function createMicroserviceFolder(
     // create all the files, it'll depend on the selected language
     await createFiles([
       {
-        fileName: 'app.js',
+        fileName: 'app.js', // TODO cambiar la extension dependiendo del lenguaje
         filePath: `${path}/src`,
       },
       {
-        fileName: 'server.js',
+        fileName: 'server.js', // TODO cambiar la extension dependiendo del lenguaje
         filePath: `${path}/src`,
       },
       {
-        fileName: 'router.js',
+        fileName: 'router.js', // TODO cambiar la extension dependiendo del lenguaje
         filePath: `${path}/src`,
       },
       {
-        fileName: 'index.js',
+        fileName: 'index.js', // TODO cambiar la extension dependiendo del lenguaje
         filePath: `${path}/src/models`,
       },
     ]);

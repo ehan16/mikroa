@@ -1,5 +1,10 @@
 import type { Arguments, CommandBuilder } from 'yargs';
-import { showError, showGenerate, showTitle } from '../utils/logger.util';
+import {
+  showError,
+  showGenerate,
+  showTitle,
+  showStart,
+} from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, readFile } from '../templates/default/default.template';
 
@@ -50,25 +55,42 @@ export const handler = async (argv: Arguments<Options>) => {
       });
     } else {
       // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
-
-      // The JSON that looks like this
       // {
       //   'microservice-name': {
-      //     route: './microservice-name', ??????????
       //     language: 'javascript',
       //     orm: 'mongoose',
       //     framework: 'express',
       //   },
       // };
+      showStart('to read the configuration file');
       const configFile = await readJson('config.json');
       console.log('CONFIG FILE', configFile);
+      for (const [name, config] of Object.entries(configFile)) {
+        // k  // Type is string
+        // v  // Type is any
+        const { language, orm, framework } = config as {
+          language: string;
+          orm: string;
+          framework: string;
+        };
+        microservices.push({
+          name,
+          language,
+          orm,
+          framework,
+        });
+      }
+      console.log(configFile);
     }
 
     // 3. Check in the cache which microservices haven't been created yet and filter them out
+    showStart('to read the cache');
     const cache = await readJson('cache.json');
+    console.log('CACHE FILE', cache);
 
     // 4. Create the ones that are not in the cache
-    microservices.forEach((_microservice) => {
+    microservices.forEach(({ framework, language, name, orm }) => {
+      showGenerate(`${name} microservice`);
       console.log('Hey');
     });
   } catch (e) {

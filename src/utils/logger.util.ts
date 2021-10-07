@@ -31,6 +31,10 @@ export const showGenerate = (fileName: string): void => {
   console.log(`${cyan('Creating ')} ${fileName}...`);
 };
 
+export const showStart = (fileName: string): void => {
+  console.log(`${cyan('Starting ')} ${fileName}...`);
+};
+
 export const showCreate = (fileName: string, filePath: string): void => {
   filePath
     ? console.log(`${green('New:')} ${fileName} in ${filePath}`)
