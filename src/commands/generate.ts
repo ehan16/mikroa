@@ -1,6 +1,7 @@
 import type { Arguments, CommandBuilder } from 'yargs';
-import { showError, showGenerate, showSuccess } from '../utils/logger.util';
+import { showError, showGenerate } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
+import { readJson } from '../templates/default/default.template';
 
 type Options = {
   microservice: string | undefined;
@@ -44,19 +45,21 @@ export const handler = async (argv: Arguments<Options>) => {
       orm: answers.orm,
       framework: answers.framework,
     });
+  } else {
+    // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
+
+    // The JSON that looks like this
+    // {
+    //   'microservice-name': {
+    //     route: './microservice-name',
+    //     language: 'javascript',
+    //     orm: 'mongoose',
+    //     framework: 'express',
+    //   },
+    // };
+    const configFile = readJson('config.json');
+    console.log('CONFIG FILE', configFile);
   }
-
-  // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
-
-  // The JSON that looks like this
-  // {
-  //   'microservice-name': {
-  //     route: './microservice-name',
-  //     language: 'javascript',
-  //     orm: 'mongoose',
-  //     framework: 'express',
-  //   },
-  // };
 
   // 3. Check in the cache which microservices haven't been created yet
 

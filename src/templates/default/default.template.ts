@@ -72,9 +72,9 @@ export function removeDirectory(path: string) {
   });
 }
 
-export async function readJson(file: string) {
+export async function readJson(fileName: string) {
   try {
-    const object = await fs.readJson(process.cwd() + file);
+    const object = await fs.readJson(`${process.cwd()}/${fileName}`);
     return object;
   } catch (err) {
     showError('The JSON file could not be read');
@@ -82,38 +82,38 @@ export async function readJson(file: string) {
 }
 
 // ff the directory or file doesn't exist, it creates it
-export function outputJson(file: string, object: unknown) {
-  fs.outputJson(process.cwd() + file, object, (err: Error) => {
+export function outputJson(fileName: string, object: unknown) {
+  fs.outputJson(`${process.cwd()}/${fileName}`, object, (err: Error) => {
     if (err) showError(err);
   });
 }
 
-export async function outputJsonAsync(file: string, object: unknown) {
+export async function outputJsonAsync(fileName: string, object: unknown) {
   try {
-    await fs.outputJson(process.cwd() + file, object);
+    await fs.outputJson(`${process.cwd()}/${fileName}`, object);
   } catch (err) {
     showError('An error has ocurred while writing the JSON file');
   }
 }
 
-export function outputFile(file: string, content: unknown) {
-  fs.outputFile(process.cwd() + file, content, (err: Error) => {
+export function outputFile(fileName: string, content: unknown) {
+  fs.outputFile(`${process.cwd()}/${fileName}`, content, (err: Error) => {
     if (err) showError(err);
   });
 }
 
-export async function outputFileAsync(file: string, content: unknown) {
+export async function outputFileAsync(fileName: string, content: unknown) {
   try {
-    await fs.outputFile(process.cwd() + file, content);
+    await fs.outputFile(`${process.cwd()}/${fileName}`, content);
   } catch (err) {
     showError('An error has ocurred while writing the file');
   }
 }
 
 // returns a string
-export async function readFile(file: string) {
+export async function readFile(fileName: string) {
   try {
-    const data = await fs.readFile(process.cwd() + file, 'utf8');
+    const data = await fs.readFile(`${process.cwd()}/${fileName}`, 'utf8');
     return data;
   } catch (err) {
     showError('An error has ocurred while reading the file');
@@ -238,6 +238,7 @@ async function createMicroserviceFolder(
     //     controllers/
     //     models/
     //       index.ts
+    //   .gitignore
     //   .eslintignore
     //   .eslintrc.js
     //   .prettierrc
@@ -248,6 +249,7 @@ async function createMicroserviceFolder(
     //   example.env
 
     await Promise.all([
+      copy('/template/template.gitignore', `${path}/.gitignore`),
       copy('/template/template.Dockerfile', `${path}/Dockerfile`),
       copy('/template/template.dockerignore', `${path}/.dockerignore`),
       copy('/template/template.env', `${path}/example.env`),
