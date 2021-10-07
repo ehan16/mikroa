@@ -1,5 +1,5 @@
 import type { Arguments, CommandBuilder } from 'yargs';
-import { showError, showGenerate } from '../utils/logger.util';
+import { showError, showGenerate, showTitle } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, readFile } from '../templates/default/default.template';
 
@@ -23,6 +23,8 @@ export const handler = async (argv: Arguments<Options>) => {
   const { microservice } = argv;
   const microserviceName = microservice?.toLocaleLowerCase() ?? '';
   const microservices = [];
+
+  showTitle();
 
   // 1. Check if microservice name was provided
   if (microserviceName) {
@@ -51,7 +53,7 @@ export const handler = async (argv: Arguments<Options>) => {
     // The JSON that looks like this
     // {
     //   'microservice-name': {
-    //     route: './microservice-name',
+    //     route: './microservice-name', ??????????
     //     language: 'javascript',
     //     orm: 'mongoose',
     //     framework: 'express',
@@ -62,7 +64,7 @@ export const handler = async (argv: Arguments<Options>) => {
   }
 
   // 3. Check in the cache which microservices haven't been created yet and filter them out
-  const cache = await readFile('.cache');
+  const cache = await readJson('cache.json');
 
   // 4. Create the ones that are not in the cache
   microservices.forEach((_microservice) => {

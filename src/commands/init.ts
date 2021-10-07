@@ -60,7 +60,7 @@ export const handler = async (argv: Arguments<Options>) => {
     if (directoryExists(`/${dirName}/.git`)) {
       showWarning('the git repository already exists');
     } else {
-      showGenerate('creating git file');
+      showGenerate('git file');
       await initGit(`/${dirName || ''}`);
     }
   }
@@ -75,5 +75,5 @@ export const handler = async (argv: Arguments<Options>) => {
   await generateApiGateway(`/${dirName}`, dirName ?? '');
 
   // 6. Generate cache file
-  createFile(`/${dirName}`, '.cache', '');
+  createFile(`/${dirName}`, 'cache.json', '{}');
 };

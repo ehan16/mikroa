@@ -12,23 +12,23 @@ export const showTitle = (): void => {
 };
 
 export const showError = (message: string | Error): void => {
-  console.error(red('❌🤬 ERROR:') + message);
+  console.error(red('❌🤬 ERROR: ') + message);
 };
 
 export const showWarning = (message: string | Error): void => {
-  console.error(yellow('WARNING:') + message);
+  console.error(yellow('WARNING: ') + message);
 };
 
 export const showSuccess = (message: string): void => {
-  console.log(green('SUCCESS:') + message + newLine);
+  console.log(`${green('SUCCESS: ✨') + message}✨${newLine}`);
 };
 
 export const showInfo = (message: string): void => {
-  console.info(cyan('INFO:') + message + newLine);
+  console.info(cyan('INFO: ') + message + newLine);
 };
 
 export const showGenerate = (fileName: string): void => {
-  console.log(`${cyan('Creating')} ${fileName}...`);
+  console.log(`${cyan('Creating ')} ${fileName}...`);
 };
 
 export const showCreate = (fileName: string, filePath: string): void => {
