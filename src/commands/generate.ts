@@ -94,6 +94,7 @@ export const handler = async (argv: Arguments<Options>) => {
     _microservices.forEach(({ framework, language, name, orm }) => {
       showGenerate(`${name} microservice`);
       console.log('Hey');
+      // TODO place create microservice method here
       // 5. Once the microservice have been created, append the new microservice to the cache
       cache = {
         ...cache,
@@ -104,6 +105,8 @@ export const handler = async (argv: Arguments<Options>) => {
         },
       };
     });
+
+    console.log('new cache', cache);
 
     // 6. Write the new cache file
     outputJson('cache.json', cache);
