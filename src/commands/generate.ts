@@ -6,7 +6,7 @@ import {
   showStart,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
-import { readJson, readFile } from '../templates/default/default.template';
+import { readJson, outputJson } from '../templates/default/default.template';
 
 type Options = {
   microservice: string | undefined;
@@ -45,7 +45,7 @@ export const handler = async (argv: Arguments<Options>) => {
       const message = `${microservice || ''}`;
       showGenerate(message);
 
-      // 1.1 In case the microservice name is passed, ask the user for language, orm, etc and then create the new microservice
+      // 1.1 In case the microservice name is passed, ask the user for language, orm, etc
       const answers = await promptForOptions();
       microservices.push({
         name: microserviceName,
@@ -66,8 +66,6 @@ export const handler = async (argv: Arguments<Options>) => {
       const configFile = await readJson('config.json');
       console.log('CONFIG FILE', configFile);
       for (const [name, config] of Object.entries(configFile)) {
-        // k  // Type is string
-        // v  // Type is any
         const { language, orm, framework } = config as {
           language: string;
           orm: string;
@@ -85,14 +83,30 @@ export const handler = async (argv: Arguments<Options>) => {
 
     // 3. Check in the cache which microservices haven't been created yet and filter them out
     showStart('to read the cache');
-    const cache = await readJson('cache.json');
+    let cache = await readJson('cache.json');
     console.log('CACHE FILE', cache);
+    const cacheMicroservices = Object.keys(cache);
+    const _microservices = microservices.filter(
+      (m) => !cacheMicroservices.includes(m.name)
+    );
 
     // 4. Create the ones that are not in the cache
-    microservices.forEach(({ framework, language, name, orm }) => {
+    _microservices.forEach(({ framework, language, name, orm }) => {
       showGenerate(`${name} microservice`);
       console.log('Hey');
+      // 5. Once the microservice have been created, append the new microservice to the cache
+      cache = {
+        ...cache,
+        [name]: {
+          language,
+          orm,
+          framework,
+        },
+      };
     });
+
+    // 6. Write the new cache file
+    outputJson('cache.json', cache);
   } catch (e) {
     showError('An error has ocurred while creating the microservice');
     process.exit();

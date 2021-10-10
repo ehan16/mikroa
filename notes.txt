@@ -1,5 +1,56 @@
 sudo chmod 775 /usr/local/bin/mikroa
 
+dependencies that need to be installed
+
+By language:
+
+1) Javascript
+
+  Nothing
+
+2) Typescript
+
+  -D
+  @types/node
+  eslint-config-avilatek-typescript
+  typescript
+  Every @types in case the other dependencies need it
+
+By orm
+
+1) Mongoose
+
+  mongoose
+
+  -D
+  @types/connect-mongo
+  @types/mongoose
+
+2) Sequelize
+
+  sequelize
+
+
+3) Prisma
+
+By framework
+
+1) Express
+
+  express
+
+2) Fastify
+
+  fastify
+  nodemon
+  fastify-plugin
+
+3) Koa.js
+
+
+
+
+
 A) mongoose 
 
 https://betterprogramming.pub/how-to-use-mongoose-with-node-js-913a8073b29c

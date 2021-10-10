@@ -175,7 +175,7 @@ export async function generateApiGateway(
   }
 }
 
-async function createMicroserviceFolder(
+async function createMicroservice(
   microserviceName: string,
   answers: OptionsAnswer
 ) {
@@ -187,6 +187,75 @@ async function createMicroserviceFolder(
     await createDirectory(path);
     await initPackageJson(path);
 
+    // create all the folders
+    await createDirectories([
+      {
+        path: `${path}/src`,
+      },
+      {
+        path: `${path}/src/controllers`,
+      },
+      {
+        path: `${path}/src/models`,
+      },
+    ]);
+
+    // microservice-name/
+    //   config.json ✅
+    //   src/ ✅
+    //     app.ts ✅
+    //     server.ts ✅
+    //     router.ts ✅
+    //     controllers/ ✅
+    //     models/ ✅
+    //       index.ts ✅
+    //   .gitignore ✅
+    //   .eslintignore ✅
+    //   .eslintrc.js ✅
+    //   .prettierrc ✅
+    //   .prettierignore ✅
+    //   package.json ✅
+    //   Dockerfile ✅
+    //   .dockerignore ✅
+    //   example.env ✅
+
+    await Promise.all([
+      copy('/template/template.gitignore', `${path}/.gitignore`),
+      copy('/template/template.Dockerfile', `${path}/Dockerfile`),
+      copy('/template/template.dockerignore', `${path}/.dockerignore`),
+      copy('/template/template.env', `${path}/example.env`),
+      copy('/template/template.eslintignore', `${path}/.eslintignore`),
+      copy('/template/template.eslintrc.js', `${path}/.eslintrc.js`),
+      copy('/template/template.prettierrc', `${path}/.prettierrc`),
+      copy('/template/template.prettierignore', `${path}/.prettierignore`),
+    ]);
+
+    // create the base files
+    const extension = language === 'javascript' ? 'js' : 'ts';
+    await createFiles([
+      {
+        fileName: 'config.json',
+        filePath: `${path}`,
+        fileContent: '{}',
+      },
+      {
+        fileName: `app.${extension}`,
+        filePath: `${path}/src`,
+      },
+      {
+        fileName: `server.${extension}`,
+        filePath: `${path}/src`,
+      },
+      {
+        fileName: `router.${extension}`,
+        filePath: `${path}/src`,
+      },
+      {
+        fileName: `index.${extension}`,
+        filePath: `${path}/src/models`,
+      },
+    ]);
+
     // install base dependencies
     await installPackage(path, 'dotenv', '');
     await installPackage(path, 'prettier', '-D');
@@ -195,9 +264,13 @@ async function createMicroserviceFolder(
     await installPackage(path, 'eslint-config-avilatek', '-D');
     await installPackage(path, 'eslint-config-prettier', '-D');
 
-    // install all the dependencies according to the provided answers
+    // install all the dependencies and create files according to the provided answers
     if (language === 'typescript') {
       console.log('hola');
+      await copy(
+        '/template/language/template.tsconfig.json',
+        `${path}/.tsconfig.json`
+      );
     }
 
     switch (orm) {
@@ -215,69 +288,6 @@ async function createMicroserviceFolder(
       default:
         break;
     }
-
-    // create all the folders
-    await createDirectories([
-      {
-        path: `${path}/src`,
-      },
-      {
-        path: `${path}/src/controllers`,
-      },
-      {
-        path: `${path}/src/models`,
-      },
-    ]);
-
-    // microservice-name/
-    //   config.json
-    //   src/
-    //     app.ts
-    //     server.ts
-    //     router.ts
-    //     controllers/
-    //     models/
-    //       index.ts
-    //   .gitignore
-    //   .eslintignore
-    //   .eslintrc.js
-    //   .prettierrc
-    //   .prettierignore
-    //   package.json
-    //   Dockerfile
-    //   .dockerignore
-    //   example.env
-
-    await Promise.all([
-      copy('/template/template.gitignore', `${path}/.gitignore`),
-      copy('/template/template.Dockerfile', `${path}/Dockerfile`),
-      copy('/template/template.dockerignore', `${path}/.dockerignore`),
-      copy('/template/template.env', `${path}/example.env`),
-      copy('/template/template.eslintignore', `${path}/.eslintignore`),
-      copy('/template/template.eslintrc.js', `${path}/.eslintrc.js`),
-      copy('/template/template.prettierrc', `${path}/.prettierrc`),
-      copy('/template/template.prettierignore', `${path}/.prettierignore`),
-    ]);
-
-    // create all the files, it'll depend on the selected language
-    await createFiles([
-      {
-        fileName: 'app.js', // TODO cambiar la extension dependiendo del lenguaje
-        filePath: `${path}/src`,
-      },
-      {
-        fileName: 'server.js', // TODO cambiar la extension dependiendo del lenguaje
-        filePath: `${path}/src`,
-      },
-      {
-        fileName: 'router.js', // TODO cambiar la extension dependiendo del lenguaje
-        filePath: `${path}/src`,
-      },
-      {
-        fileName: 'index.js', // TODO cambiar la extension dependiendo del lenguaje
-        filePath: `${path}/src/models`,
-      },
-    ]);
   } catch (err) {
     showError('An error has ocurred while creating the microservice');
   }
