@@ -9,7 +9,6 @@ import {
 export async function initMongooseJsFastify(path: string) {
   await installPackage(path, 'fastify');
   await installPackage(path, 'fastify-plugin');
-  await installPackage(path, 'mongoose');
 
   await createFiles([
     { fileName: 'app.js', filePath: path, fileContent: app() },

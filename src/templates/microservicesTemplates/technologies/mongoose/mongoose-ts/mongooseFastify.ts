@@ -9,7 +9,6 @@ import {
 export async function initMongooseTsFastify(path: string) {
   await installPackage(path, 'fastify');
   await installPackage(path, 'fastify-plugin');
-  await installPackage(path, 'mongoose');
   await installPackage(path, '@types/connect-mongo', '-D');
 
   await createFiles([
