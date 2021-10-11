@@ -26,3 +26,19 @@ export async function installPackage(
     console.log(`Installed ${packageName}`);
   }
 }
+
+export async function executePackage(
+  path: string,
+  // eslint-disable-next-line no-shadow
+  options = '',
+  type: string
+) {
+  const res = await execa('npx', [type, options], {
+    cwd: path,
+  });
+  if (res.failed) {
+    console.error(`Failed to execute ${type}`);
+  } else {
+    console.log(`${type} executed correctly`);
+  }
+}

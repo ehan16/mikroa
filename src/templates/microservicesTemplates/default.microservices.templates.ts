@@ -1,3 +1,4 @@
+import { createFile } from 'fs-extra';
 import { showError } from '../../utils/logger.util';
 import { initPackageJson, installPackage } from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
@@ -40,6 +41,9 @@ export async function createMicroservice(
       },
       {
         path: `${path}/src/models`,
+      },
+      {
+        path: `${path}/src/routes`,
       },
     ]);
 
@@ -91,20 +95,9 @@ export async function createMicroservice(
         fileContent: '{}',
       },
       {
-        fileName: `app.${extension}`,
-        filePath: `${path}/src`,
-      },
-      {
-        fileName: `server.${extension}`,
-        filePath: `${path}/src`,
-      },
-      {
-        fileName: `router.${extension}`,
-        filePath: `${path}/src`,
-      },
-      {
         fileName: `index.${extension}`,
-        filePath: `${path}/src/models`,
+        filePath: `${path}/src/routes`,
+        fileContent: '{}',
       },
     ]);
 
@@ -158,7 +151,7 @@ export async function createMicroservice(
       case 'prisma':
         switch (framework) {
           case 'express':
-            await initPrismaExpress(language);
+            await initPrismaExpress(language, path);
             break;
           case 'fastify':
             await initPrismaFastify(language);

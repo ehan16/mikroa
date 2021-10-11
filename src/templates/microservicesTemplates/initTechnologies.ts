@@ -59,9 +59,9 @@ export async function initSequelizeKoa(language: string) {
     await initSequelizeJsKoa();
   }
 }
-export async function initPrismaExpress(language: string) {
+export async function initPrismaExpress(language: string, path: string) {
   if (language === 'typescript') {
-    await initPrismaTsExpress();
+    await initPrismaTsExpress(path);
   } else {
     await initPrismaJsExpress();
   }

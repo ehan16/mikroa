@@ -1,7 +1,10 @@
 import fs from 'fs-extra';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
-import { initPackageJson, installPackage } from '../../utils/npm.util';
-import { OptionsAnswer } from '../../utils/prompt.util';
+import {
+  executePackage,
+  initPackageJson,
+  installPackage,
+} from '../../utils/npm.util';
 import {
   apiAdapterJs,
   indexJs,
@@ -179,5 +182,10 @@ export async function generateApiGateway(
 
 export async function initTypeScript(path: string) {
   // instala typescript y toda vaina relacionada a ts
+  await Promise.all([
+    installPackage(path, 'typescript', '--save-dev'),
+    installPackage(path, 'ts-node-dev', '--save-dev'),
+    executePackage(path, 'tsc', '--init'),
+  ]);
   await copy('/template/template.tsconfig.json', `${path}/.tsconfig.json`);
 }

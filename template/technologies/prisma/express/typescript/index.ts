@@ -1,6 +1,6 @@
 // src
 
-export function appTs() {
+export function prismaExpressAppTs() {
   return `
   import express from 'express';
 
@@ -16,7 +16,7 @@ export function appTs() {
       `;
 }
 
-export function prismaTs() {
+export function prismaExpressPrismaTs() {
   return `
   import { PrismaClient } from '@prisma/client';
   import { Request, Response } from 'express';
@@ -31,7 +31,7 @@ export function prismaTs() {
         `;
 }
 
-export function serverTs() {
+export function prismaExpressServerTs() {
   return `
   /* eslint-disable no-underscore-dangle */
   /* eslint-disable @typescript-eslint/ban-ts-comment */
