@@ -78,7 +78,6 @@ Cada microservicio debe seguir la siguiente estructura:
 ```json:title=config.json
 {
   "my-microservice": {
-      "route": "./my-microservice",
       "language": "javascript",
       "orm": "mongoose",
       "framework": "express",
