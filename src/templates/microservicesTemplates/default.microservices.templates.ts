@@ -1,6 +1,9 @@
-import { createFile } from 'fs-extra';
 import { showError } from '../../utils/logger.util';
-import { initPackageJson, installPackage } from '../../utils/npm.util';
+import {
+  executePackage,
+  initPackageJson,
+  installPackage,
+} from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
 import {
   copy,
@@ -149,6 +152,10 @@ export async function createMicroservice(
         }
         break;
       case 'prisma':
+        await Promise.all([
+          installPackage(path, 'prisma', '--save-dev'),
+          executePackage(path, 'prisma', 'init'),
+        ]);
         switch (framework) {
           case 'express':
             await initPrismaExpress(language, path);
