@@ -8,6 +8,14 @@ import {
   routerJs,
   serviceExampleJs,
 } from '../filesTemplate/api-gateway-files';
+import {
+  initExpress,
+  initFastify,
+  initKoa,
+  initMongoose,
+  initPrisma,
+  initSequelize,
+} from './technologies';
 
 // eslint-disable-next-line arrow-body-style
 export const directoryExists = (path: string): boolean => {
@@ -175,7 +183,7 @@ export async function generateApiGateway(
   }
 }
 
-async function createMicroservice(
+export async function createMicroservice(
   microserviceName: string,
   answers: OptionsAnswer
 ) {
@@ -230,8 +238,17 @@ async function createMicroservice(
       copy('/template/template.prettierignore', `${path}/.prettierignore`),
     ]);
 
+    // install base dependencies
+    await installPackage(path, 'dotenv', '');
+    await installPackage(path, 'prettier', '-D');
+    await installPackage(path, 'autoprefixer', '-D');
+    await installPackage(path, 'eslint', '-D');
+    await installPackage(path, 'eslint-config-avilatek', '-D');
+    await installPackage(path, 'eslint-config-prettier', '-D');
+
     // create the base files
     const extension = language === 'javascript' ? 'js' : 'ts';
+    // TODO define the content of these files
     await createFiles([
       {
         fileName: 'config.json',
@@ -256,37 +273,51 @@ async function createMicroservice(
       },
     ]);
 
-    // install base dependencies
-    await installPackage(path, 'dotenv', '');
-    await installPackage(path, 'prettier', '-D');
-    await installPackage(path, 'autoprefixer', '-D');
-    await installPackage(path, 'eslint', '-D');
-    await installPackage(path, 'eslint-config-avilatek', '-D');
-    await installPackage(path, 'eslint-config-prettier', '-D');
+    // ? in the case of the app and server file, output the file content with the function output file, this will depend on the chosen technologies
 
     // install all the dependencies and create files according to the provided answers
-    if (language === 'typescript') {
-      console.log('hola');
-      await copy(
-        '/template/language/template.tsconfig.json',
-        `${path}/.tsconfig.json`
-      );
+    switch (language) {
+      case 'typescript':
+        await copy(
+          '/template/language/template.tsconfig.json',
+          `${path}/.tsconfig.json`
+        );
+        break;
+      case 'javascript':
+        break;
+      default:
+        showError('the selected language is not an option');
+        process.exit();
     }
 
     switch (orm) {
       case 'mongoose':
-        console.log('mongo');
+        await initMongoose();
+        break;
+      case 'sequelize':
+        await initSequelize();
+        break;
+      case 'prisma':
+        await initPrisma();
         break;
       default:
-        break;
+        showError('the selected orm is not an option');
+        process.exit();
     }
 
     switch (framework) {
       case 'express':
-        console.log('Express');
+        await initExpress();
+        break;
+      case 'fastify':
+        await initFastify();
+        break;
+      case 'koa.js':
+        await initKoa();
         break;
       default:
-        break;
+        showError('the selected framework is not an option');
+        process.exit();
     }
   } catch (err) {
     showError('An error has ocurred while creating the microservice');

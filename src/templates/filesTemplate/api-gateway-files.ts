@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-escape */
-
 // index.js content
 export function indexJs(name: string) {
   return `
@@ -19,7 +17,7 @@ export function indexJs(name: string) {
 
     console.log("🚀 ${name} API Gateway on http://localhost:3000");
     app.listen(3000);
-      `;
+    `;
 }
 
 // router.js is content combines all the services endpoints
@@ -37,7 +35,7 @@ export function routerJs() {
   // router.use(serviceExample);
   
   module.exports = router;
-        `;
+  `;
 }
 
 // apiAdapter.js is to construct the API endpoint for each service
@@ -51,7 +49,7 @@ export function apiAdapterJs() {
       baseURL: baseURL,
     });
   }
-          `;
+  `;
 }
 
 // serviceExample.js is an example file to reroute request to a Service
@@ -70,5 +68,5 @@ export function serviceExampleJs() {
   })
   
   module.exports = router;
-            `;
+  `;
 }

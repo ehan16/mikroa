@@ -24,8 +24,8 @@ yargs(hideBin(process.argv))
     '$0 generate',
     "Read root's config file and generate new microservices"
   )
-  .example('$0 start', 'Start development server')
-  .example('$0 build', 'Build a Mikroa project')
+  .example('$0 start', 'Start running all the existing microservices')
+  .example('$0 build', 'Generate the corresponding Docker containers')
   .example(
     '$0 migrate',
     'Read the microservice config file and migrate all the models to the database'

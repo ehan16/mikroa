@@ -6,7 +6,11 @@ import {
   showStart,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
-import { readJson, outputJson } from '../templates/default/default.template';
+import {
+  readJson,
+  outputJson,
+  createMicroservice,
+} from '../templates/default/default.template';
 
 type Options = {
   microservice: string | undefined;
@@ -42,8 +46,7 @@ export const handler = async (argv: Arguments<Options>) => {
         process.exit();
       }
 
-      const message = `${microservice || ''}`;
-      showGenerate(message);
+      showGenerate(`${microservice || ''}`);
 
       // 1.1 In case the microservice name is passed, ask the user for language, orm, etc
       const answers = await promptForOptions();
@@ -95,6 +98,8 @@ export const handler = async (argv: Arguments<Options>) => {
       showGenerate(`${name} microservice`);
       console.log('Hey');
       // TODO place create microservice method here
+      // createMicroservice(name, { language, orm, framework });
+
       // 5. Once the microservice have been created, append the new microservice to the cache
       cache = {
         ...cache,
