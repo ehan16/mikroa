@@ -18,7 +18,7 @@ import {
   initSequelizeExpress,
   initSequelizeFastify,
   initSequelizeKoa,
-} from './technologies';
+} from './initTechnologies';
 
 export async function createMicroservice(
   microserviceName: string,
