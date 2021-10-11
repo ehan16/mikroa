@@ -1,3 +1,3 @@
-export async function initMongooseJsFastify() {
-  console.log('holi');
+export async function initMongooseJsFastify(path: string) {
+  console.log('ada');
 }
