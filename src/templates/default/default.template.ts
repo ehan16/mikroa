@@ -179,8 +179,5 @@ export async function generateApiGateway(
 
 export async function initTypeScript(path: string) {
   // instala typescript y toda vaina relacionada a ts
-  await copy(
-    '/template/language/template.tsconfig.json',
-    `${path}/.tsconfig.json`
-  );
+  await copy('/template/template.tsconfig.json', `${path}/.tsconfig.json`);
 }
