@@ -8,14 +8,6 @@ import {
   routerJs,
   serviceExampleJs,
 } from '../filesTemplate/api-gateway-files';
-import {
-  initExpress,
-  initFastify,
-  initKoa,
-  initMongoose,
-  initPrisma,
-  initSequelize,
-} from './technologies';
 
 // eslint-disable-next-line arrow-body-style
 export const directoryExists = (path: string): boolean => {
@@ -178,6 +170,8 @@ export async function generateApiGateway(
         fileContent: serviceExampleJs(),
       },
     ]);
+
+    // Correr prettier
   } catch (err) {
     showError('An error has ocurred while creating the API Gateway');
   }
@@ -208,7 +202,7 @@ export async function createMicroservice(
       },
     ]);
 
-    // microservice-name/
+    // microservice-name/ ✅
     //   config.json ✅
     //   src/ ✅
     //     app.ts ✅
@@ -231,7 +225,7 @@ export async function createMicroservice(
       copy('/template/template.gitignore', `${path}/.gitignore`),
       copy('/template/template.Dockerfile', `${path}/Dockerfile`),
       copy('/template/template.dockerignore', `${path}/.dockerignore`),
-      copy('/template/template.env', `${path}/example.env`),
+      copy('/template/template.env', `${path}/variables.env`),
       copy('/template/template.eslintignore', `${path}/.eslintignore`),
       copy('/template/template.eslintrc.js', `${path}/.eslintrc.js`),
       copy('/template/template.prettierrc', `${path}/.prettierrc`),
@@ -278,10 +272,7 @@ export async function createMicroservice(
     // install all the dependencies and create files according to the provided answers
     switch (language) {
       case 'typescript':
-        await copy(
-          '/template/language/template.tsconfig.json',
-          `${path}/.tsconfig.json`
-        );
+        await initTypeScript(path);
         break;
       case 'javascript':
         break;
@@ -322,4 +313,34 @@ export async function createMicroservice(
   } catch (err) {
     showError('An error has ocurred while creating the microservice');
   }
+}
+
+export async function initMongoose() {
+  console.log('holi');
+}
+
+export async function initSequelize() {
+  console.log('holi');
+}
+
+export async function initPrisma() {
+  console.log('holi');
+}
+
+export async function initExpress() {
+  console.log('holi');
+}
+export async function initFastify() {
+  console.log('holi');
+}
+export async function initKoa() {
+  console.log('holi');
+}
+
+export async function initTypeScript(path: string) {
+  // instala typescript y toda vaina relacionada a ts
+  await copy(
+    '/template/language/template.tsconfig.json',
+    `${path}/.tsconfig.json`
+  );
 }
