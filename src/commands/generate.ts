@@ -6,11 +6,7 @@ import {
   showStart,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
-import {
-  readJson,
-  outputJson,
-  createMicroservice,
-} from '../templates/default/default.template';
+import { readJson, outputJson } from '../templates/default/default.template';
 
 type Options = {
   microservice: string | undefined;
