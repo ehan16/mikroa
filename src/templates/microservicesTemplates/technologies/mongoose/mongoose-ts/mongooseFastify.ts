@@ -5,19 +5,24 @@ import {
   example,
   server,
 } from '../../../../../../template/technologies/mongoose/fastify/typescript';
+import { showError } from '../../../../../utils/logger.util';
 
 export async function initMongooseTsFastify(path: string) {
-  await installPackage(path, 'fastify');
-  await installPackage(path, 'fastify-plugin');
-  await installPackage(path, '@types/connect-mongo', '-D');
+  try {
+    await installPackage(path, 'fastify');
+    await installPackage(path, 'fastify-plugin');
+    await installPackage(path, '@types/connect-mongo', '-D');
 
-  await createFiles([
-    { fileName: 'app.ts', filePath: path, fileContent: app() },
-    { fileName: 'server.ts', filePath: path, fileContent: server() },
-    {
-      fileName: 'users.ts',
-      filePath: `${path}/routes`,
-      fileContent: example(),
-    },
-  ]);
+    await createFiles([
+      { fileName: 'app.ts', filePath: `${path}/src`, fileContent: app() },
+      { fileName: 'server.ts', filePath: `${path}/src`, fileContent: server() },
+      {
+        fileName: 'users.ts',
+        filePath: `${path}/src/routes`,
+        fileContent: example(),
+      },
+    ]);
+  } catch (err) {
+    showError('An error has ocurred while generating the microservice');
+  }
 }

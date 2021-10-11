@@ -163,7 +163,7 @@ export async function createMicroservice(
             await initPrismaExpress(language);
             break;
           case 'fastify':
-            await initPrismaFastify(language);
+            await initPrismaFastify(language, path);
             break;
           case 'koa.js':
             await initPrismaKoa(language);
