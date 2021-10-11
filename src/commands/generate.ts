@@ -7,6 +7,7 @@ import {
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, outputJson } from '../templates/default/default.template';
+import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.templates';
 
 type Options = {
   microservice: string | undefined;
@@ -93,8 +94,7 @@ export const handler = async (argv: Arguments<Options>) => {
     _microservices.forEach(({ framework, language, name, orm }) => {
       showGenerate(`${name} microservice`);
       console.log('Hey');
-      // TODO place create microservice method here
-      // createMicroservice(name, { language, orm, framework });
+      createMicroservice(name, { language, orm, framework });
 
       // 5. Once the microservice have been created, append the new microservice to the cache
       cache = {

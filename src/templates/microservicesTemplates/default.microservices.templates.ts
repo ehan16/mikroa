@@ -124,12 +124,14 @@ export async function createMicroservice(
 
     switch (orm) {
       case 'mongoose':
+        await installPackage(path, 'mongoose');
+
         switch (framework) {
           case 'express':
             await initMongooseExpress(language);
             break;
           case 'fastify':
-            await initMongooseFastify(language);
+            await initMongooseFastify(language, path);
             break;
           case 'koa.js':
             await initMongooseKoa(language);
