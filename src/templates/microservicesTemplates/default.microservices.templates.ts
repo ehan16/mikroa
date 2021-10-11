@@ -129,7 +129,7 @@ export async function createMicroservice(
             await initMongooseExpress(language);
             break;
           case 'fastify':
-            await initMongooseFastify(language);
+            await initMongooseFastify(language, path);
             break;
           case 'koa.js':
             await initMongooseKoa(language);

@@ -16,8 +16,11 @@ export function app() {
 
 export function server() {
   return `
-  const app = require('./app');
   const mongoose = require('mongoose');
+  const dotenv = require('dotenv');
+  const app = require('./app');
+
+  dotenv.config();
   
   const start = async () => {
     mongoose
@@ -41,10 +44,10 @@ export function server() {
   
     app.listen(PORT, (err) => {
       if (err) {
-        console.error(\`❌🤬 ${err}\`);
+        console.error(\`❌🤬 \${err}\`);
         process.exit(1);
       }
-      console.log(\`🚀 App running on \${process.env.HOST}:\${PORT}/\`);
+      console.log(\`🚀 App running on http://localhost:\${PORT}/\`);
     });
   };
   

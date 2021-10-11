@@ -20,7 +20,7 @@ export async function promptForOptions() {
     type: 'list',
     name: 'orm',
     message: 'Please choose which orm to use',
-    choices: ['mongoose', 'sequelize', 'prisma'],
+    choices: ['mongoose', 'prisma'],
   });
 
   questions.push({

@@ -24,11 +24,11 @@ export async function initMongooseExpress(language: string) {
     await initMongooseJsExpress();
   }
 }
-export async function initMongooseFastify(language: string) {
+export async function initMongooseFastify(language: string, path: string) {
   if (language === 'typescript') {
-    await initMongooseTsFastify();
+    await initMongooseTsFastify(path);
   } else {
-    await initMongooseJsFastify();
+    await initMongooseJsFastify(path);
   }
 }
 export async function initMongooseKoa(language: string) {

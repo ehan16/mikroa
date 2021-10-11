@@ -179,5 +179,10 @@ export async function generateApiGateway(
 
 export async function initTypeScript(path: string) {
   // instala typescript y toda vaina relacionada a ts
+  await installPackage(path, 'typescript', '-D');
+  await installPackage(path, '@types/dotenv', '-D');
+  await installPackage(path, '@types/eslint', '-D');
+  await installPackage(path, '@types/prettier', '-D');
+  await installPackage(path, '@types/node', '-D');
   await copy('/template/template.tsconfig.json', `${path}/.tsconfig.json`);
 }

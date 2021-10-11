@@ -21,7 +21,21 @@ export default app;
 export function server() {
   return `
   import mongoose from 'mongoose';
-import app from './app';
+  import dotenv from 'dotenv';
+  import app from './app';
+
+  dotenv.config();
+
+  declare global {
+    namespace NodeJS {
+      interface Global {
+        __rootdir__: string;
+      }
+    }
+  }
+  
+  // @ts-expect-error
+  global.__rootdir__ = process.cwd() || __dirname;
 
 async function start() {
   mongoose
@@ -48,7 +62,7 @@ async function start() {
       console.error(\`❌🤬 \${err}\`);
       process.exit(1);
     }
-    console.log(\`🚀 App running on \${process.env.HOST}:\${PORT}/\`);
+    console.log(\`🚀 App running on http://localhost:\${PORT}/\`);
   });
 }
 
