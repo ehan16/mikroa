@@ -1,7 +1,10 @@
 import fs from 'fs-extra';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
-import { initPackageJson, installPackage } from '../../utils/npm.util';
-import { OptionsAnswer } from '../../utils/prompt.util';
+import {
+  executePackage,
+  initPackageJson,
+  installPackage,
+} from '../../utils/npm.util';
 import {
   apiAdapterJs,
   indexJs,
@@ -180,9 +183,14 @@ export async function generateApiGateway(
 export async function initTypeScript(path: string) {
   // instala typescript y toda vaina relacionada a ts
   await installPackage(path, 'typescript', '-D');
-  await installPackage(path, '@types/dotenv', '-D');
-  await installPackage(path, '@types/eslint', '-D');
-  await installPackage(path, '@types/prettier', '-D');
-  await installPackage(path, '@types/node', '-D');
+  await Promise.all([
+    installPackage(path, 'typescript', '-D'),
+    installPackage(path, 'ts-node-dev', '-D'),
+    installPackage(path, '@types/dotenv', '-D'),
+    installPackage(path, '@types/eslint', '-D'),
+    installPackage(path, '@types/prettier', '-D'),
+    installPackage(path, '@types/node', '-D'),
+    executePackage(path, 'tsc', '--init'),
+  ]);
   await copy('/template/template.tsconfig.json', `${path}/.tsconfig.json`);
 }
