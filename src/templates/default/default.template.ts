@@ -182,7 +182,6 @@ export async function generateApiGateway(
 
 export async function initTypeScript(path: string) {
   // instala typescript y toda vaina relacionada a ts
-  await installPackage(path, 'typescript', '-D');
   await Promise.all([
     installPackage(path, 'typescript', '-D'),
     installPackage(path, 'ts-node-dev', '-D'),
