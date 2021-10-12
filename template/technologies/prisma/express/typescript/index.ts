@@ -1,6 +1,6 @@
 // src
 
-export function prismaExpressAppTs() {
+export function prismaMongooseExpressAppTs() {
   return `
   import express from 'express';
 

@@ -26,6 +26,8 @@ export async function initPrismaJsExpress(path: string) {
       },
     ]);
   } catch (err) {
-    showError('An error has ocurred while creating the API Gateway');
+    showError(
+      'An error has ocurred while creating the prisma-express basic files'
+    );
   }
 }

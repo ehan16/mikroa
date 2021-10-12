@@ -1,5 +1,5 @@
 import {
-  prismaExpressAppTs,
+  prismaMongooseExpressAppTs,
   prismaExpressPrismaTs,
   prismaExpressServerTs,
 } from '../../../../../../template/technologies/prisma/express/typescript';
@@ -12,7 +12,7 @@ export async function initPrismaTsExpress(path: string) {
       {
         fileName: 'app.ts',
         filePath: `${path}/src`,
-        fileContent: prismaExpressAppTs(),
+        fileContent: prismaMongooseExpressAppTs(),
       },
       {
         fileName: `prisma.ts`,
@@ -26,6 +26,8 @@ export async function initPrismaTsExpress(path: string) {
       },
     ]);
   } catch (err) {
-    showError('An error has ocurred while creating the API Gateway');
+    showError(
+      'An error has ocurred while creating the prisma-express basic files'
+    );
   }
 }

@@ -17,9 +17,9 @@ import { initSequelizeTsExpress } from './technologies/sequelize/sequelize-ts/se
 import { initSequelizeTsFastify } from './technologies/sequelize/sequelize-ts/sequelizeTsFastify';
 import { initSequelizeTsKoa } from './technologies/sequelize/sequelize-ts/sequelizeTsKoa';
 
-export async function initMongooseExpress(language: string) {
+export async function initMongooseExpress(language: string, path: string) {
   if (language === 'typescript') {
-    await initMongooseTsExpress();
+    await initMongooseTsExpress(path);
   } else {
     await initMongooseJsExpress();
   }
