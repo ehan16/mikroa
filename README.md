@@ -87,9 +87,27 @@ Cada microservicio debe seguir la siguiente estructura:
 
 ### `build`
 
+Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mikroa, se crean los contenedores respectivos de cada microservicio según el `.Dockerfile` correspondiente. En caso de poseer requerimientos extras, se recomienda modificar dicho archivo para adaptarse a sus necesidades
+
+```shell
+  mikroa build
+```
+
 ### `migrate`
 
+El comando `mikroa migrate` se encarga de leer todos los modelos que se encuentran en el archivo de configuración de cada microservicio, conocido como `config.json`, para su posterior migración a la base de datos
+
+```shell
+  mikroa migrate
+```
+
 ### `start`
+
+En la carpeta `root` del proyecto, el comando `mikroa start` ejecuta todos los microservicios del proyecto Mikroa
+
+```shell
+  mikroa start
+```
 
 ## Licencia
 
