@@ -66,11 +66,11 @@ export async function initPrismaExpress(language: string) {
     await initPrismaJsExpress();
   }
 }
-export async function initPrismaFastify(language: string) {
+export async function initPrismaFastify(language: string, path: string) {
   if (language === 'typescript') {
-    await initPrismaTsFastify();
+    await initPrismaTsFastify(path);
   } else {
-    await initPrismaJsFastify();
+    await initPrismaJsFastify(path);
   }
 }
 export async function initPrismaKoa(language: string) {

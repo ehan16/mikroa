@@ -11,11 +11,11 @@ export async function initMongooseJsFastify(path: string) {
   await installPackage(path, 'fastify-plugin');
 
   await createFiles([
-    { fileName: 'app.js', filePath: path, fileContent: app() },
-    { fileName: 'server.js', filePath: path, fileContent: server() },
+    { fileName: 'app.js', filePath: `${path}/src`, fileContent: app() },
+    { fileName: 'server.js', filePath: `${path}/src`, fileContent: server() },
     {
       fileName: 'users.js',
-      filePath: `${path}/routes`,
+      filePath: `${path}/src/routes`,
       fileContent: example(),
     },
   ]);
