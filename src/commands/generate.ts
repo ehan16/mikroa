@@ -96,8 +96,7 @@ export const handler = async (argv: Arguments<Options>) => {
     }
 
     // 4. Create the ones that are not in the cache
-    // TODO cambiar for each por un for normal
-    _microservices.forEach(async ({ framework, language, name, orm }) => {
+    for (const { framework, language, name, orm } of _microservices) {
       showGenerate(`${name} microservice`);
       await createMicroservice(name, { language, orm, framework });
 
@@ -113,7 +112,7 @@ export const handler = async (argv: Arguments<Options>) => {
 
       // 6. format all the files
       // await formatFiles(`/${name}`, language === 'typescript');
-    });
+    }
 
     // 7. Write the new cache file
     await outputJson('cache.json', cache);
