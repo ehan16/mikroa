@@ -96,6 +96,7 @@ export const handler = async (argv: Arguments<Options>) => {
     }
 
     // 4. Create the ones that are not in the cache
+    // TODO cambiar for each por un for normal
     _microservices.forEach(async ({ framework, language, name, orm }) => {
       showGenerate(`${name} microservice`);
       await createMicroservice(name, { language, orm, framework });
