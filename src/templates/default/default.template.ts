@@ -45,6 +45,7 @@ export function createFiles(
 
 // creates a new file named `target` in case the file didn't exist
 export function copy(src: string, target: string) {
+  // TODO volar el pedacito de test/my-microservice /Users/EH/Downloads/CLI/mikroa/test/my-microservice/template/template.gitignore
   fs.copy(process.cwd() + src, process.cwd() + target, (err: Error) => {
     if (err) return showError(err);
   });
@@ -181,7 +182,6 @@ export async function generateApiGateway(
 }
 
 export async function initTypeScript(path: string) {
-  // instala typescript y toda vaina relacionada a ts
   await Promise.all([
     installPackage(path, 'typescript', '-D'),
     installPackage(path, 'ts-node-dev', '-D'),
@@ -191,5 +191,4 @@ export async function initTypeScript(path: string) {
     installPackage(path, '@types/node', '-D'),
     executePackage(path, 'tsc', '--init'),
   ]);
-  await copy('/template/template.tsconfig.json', `${path}/.tsconfig.json`);
 }

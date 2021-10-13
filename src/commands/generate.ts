@@ -4,10 +4,12 @@ import {
   showGenerate,
   showTitle,
   showStart,
+  showWarning,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, outputJson } from '../templates/default/default.template';
 import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.templates';
+import { formatFiles } from '../utils/npm.util';
 
 type Options = {
   microservice: string | undefined;
@@ -84,17 +86,21 @@ export const handler = async (argv: Arguments<Options>) => {
     // 3. Check in the cache which microservices haven't been created yet and filter them out
     showStart('to read the cache');
     let cache = await readJson('cache.json');
-    console.log('CACHE FILE', cache);
     const cacheMicroservices = Object.keys(cache);
     const _microservices = microservices.filter(
       (m) => !cacheMicroservices.includes(m.name)
     );
 
+    if (_microservices?.length === 0) {
+      showWarning(
+        'there is no new microservices to generate or you passed an already created microservice'
+      );
+    }
+
     // 4. Create the ones that are not in the cache
-    _microservices.forEach(({ framework, language, name, orm }) => {
+    _microservices.forEach(async ({ framework, language, name, orm }) => {
       showGenerate(`${name} microservice`);
-      console.log('Hey');
-      createMicroservice(name, { language, orm, framework });
+      await createMicroservice(name, { language, orm, framework });
 
       // 5. Once the microservice have been created, append the new microservice to the cache
       cache = {
@@ -107,10 +113,10 @@ export const handler = async (argv: Arguments<Options>) => {
       };
     });
 
-    console.log('new cache', cache);
-
     // 6. Write the new cache file
     outputJson('cache.json', cache);
+
+    // formatFiles(`/${microserviceName}`);
   } catch (e) {
     showError('An error has ocurred while creating the microservice');
     process.exit();

@@ -28,7 +28,7 @@ export async function createMicroservice(
   microserviceName: string,
   answers: OptionsAnswer
 ) {
-  const path = `${process.cwd()}/${microserviceName}`;
+  const path = `/${microserviceName}`;
   const { framework, language, orm } = answers;
   try {
     // create the microservice root folder and init the package.json
@@ -70,23 +70,49 @@ export async function createMicroservice(
     //   example.env ✅
 
     await Promise.all([
-      copy('/template/template.gitignore', `${path}/.gitignore`),
-      copy('/template/template.Dockerfile', `${path}/Dockerfile`),
-      copy('/template/template.dockerignore', `${path}/.dockerignore`),
-      copy('/template/template.env', `${path}/variables.env`),
-      copy('/template/template.eslintignore', `${path}/.eslintignore`),
-      copy('/template/template.eslintrc.js', `${path}/.eslintrc.js`),
-      copy('/template/template.prettierrc', `${path}/.prettierrc`),
-      copy('/template/template.prettierignore', `${path}/.prettierignore`),
+      copy(
+        `/${microserviceName}/template/template.gitignore`,
+        `${path}/.gitignore`
+      ),
+      copy(
+        `/${microserviceName}/template/template.Dockerfile`,
+        `${path}/Dockerfile`
+      ),
+      copy(
+        `/${microserviceName}/template/template.dockerignore`,
+        `${path}/.dockerignore`
+      ),
+      copy(
+        `/${microserviceName}/template/template.env`,
+        `${path}/variables.env`
+      ),
+      copy(
+        `/${microserviceName}/template/template.eslintignore`,
+        `${path}/.eslintignore`
+      ),
+      copy(
+        `/${microserviceName}/template/template.eslintrc.js`,
+        `${path}/.eslintrc.js`
+      ),
+      copy(
+        `/${microserviceName}/template/template.prettierrc`,
+        `${path}/.prettierrc`
+      ),
+      copy(
+        `/${microserviceName}/template/template.prettierignore`,
+        `${path}/.prettierignore`
+      ),
     ]);
 
     // install base dependencies
     await installPackage(path, 'dotenv', '');
     await installPackage(path, 'prettier', '-D');
     await installPackage(path, 'autoprefixer', '-D');
-    await installPackage(path, 'eslint', '-D');
-    await installPackage(path, 'eslint-config-avilatek', '-D');
-    await installPackage(path, 'eslint-config-prettier', '-D');
+    await installPackage(path, 'eslint@^7.32.0', '-D');
+    console.log('eslint despues');
+    await installPackage(path, 'eslint-config-avilatek@^1.7.0', '-D');
+    await installPackage(path, 'eslint-config-prettier@^8.3.0', '-D');
+    console.log('eslint config despues');
 
     // create the base files
     const extension = language === 'javascript' ? 'js' : 'ts';
@@ -100,7 +126,6 @@ export async function createMicroservice(
       {
         fileName: `index.${extension}`,
         filePath: `${path}/src/routes`,
-        fileContent: '{}',
       },
     ]);
 
@@ -153,10 +178,8 @@ export async function createMicroservice(
         }
         break;
       case 'prisma':
-        await Promise.all([
-          installPackage(path, 'prisma', '--save-dev'),
-          executePackage(path, 'prisma', 'init'),
-        ]);
+        await installPackage(path, 'prisma', '--save-dev');
+        await executePackage(path, 'prisma', 'init');
         switch (framework) {
           case 'express':
             await initPrismaExpress(language, path);
@@ -177,6 +200,7 @@ export async function createMicroservice(
         process.exit();
     }
   } catch (err) {
+    console.error(err);
     showError('An error has ocurred while creating the microservice');
   }
 }
