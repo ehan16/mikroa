@@ -45,7 +45,6 @@ export function createFiles(
 
 // creates a new file named `target` in case the file didn't exist
 export function copy(src: string, target: string) {
-  // TODO volar el pedacito de test/my-microservice /Users/EH/Downloads/CLI/mikroa/test/my-microservice/template/template.gitignore
   fs.copy(process.cwd() + src, process.cwd() + target, (err: Error) => {
     if (err) return showError(err);
   });

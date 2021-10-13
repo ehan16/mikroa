@@ -34,6 +34,7 @@ export async function createMicroservice(
     // create the microservice root folder and init the package.json
     await createDirectory(path);
     await initPackageJson(path);
+
     // create all the folders
     await createDirectories([
       {
@@ -109,14 +110,11 @@ export async function createMicroservice(
     await installPackage(path, 'prettier', '-D');
     await installPackage(path, 'autoprefixer', '-D');
     await installPackage(path, 'eslint@^7.32.0', '-D');
-    console.log('eslint despues');
     await installPackage(path, 'eslint-config-avilatek@^1.7.0', '-D');
     await installPackage(path, 'eslint-config-prettier@^8.3.0', '-D');
-    console.log('eslint config despues');
 
     // create the base files
     const extension = language === 'javascript' ? 'js' : 'ts';
-    // TODO define the content of these files
     await createFiles([
       {
         fileName: 'config.json',
@@ -128,8 +126,6 @@ export async function createMicroservice(
       //   filePath: `${path}/src/routes`,
       // },
     ]);
-
-    // ? in the case of the app and server file, output the file content with the function output file, this will depend on the chosen technologies
 
     // install all the dependencies and create files according to the provided answers
     switch (language) {
