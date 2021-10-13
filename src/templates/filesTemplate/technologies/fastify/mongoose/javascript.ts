@@ -7,7 +7,7 @@ export function fastifyMongooseAppJs() {
   
   app.register(users);
   
-  exports.app = app;
+  module.exports = app;
 `;
 }
 
@@ -17,9 +17,9 @@ export function fastifyMongooseServerJs() {
   const dotenv = require('dotenv');
   const app = require('./app');
 
-  dotenv.config();
+  dotenv.config({ path: './src/variables.env' });
   
-  const start = async () => {
+  async function main() {
     mongoose
       .connect(String(process.env.DATABASE), {
         useNewUrlParser: true,
@@ -48,7 +48,7 @@ export function fastifyMongooseServerJs() {
     });
   };
   
-  start();
+  main();
   `;
 }
 

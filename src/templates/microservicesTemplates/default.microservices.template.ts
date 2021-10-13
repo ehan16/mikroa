@@ -78,7 +78,7 @@ export async function createMicroservice(
       },
       {
         fileName: 'variables.env',
-        filePath: `${path}`,
+        filePath: `${path}/src`,
         fileContent: env(),
       },
       {
@@ -145,7 +145,7 @@ export async function createMicroservice(
             await initMongooseFastify(language, path);
             break;
           case 'koa.js':
-            await initMongooseKoa(language);
+            await initMongooseKoa(language, path);
             break;
           default:
             showError('the selected orm is not an option');

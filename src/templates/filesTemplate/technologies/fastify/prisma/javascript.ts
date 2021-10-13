@@ -7,7 +7,7 @@ const app = fastify();
 
 app.register(router);
 
-exports.app = app;
+module.exports = app;
   `;
 }
 
@@ -17,7 +17,7 @@ export function fastifyPrismaPrismaJs() {
 
 const prisma = new PrismaClient();
 
-exports.prisma = prisma;
+module.exports = prisma;
   `;
 }
 
@@ -65,7 +65,7 @@ const router = (fastify, opts, next) => {
   next();
 };
 
-exports.router = router;
+module.exports = router;
   `;
 }
 
@@ -75,6 +75,6 @@ export function routesJs() {
 
  const renderRoutes = Object.values(routes);
 
- exports.renderRoutes = renderRoutes;
+ module.exports = renderRoutes;
   `;
 }

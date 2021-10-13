@@ -32,6 +32,7 @@ import {
 
 export async function initMongooseExpress(language: string, path: string) {
   await installPackage(path, 'express');
+
   if (language === 'typescript') {
     await initMongooseTsExpress(path);
   } else {
@@ -39,17 +40,24 @@ export async function initMongooseExpress(language: string, path: string) {
   }
 }
 export async function initMongooseFastify(language: string, path: string) {
+  await installPackage(path, 'fastify');
+  await installPackage(path, 'fastify-plugin');
+
   if (language === 'typescript') {
     await initMongooseTsFastify(path);
   } else {
     await initMongooseJsFastify(path);
   }
 }
-export async function initMongooseKoa(language: string) {
+export async function initMongooseKoa(language: string, path: string) {
+  await installPackage(path, 'koa');
+  await installPackage(path, 'koa-router');
+  await installPackage(path, 'koa-bodyparser');
+
   if (language === 'typescript') {
-    await initMongooseTsKoa();
+    await initMongooseTsKoa(path);
   } else {
-    await initMongooseJsKoa();
+    await initMongooseJsKoa(path);
   }
 }
 export async function initSequelizeExpress(language: string) {

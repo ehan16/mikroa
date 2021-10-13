@@ -4,7 +4,7 @@ export function prismaExpressPrismaJs() {
 
     const prisma = new PrismaClient();
 
-    exports.prisma = prisma;
+    module.exports = prisma;
           `;
 }
 

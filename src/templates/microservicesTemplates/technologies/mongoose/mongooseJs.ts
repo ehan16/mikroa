@@ -1,6 +1,5 @@
 import { showError } from '../../../../utils/logger.util';
 import { createFiles } from '../../../default/default.template';
-import { installPackage } from '../../../../utils/npm.util';
 import {
   expressAppJs,
   mongooseExpressServerJs,
@@ -8,6 +7,9 @@ import {
   fastifyMongooseExampleJs,
   fastifyMongooseServerJs,
   routesIndexJs,
+  koaMongooseAppJs,
+  koaMongooseRoutesJs,
+  koaMongooseServerJs,
 } from '../../../filesTemplate/technologies';
 
 export async function initMongooseJsExpress(path: string) {
@@ -37,28 +39,53 @@ export async function initMongooseJsExpress(path: string) {
 }
 
 export async function initMongooseJsFastify(path: string) {
-  await installPackage(path, 'fastify');
-  await installPackage(path, 'fastify-plugin');
-
-  await createFiles([
-    {
-      fileName: 'app.js',
-      filePath: `${path}/src`,
-      fileContent: fastifyMongooseAppJs(),
-    },
-    {
-      fileName: 'server.js',
-      filePath: `${path}/src`,
-      fileContent: fastifyMongooseServerJs(),
-    },
-    {
-      fileName: 'users.js',
-      filePath: `${path}/src/routes`,
-      fileContent: fastifyMongooseExampleJs(),
-    },
-  ]);
+  try {
+    await createFiles([
+      {
+        fileName: 'app.js',
+        filePath: `${path}/src`,
+        fileContent: fastifyMongooseAppJs(),
+      },
+      {
+        fileName: 'server.js',
+        filePath: `${path}/src`,
+        fileContent: fastifyMongooseServerJs(),
+      },
+      {
+        fileName: 'users.js',
+        filePath: `${path}/src/routes`,
+        fileContent: fastifyMongooseExampleJs(),
+      },
+    ]);
+  } catch (err) {
+    showError(
+      'An error has ocurred while creating the mongoose-express basic files'
+    );
+  }
 }
 
-export async function initMongooseJsKoa() {
-  console.log('holi');
+export async function initMongooseJsKoa(path: string) {
+  try {
+    await createFiles([
+      {
+        fileName: 'app.js',
+        filePath: `${path}/src`,
+        fileContent: koaMongooseAppJs(),
+      },
+      {
+        fileName: 'server.js',
+        filePath: `${path}/src`,
+        fileContent: koaMongooseServerJs(),
+      },
+      {
+        fileName: 'index.js',
+        filePath: `${path}/src/routes`,
+        fileContent: koaMongooseRoutesJs(),
+      },
+    ]);
+  } catch (err) {
+    showError(
+      'An error has ocurred while creating the mongoose-express basic files'
+    );
+  }
 }

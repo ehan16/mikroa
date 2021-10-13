@@ -8,3 +8,5 @@ export * from './fastify/mongoose/javascript';
 export * from './fastify/mongoose/typescript';
 export * from './fastify/prisma/javascript';
 export * from './fastify/prisma/typescript';
+export * from './koa/mongoose/javascript';
+export * from './koa/mongoose/typescript';

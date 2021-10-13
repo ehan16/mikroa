@@ -24,20 +24,9 @@ export function fastifyMongooseServerTs() {
   import dotenv from 'dotenv';
   import app from './app';
 
-  dotenv.config();
+  dotenv.config({ path: './src/variables.env' });
 
-  declare global {
-    namespace NodeJS {
-      interface Global {
-        __rootdir__: string;
-      }
-    }
-  }
-  
-  // @ts-expect-error
-  global.__rootdir__ = process.cwd() || __dirname;
-
-async function start() {
+async function main() {
   mongoose
     .connect(String(process.env.DATABASE), {
       useNewUrlParser: true,
@@ -66,7 +55,7 @@ async function start() {
   });
 }
 
-start();
+main();
 
   `;
 }

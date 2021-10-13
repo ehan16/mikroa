@@ -5,6 +5,7 @@ export function mongooseExpressServerJs() {
   const mongoose = require('mongoose');
   const app = require('./app');
   
+  async function main() {
   mongoose
     .connect(String(process.env.DATABASE_URL), {
       useNewUrlParser: true,
@@ -27,5 +28,8 @@ export function mongooseExpressServerJs() {
   app.listen({ port: PORT }, () =>
     console.log(\`🚀 Server ready at http://localhost:\${PORT}\`)
   );
+};
+
+main();
     `;
 }

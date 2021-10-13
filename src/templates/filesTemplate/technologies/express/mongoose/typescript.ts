@@ -7,6 +7,7 @@ export function mongooseExpressServerTs() {
   import mongoose from 'mongoose';
   import app from './app';
   
+  async function main() {
   mongoose
     .connect(String(process.env.DATABASE_URL), {
       useNewUrlParser: true,
@@ -29,5 +30,8 @@ export function mongooseExpressServerTs() {
   app.listen({ port: PORT }, () =>
     console.log(\`🚀 Server ready at http://localhost:\${PORT}\`)
   );
+};
+
+main();
     `;
 }

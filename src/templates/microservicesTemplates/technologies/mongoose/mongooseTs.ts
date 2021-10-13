@@ -8,6 +8,9 @@ import {
   fastifyMongooseExampleTs,
   fastifyMongooseServerTs,
   routesIndexTs,
+  koaMongooseAppTs,
+  koaMongooseRoutesTs,
+  koaMongooseServerTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initMongooseTsExpress(path: string) {
@@ -39,10 +42,7 @@ export async function initMongooseTsExpress(path: string) {
 
 export async function initMongooseTsFastify(path: string) {
   try {
-    await installPackage(path, 'fastify');
-    await installPackage(path, 'fastify-plugin');
     await installPackage(path, '@types/connect-mongo', '-D');
-
     await createFiles([
       {
         fileName: 'app.ts',
@@ -65,6 +65,27 @@ export async function initMongooseTsFastify(path: string) {
   }
 }
 
-export async function initMongooseTsKoa() {
-  console.log('holi');
+export async function initMongooseTsKoa(path: string) {
+  try {
+    await installPackage(path, '@types/connect-mongo', '-D');
+    await createFiles([
+      {
+        fileName: 'app.ts',
+        filePath: `${path}/src`,
+        fileContent: koaMongooseAppTs(),
+      },
+      {
+        fileName: 'server.ts',
+        filePath: `${path}/src`,
+        fileContent: koaMongooseServerTs(),
+      },
+      {
+        fileName: 'index.ts',
+        filePath: `${path}/src/routes`,
+        fileContent: koaMongooseRoutesTs(),
+      },
+    ]);
+  } catch (err) {
+    showError('An error has ocurred while generating the microservice');
+  }
 }
