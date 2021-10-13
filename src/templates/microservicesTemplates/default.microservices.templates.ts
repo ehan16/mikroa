@@ -123,10 +123,10 @@ export async function createMicroservice(
         filePath: `${path}`,
         fileContent: '{}',
       },
-      {
-        fileName: `index.${extension}`,
-        filePath: `${path}/src/routes`,
-      },
+      // {
+      //   fileName: `index.${extension}`,
+      //   filePath: `${path}/src/routes`,
+      // },
     ]);
 
     // ? in the case of the app and server file, output the file content with the function output file, this will depend on the chosen technologies

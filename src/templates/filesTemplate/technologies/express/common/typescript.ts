@@ -13,3 +13,13 @@ export function expressAppTs() {
   export default app;
       `;
 }
+
+export function routesIndexTs() {
+  return `
+  import { Router } from 'express';
+
+const router = Router();
+
+export default router;
+  `;
+}

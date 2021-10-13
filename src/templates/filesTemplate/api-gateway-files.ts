@@ -1,10 +1,10 @@
 // index.js content
 export function indexJs(name: string) {
   return `
-    var express = require('express');
-    var app = express();
-    var router = require('./routers/router');
-    var bodyParser = require('body-parser');
+    const express = require('express');
+    const app = express();
+    const router = require('./routers/router');
+    const bodyParser = require('body-parser');
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,9 +24,9 @@ export function indexJs(name: string) {
 
 export function routerJs() {
   return `
-  var express = require('express');
-  var router = express.Router();
-  // var serviceExample = require('./serviceExample')
+  const express = require('express');
+  const router = express.Router();
+  // const serviceExample = require('./serviceExample')
   router.use((req, res, next) => {
       console.log("Called: ", req.path)
       next()
@@ -56,8 +56,8 @@ export function apiAdapterJs() {
 
 export function serviceExampleJs() {
   return `
-  var express = require('express');
-  var router = express.Router();
+  const express = require('express');
+  const router = express.Router();
   const apiAdapter = require('./apiAdapter');
   
   const BASE_URL = 'http://localhost:8888'

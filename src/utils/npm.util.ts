@@ -30,11 +30,11 @@ export async function installPackage(
 export async function executePackage(
   path: string,
   // eslint-disable-next-line no-shadow
-  options = '',
-  type: string
+  type: string,
+  options = ''
 ) {
   const res = await execa('npx', [type, options], {
-    cwd: path,
+    cwd: process.cwd() + path,
   });
   if (res.failed) {
     console.error(`Failed to execute ${type}`);

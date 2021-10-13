@@ -2,7 +2,9 @@ export function prismaExpressPrismaJs() {
   return `
     const { PrismaClient } = require('@prisma/client');
 
-    export const prisma = new PrismaClient();
+    const prisma = new PrismaClient();
+
+    exports.prisma = prisma;
           `;
 }
 

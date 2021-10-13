@@ -7,6 +7,7 @@ import {
   fastifyMongooseAppTs,
   fastifyMongooseExampleTs,
   fastifyMongooseServerTs,
+  routesIndexTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initMongooseTsExpress(path: string) {
@@ -22,6 +23,11 @@ export async function initMongooseTsExpress(path: string) {
         fileName: `server.ts`,
         filePath: `${path}/src`,
         fileContent: mongooseExpressServerTs(),
+      },
+      {
+        fileName: `index.ts`,
+        filePath: `${path}/src/routes`,
+        fileContent: routesIndexTs(),
       },
     ]);
   } catch (err) {

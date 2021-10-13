@@ -10,6 +10,21 @@ export function expressAppJs() {
     app.set('port', Number(process.env.PORT) || 3000);
     app.use('/', routes);
     
-    export default app;
+    exports.app = app;
         `;
+}
+
+export function routesIndexJs() {
+  return `
+  const express = require('express');
+const router = express.Router();
+
+router.use((req, res, next) => {
+  console.log('Called: ', req.path);
+  next();
+});
+
+module.exports = router;
+
+  `;
 }

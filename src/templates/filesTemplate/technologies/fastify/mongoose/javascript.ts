@@ -7,7 +7,7 @@ export function fastifyMongooseAppJs() {
   
   app.register(users);
   
-  export default app;
+  exports.app = app;
 `;
 }
 
