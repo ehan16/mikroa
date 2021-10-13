@@ -90,3 +90,24 @@ async function main() {
 
 main();
 ```
+
+
+
+ // microservice-name/ ✅
+    //   config.json ✅
+    //   src/ ✅
+    //     app.ts ✅
+    //     server.ts ✅
+    //     router.ts ✅
+    //     controllers/ ✅
+    //     models/ ✅
+    //       index.ts ✅
+    //   .gitignore ✅
+    //   .eslintignore ✅
+    //   .eslintrc.js ✅
+    //   .prettierrc ✅
+    //   .prettierignore ✅
+    //   package.json ✅
+    //   Dockerfile ✅
+    //   .dockerignore ✅
+    //   example.env ✅

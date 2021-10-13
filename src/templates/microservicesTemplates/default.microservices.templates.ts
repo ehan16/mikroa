@@ -23,6 +23,16 @@ import {
   initSequelizeFastify,
   initSequelizeKoa,
 } from './initTechnologies';
+import {
+  dockerfile,
+  dockerignore,
+  env,
+  eslintignore,
+  eslintrcjs,
+  gitignore,
+  prettierignore,
+  prettierrc,
+} from '../filesTemplate/basicSetup';
 
 export async function createMicroservice(
   microserviceName: string,
@@ -51,58 +61,47 @@ export async function createMicroservice(
       },
     ]);
 
-    // microservice-name/ ✅
-    //   config.json ✅
-    //   src/ ✅
-    //     app.ts ✅
-    //     server.ts ✅
-    //     router.ts ✅
-    //     controllers/ ✅
-    //     models/ ✅
-    //       index.ts ✅
-    //   .gitignore ✅
-    //   .eslintignore ✅
-    //   .eslintrc.js ✅
-    //   .prettierrc ✅
-    //   .prettierignore ✅
-    //   package.json ✅
-    //   Dockerfile ✅
-    //   .dockerignore ✅
-    //   example.env ✅
-
-    await Promise.all([
-      copy(
-        `/${microserviceName}/template/template.gitignore`,
-        `${path}/.gitignore`
-      ),
-      copy(
-        `/${microserviceName}/template/template.Dockerfile`,
-        `${path}/Dockerfile`
-      ),
-      copy(
-        `/${microserviceName}/template/template.dockerignore`,
-        `${path}/.dockerignore`
-      ),
-      copy(
-        `/${microserviceName}/template/template.env`,
-        `${path}/variables.env`
-      ),
-      copy(
-        `/${microserviceName}/template/template.eslintignore`,
-        `${path}/.eslintignore`
-      ),
-      copy(
-        `/${microserviceName}/template/template.eslintrc.js`,
-        `${path}/.eslintrc.js`
-      ),
-      copy(
-        `/${microserviceName}/template/template.prettierrc`,
-        `${path}/.prettierrc`
-      ),
-      copy(
-        `/${microserviceName}/template/template.prettierignore`,
-        `${path}/.prettierignore`
-      ),
+    await createFiles([
+      {
+        fileName: '.gitignore',
+        filePath: `${path}`,
+        fileContent: gitignore(),
+      },
+      {
+        fileName: 'Dockerfile',
+        filePath: `${path}`,
+        fileContent: dockerfile(),
+      },
+      {
+        fileName: '.dockerignore',
+        filePath: `${path}`,
+        fileContent: dockerignore(),
+      },
+      {
+        fileName: 'variables.env',
+        filePath: `${path}`,
+        fileContent: env(),
+      },
+      {
+        fileName: '.eslintignore',
+        filePath: `${path}`,
+        fileContent: eslintignore(),
+      },
+      {
+        fileName: '.eslintrc.js',
+        filePath: `${path}`,
+        fileContent: eslintrcjs(),
+      },
+      {
+        fileName: '.prettierrc',
+        filePath: `${path}`,
+        fileContent: prettierrc(),
+      },
+      {
+        fileName: '.prettierignore',
+        filePath: `${path}`,
+        fileContent: prettierignore(),
+      },
     ]);
 
     // install base dependencies
@@ -121,10 +120,6 @@ export async function createMicroservice(
         filePath: `${path}`,
         fileContent: '{}',
       },
-      // {
-      //   fileName: `index.${extension}`,
-      //   filePath: `${path}/src/routes`,
-      // },
     ]);
 
     // install all the dependencies and create files according to the provided answers
