@@ -11,6 +11,7 @@ import {
 
 export async function initMongooseTsExpress(path: string) {
   try {
+    await installPackage(path, '@types/express');
     await createFiles([
       {
         fileName: 'app.ts',

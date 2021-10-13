@@ -1,3 +1,4 @@
+import { installPackage } from '../../utils/npm.util';
 import {
   initMongooseJsExpress,
   initMongooseJsFastify,
@@ -30,6 +31,7 @@ import {
 } from './technologies/sequelize/sequelizeTs';
 
 export async function initMongooseExpress(language: string, path: string) {
+  await installPackage(path, 'express');
   if (language === 'typescript') {
     await initMongooseTsExpress(path);
   } else {
