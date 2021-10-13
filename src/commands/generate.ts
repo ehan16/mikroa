@@ -8,7 +8,7 @@ import {
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, outputJson } from '../templates/default/default.template';
-import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.templates';
+import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.template';
 import { formatFiles } from '../utils/npm.util';
 
 type Options = {
@@ -109,12 +109,13 @@ export const handler = async (argv: Arguments<Options>) => {
           framework,
         },
       };
+
+      // 6. format all the files
+      // await formatFiles(`/${name}`, language === 'typescript');
     });
 
-    // 6. Write the new cache file
+    // 7. Write the new cache file
     await outputJson('cache.json', cache);
-
-    await formatFiles(`/${microserviceName}`);
   } catch (e) {
     showError('An error has ocurred while creating the microservice');
     process.exit();
