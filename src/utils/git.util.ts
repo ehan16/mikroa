@@ -1,5 +1,5 @@
 import execa from 'execa';
-import { copy, createFile } from '../templates/default/default.template';
+import { copy } from '../templates/default/default.template';
 import { showError, showSuccess } from './logger.util';
 import { gitignore } from '../templates/filesTemplate/basicSetup';
 

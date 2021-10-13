@@ -1,7 +1,7 @@
 import type { CommandBuilder } from 'yargs';
 
-export const command: string = 'start';
-export const desc: string = 'Start running all the microservices';
+export const command = 'start';
+export const desc = 'Start running all the microservices';
 
 export const builder: CommandBuilder = {};
 

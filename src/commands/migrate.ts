@@ -1,7 +1,7 @@
 import type { CommandBuilder } from 'yargs';
 
-export const command: string = 'migrate';
-export const desc: string =
+export const command = 'migrate';
+export const desc =
   'Read the configuration file and migrate all the models to the database';
 
 export const builder: CommandBuilder = {};

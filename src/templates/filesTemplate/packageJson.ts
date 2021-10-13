@@ -1,13 +1,13 @@
 export default function packageJson(
   microserviceName: string,
-  typescript: boolean
+  typescript: boolean = false
 ) {
   return `
   {
     "name": "${microserviceName}",
     "version": "1.0.0",
     "description": "",
-    ${typescript ? '' : '"main" : "index.js",'} 
+    ${typescript ? '' : '"main" : "src/server.js",'} 
     "scripts": {
      ${
        typescript

@@ -10,7 +10,7 @@ import {
   indexJs,
   routerJs,
   serviceExampleJs,
-} from '../filesTemplate/api-gateway-files';
+} from '../filesTemplate/apiGatewayFiles';
 
 // eslint-disable-next-line arrow-body-style
 export const directoryExists = (path: string): boolean => {
@@ -183,7 +183,7 @@ export async function generateApiGateway(
 export async function initTypeScript(path: string) {
   await Promise.all([
     installPackage(path, 'typescript', '-D'),
-    installPackage(path, 'ts-node-dev', '-D'),
+    installPackage(path, 'ts-node', '-D'),
     installPackage(path, '@types/dotenv', '-D'),
     installPackage(path, '@types/eslint', '-D'),
     installPackage(path, '@types/prettier', '-D'),

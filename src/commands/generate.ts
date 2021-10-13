@@ -15,8 +15,8 @@ type Options = {
   microservice: string | undefined;
 };
 
-export const command: string = 'generate [microservice]';
-export const desc: string = 'Create a new microservice';
+export const command = 'generate [microservice]';
+export const desc = 'Create a new microservice';
 export const aliases: string[] = ['gen'];
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
@@ -66,7 +66,6 @@ export const handler = async (argv: Arguments<Options>) => {
       // };
       showStart('to read the configuration file');
       const configFile = await readJson('config.json');
-      console.log('CONFIG FILE', configFile);
       for (const [name, config] of Object.entries(configFile)) {
         const { language, orm, framework } = config as {
           language: string;
@@ -80,7 +79,6 @@ export const handler = async (argv: Arguments<Options>) => {
           framework,
         });
       }
-      console.log(configFile);
     }
 
     // 3. Check in the cache which microservices haven't been created yet and filter them out
@@ -114,9 +112,9 @@ export const handler = async (argv: Arguments<Options>) => {
     });
 
     // 6. Write the new cache file
-    outputJson('cache.json', cache);
+    await outputJson('cache.json', cache);
 
-    // formatFiles(`/${microserviceName}`);
+    await formatFiles(`/${microserviceName}`);
   } catch (e) {
     showError('An error has ocurred while creating the microservice');
     process.exit();

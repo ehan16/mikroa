@@ -43,15 +43,16 @@ export async function executePackage(
   }
 }
 
-export async function formatFiles(path: string) {
+export async function formatFiles(path: string, typescript: boolean = false) {
   const res = await execa(
-    'prettier',
-    ['--write', '"**/*.{js,json,md,ts,tsx}"'],
+    'npx',
+    ['prettier', '--write', `**/*.{js,json${typescript ? ',ts' : ''}}`],
     {
       cwd: process.cwd() + path,
     }
   );
   if (res.failed) {
+    console.log(res);
     console.error(`Failed to execute prettier`);
   } else {
     console.log(`Prettier executed correctly`);

@@ -6,7 +6,6 @@ import {
 } from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
 import {
-  copy,
   createDirectories,
   createDirectory,
   createFiles,
@@ -111,6 +110,7 @@ export async function createMicroservice(
     await installPackage(path, 'eslint@^7.32.0', '-D');
     await installPackage(path, 'eslint-config-avilatek@^1.7.0', '-D');
     await installPackage(path, 'eslint-config-prettier@^8.3.0', '-D');
+    await installPackage(path, 'nodemon', '-D');
 
     // create the base files
     const extension = language === 'javascript' ? 'js' : 'ts';

@@ -1,7 +1,7 @@
 import type { CommandBuilder } from 'yargs';
 
-export const command: string = 'build';
-export const desc: string =
+export const command = 'build';
+export const desc =
   'Build a Mikroa project by generating the Docker containers';
 
 export const builder: CommandBuilder = {};

@@ -1,6 +1,6 @@
 export function dockerfile() {
   return `
-  # Install dependencies only when needed
+# Install dependencies only when needed
 FROM node:16-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -38,7 +38,7 @@ CMD ["npm", "start" ]
 
 export function dockerignore() {
   return `
-  # docker files
+# docker files
 .dockerignore
 
 # dependencies
@@ -80,7 +80,7 @@ README.md
 
 export function env() {
   return `
-  NODE_ENV=
+NODE_ENV=
 PORT=
 SECRET=
 URL=
@@ -215,7 +215,7 @@ export function tsconfig() {
 
 export function prettierignore() {
   return `
-  # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
