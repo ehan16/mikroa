@@ -18,9 +18,6 @@ import {
   initPrismaExpress,
   initPrismaFastify,
   initPrismaKoa,
-  initSequelizeExpress,
-  initSequelizeFastify,
-  initSequelizeKoa,
 } from './initTechnologies';
 import {
   dockerfile,
@@ -146,22 +143,6 @@ export async function createMicroservice(
             break;
           case 'koa.js':
             await initMongooseKoa(language, path);
-            break;
-          default:
-            showError('the selected orm is not an option');
-            process.exit();
-        }
-        break;
-      case 'sequelize':
-        switch (framework) {
-          case 'express':
-            await initSequelizeExpress(language);
-            break;
-          case 'fastify':
-            await initSequelizeFastify(language);
-            break;
-          case 'koa.js':
-            await initSequelizeKoa(language);
             break;
           default:
             showError('the selected orm is not an option');

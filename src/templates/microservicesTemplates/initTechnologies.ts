@@ -19,16 +19,6 @@ import {
   initPrismaTsFastify,
   initPrismaTsKoa,
 } from './technologies/prisma/prismaTs';
-import {
-  initSequelizeJsExpress,
-  initSequelizeJsFastify,
-  initSequelizeJsKoa,
-} from './technologies/sequelize/sequelizeJs';
-import {
-  initSequelizeTsExpress,
-  initSequelizeTsFastify,
-  initSequelizeTsKoa,
-} from './technologies/sequelize/sequelizeTs';
 
 export async function initMongooseExpress(language: string, path: string) {
   await installPackage(path, 'express');
@@ -58,27 +48,6 @@ export async function initMongooseKoa(language: string, path: string) {
     await initMongooseTsKoa(path);
   } else {
     await initMongooseJsKoa(path);
-  }
-}
-export async function initSequelizeExpress(language: string) {
-  if (language === 'typescript') {
-    await initSequelizeTsExpress();
-  } else {
-    await initSequelizeJsExpress();
-  }
-}
-export async function initSequelizeFastify(language: string) {
-  if (language === 'typescript') {
-    await initSequelizeTsFastify();
-  } else {
-    await initSequelizeJsFastify();
-  }
-}
-export async function initSequelizeKoa(language: string) {
-  if (language === 'typescript') {
-    await initSequelizeTsKoa();
-  } else {
-    await initSequelizeJsKoa();
   }
 }
 export async function initPrismaExpress(language: string, path: string) {
