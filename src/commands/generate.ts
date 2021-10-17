@@ -111,7 +111,7 @@ export const handler = async (argv: Arguments<Options>) => {
       };
 
       // 6. format all the files
-      // await formatFiles(`/${name}`, language === 'typescript');
+      await formatFiles(`/${name}`, language === 'typescript');
     }
 
     // 7. Write the new cache file
