@@ -3,19 +3,18 @@ import { createFiles } from '../../../default/default.template';
 import { installPackage } from '../../../../utils/npm.util';
 import {
   expressAppTs,
-  mongooseExpressServerTs,
   fastifyMongooseAppTs,
   fastifyMongooseExampleTs,
-  fastifyMongooseServerTs,
+  koaAppTs,
+  koaRoutesTs,
+  mongooseServerTs,
   routesIndexTs,
-  koaMongooseAppTs,
-  koaMongooseRoutesTs,
-  koaMongooseServerTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initMongooseTsExpress(path: string) {
   try {
     await installPackage(path, '@types/express');
+    await installPackage(path, '@types/connect-mongo', '-D');
     await createFiles([
       {
         fileName: 'app.ts',
@@ -25,7 +24,7 @@ export async function initMongooseTsExpress(path: string) {
       {
         fileName: `server.ts`,
         filePath: `${path}/src`,
-        fileContent: mongooseExpressServerTs(),
+        fileContent: mongooseServerTs(),
       },
       {
         fileName: `index.ts`,
@@ -52,7 +51,7 @@ export async function initMongooseTsFastify(path: string) {
       {
         fileName: 'server.ts',
         filePath: `${path}/src`,
-        fileContent: fastifyMongooseServerTs(),
+        fileContent: mongooseServerTs(),
       },
       {
         fileName: 'users.ts',
@@ -72,17 +71,17 @@ export async function initMongooseTsKoa(path: string) {
       {
         fileName: 'app.ts',
         filePath: `${path}/src`,
-        fileContent: koaMongooseAppTs(),
+        fileContent: koaAppTs(),
       },
       {
         fileName: 'server.ts',
         filePath: `${path}/src`,
-        fileContent: koaMongooseServerTs(),
+        fileContent: mongooseServerTs(),
       },
       {
         fileName: 'index.ts',
         filePath: `${path}/src/routes`,
-        fileContent: koaMongooseRoutesTs(),
+        fileContent: koaRoutesTs(),
       },
     ]);
   } catch (err) {

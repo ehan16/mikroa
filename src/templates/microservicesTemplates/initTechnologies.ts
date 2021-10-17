@@ -64,10 +64,14 @@ export async function initPrismaFastify(language: string, path: string) {
     await initPrismaJsFastify(path);
   }
 }
-export async function initPrismaKoa(language: string) {
+export async function initPrismaKoa(language: string, path: string) {
+  await installPackage(path, 'koa');
+  await installPackage(path, 'koa-router');
+  await installPackage(path, 'koa-bodyparser');
+
   if (language === 'typescript') {
-    await initPrismaTsKoa();
+    await initPrismaTsKoa(path);
   } else {
-    await initPrismaJsKoa();
+    await initPrismaJsKoa(path);
   }
 }

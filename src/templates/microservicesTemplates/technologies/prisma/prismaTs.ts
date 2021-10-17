@@ -4,12 +4,13 @@ import { installPackage } from '../../../../utils/npm.util';
 import {
   expressAppTs,
   prismaExpressPrismaTs,
-  prismaExpressServerTs,
   fastifyPrismaAppTs,
   fastifyPrismaPrismaTs,
-  fastifyPrismaServerTs,
   indexRoutesTs,
   routesTs,
+  prismaServerTs,
+  koaAppTs,
+  koaRoutesTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initPrismaTsExpress(path: string) {
@@ -28,7 +29,7 @@ export async function initPrismaTsExpress(path: string) {
       {
         fileName: `server.ts`,
         filePath: `${path}/src`,
-        fileContent: prismaExpressServerTs(),
+        fileContent: prismaServerTs(),
       },
     ]);
   } catch (err) {
@@ -52,7 +53,7 @@ export async function initPrismaTsFastify(path: string) {
       {
         fileName: 'server.ts',
         filePath: `${path}/src`,
-        fileContent: fastifyPrismaServerTs(),
+        fileContent: prismaServerTs(),
       },
       {
         fileName: 'prisma.ts',
@@ -75,6 +76,26 @@ export async function initPrismaTsFastify(path: string) {
   }
 }
 
-export async function initPrismaTsKoa() {
-  console.log('holi');
+export async function initPrismaTsKoa(path: string) {
+  try {
+    await createFiles([
+      {
+        fileName: 'app.ts',
+        filePath: `${path}/src`,
+        fileContent: koaAppTs(),
+      },
+      {
+        fileName: 'server.ts',
+        filePath: `${path}/src`,
+        fileContent: prismaServerTs(),
+      },
+      {
+        fileName: 'index.ts',
+        filePath: `${path}/src/routes`,
+        fileContent: koaRoutesTs(),
+      },
+    ]);
+  } catch (err) {
+    showError('An error has ocurred while generating the microservice');
+  }
 }

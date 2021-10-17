@@ -2,14 +2,14 @@ import { showError } from '../../../../utils/logger.util';
 import { createFiles } from '../../../default/default.template';
 import { installPackage } from '../../../../utils/npm.util';
 import {
-  prismaExpressPrismaJs,
-  prismaExpressServerJs,
   expressAppJs,
   fastifyPrismaAppJs,
-  fastifyPrismaServerJs,
-  fastifyPrismaPrismaJs,
   indexRoutesJs,
   routesJs,
+  prismaPrismaJs,
+  prismaServerJs,
+  koaAppJs,
+  koaRoutesJs,
 } from '../../../filesTemplate/technologies';
 
 export async function initPrismaJsExpress(path: string) {
@@ -23,12 +23,12 @@ export async function initPrismaJsExpress(path: string) {
       {
         fileName: `prisma.js`,
         filePath: `${path}/src`,
-        fileContent: prismaExpressPrismaJs(),
+        fileContent: prismaPrismaJs(),
       },
       {
         fileName: `server.js`,
         filePath: `${path}/src`,
-        fileContent: prismaExpressServerJs(),
+        fileContent: prismaServerJs(),
       },
     ]);
   } catch (err) {
@@ -52,12 +52,12 @@ export async function initPrismaJsFastify(path: string) {
       {
         fileName: 'server.js',
         filePath: `${path}/src`,
-        fileContent: fastifyPrismaServerJs(),
+        fileContent: prismaServerJs(),
       },
       {
         fileName: 'prisma.js',
         filePath: `${path}/src`,
-        fileContent: fastifyPrismaPrismaJs(),
+        fileContent: prismaPrismaJs(),
       },
       {
         fileName: 'index.js',
@@ -75,6 +75,28 @@ export async function initPrismaJsFastify(path: string) {
   }
 }
 
-export async function initPrismaJsKoa() {
-  console.log('holi');
+export async function initPrismaJsKoa(path: string) {
+  try {
+    await createFiles([
+      {
+        fileName: 'app.js',
+        filePath: `${path}/src`,
+        fileContent: koaAppJs(),
+      },
+      {
+        fileName: 'server.js',
+        filePath: `${path}/src`,
+        fileContent: prismaServerJs(),
+      },
+      {
+        fileName: 'index.js',
+        filePath: `${path}/src/routes`,
+        fileContent: koaRoutesJs(),
+      },
+    ]);
+  } catch (err) {
+    showError(
+      'An error has ocurred while creating the mongoose-express basic files'
+    );
+  }
 }

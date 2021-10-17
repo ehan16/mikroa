@@ -160,7 +160,7 @@ export async function createMicroservice(
             await initPrismaFastify(language, path);
             break;
           case 'koa.js':
-            await initPrismaKoa(language);
+            await initPrismaKoa(language, path);
             break;
           default:
             showError('the selected orm is not an option');

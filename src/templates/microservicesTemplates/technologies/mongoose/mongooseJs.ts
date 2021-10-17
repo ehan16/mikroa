@@ -2,14 +2,12 @@ import { showError } from '../../../../utils/logger.util';
 import { createFiles } from '../../../default/default.template';
 import {
   expressAppJs,
-  mongooseExpressServerJs,
   fastifyMongooseAppJs,
   fastifyMongooseExampleJs,
-  fastifyMongooseServerJs,
+  koaAppJs,
+  koaRoutesJs,
+  mongooseServerJs,
   routesIndexJs,
-  koaMongooseAppJs,
-  koaMongooseRoutesJs,
-  koaMongooseServerJs,
 } from '../../../filesTemplate/technologies';
 
 export async function initMongooseJsExpress(path: string) {
@@ -23,7 +21,7 @@ export async function initMongooseJsExpress(path: string) {
       {
         fileName: `server.js`,
         filePath: `${path}/src`,
-        fileContent: mongooseExpressServerJs(),
+        fileContent: mongooseServerJs(),
       },
       {
         fileName: `index.js`,
@@ -49,7 +47,7 @@ export async function initMongooseJsFastify(path: string) {
       {
         fileName: 'server.js',
         filePath: `${path}/src`,
-        fileContent: fastifyMongooseServerJs(),
+        fileContent: mongooseServerJs(),
       },
       {
         fileName: 'users.js',
@@ -70,17 +68,17 @@ export async function initMongooseJsKoa(path: string) {
       {
         fileName: 'app.js',
         filePath: `${path}/src`,
-        fileContent: koaMongooseAppJs(),
+        fileContent: koaAppJs(),
       },
       {
         fileName: 'server.js',
         filePath: `${path}/src`,
-        fileContent: koaMongooseServerJs(),
+        fileContent: mongooseServerJs(),
       },
       {
         fileName: 'index.js',
         filePath: `${path}/src/routes`,
-        fileContent: koaMongooseRoutesJs(),
+        fileContent: koaRoutesJs(),
       },
     ]);
   } catch (err) {
