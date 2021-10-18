@@ -35,6 +35,8 @@ export const handler = async (argv: Arguments<Options>) => {
   showTitle();
 
   try {
+    const configFile = await readJson('config.json');
+
     // 1. Check if microservice name was provided
     if (microserviceName) {
       if (
@@ -47,7 +49,7 @@ export const handler = async (argv: Arguments<Options>) => {
 
       showGenerate(`${microservice || ''}`);
 
-      // 1.1 In case the microservice name is passed, ask the user for language, orm, etc
+      // In case the microservice name is passed, ask the user for language, orm, etc
       const answers = await promptForOptions();
       microservices.push({
         name: microserviceName,
@@ -55,23 +57,28 @@ export const handler = async (argv: Arguments<Options>) => {
         orm: answers.orm,
         framework: answers.framework,
       });
+
+      // If a new microservice was created manually, append to the config
+      const newConfig = {
+        ...configFile,
+        [microserviceName]: {
+          language: answers.language,
+          orm: answers.orm,
+          framework: answers.framework,
+        },
+      };
+
+      await outputJson('config.json', newConfig);
     } else {
       // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
-      // {
-      //   'microservice-name': {
-      //     language: 'javascript',
-      //     orm: 'mongoose',
-      //     framework: 'express',
-      //   },
-      // };
       showStart('to read the configuration file');
-      const configFile = await readJson('config.json');
       for (const [name, config] of Object.entries(configFile)) {
         const { language, orm, framework } = config as {
           language: string;
           orm: string;
           framework: string;
         };
+
         microservices.push({
           name,
           language,
@@ -84,15 +91,16 @@ export const handler = async (argv: Arguments<Options>) => {
     // 3. Check in the cache which microservices haven't been created yet and filter them out
     showStart('to read the cache');
     let cache = await readJson('cache.json');
-    const cacheMicroservices = Object.keys(cache);
+
     const _microservices = microservices.filter(
-      (m) => !cacheMicroservices.includes(m.name)
+      (m) => !Object.keys(cache).includes(m.name)
     );
 
     if (_microservices?.length === 0) {
       showWarning(
         'there is no new microservices to generate or you passed an already created microservice'
       );
+      process.exit();
     }
 
     // 4. Create the ones that are not in the cache
@@ -100,7 +108,7 @@ export const handler = async (argv: Arguments<Options>) => {
       showGenerate(`${name} microservice`);
       await createMicroservice(name, { language, orm, framework });
 
-      // 5. Once the microservice have been created, append the new microservice to the cache
+      // 5. Once it have been created, append the new microservice to the cache
       cache = {
         ...cache,
         [name]: {
@@ -116,6 +124,9 @@ export const handler = async (argv: Arguments<Options>) => {
 
     // 7. Write the new cache file
     await outputJson('cache.json', cache);
+
+    // 8. Format
+    await formatFiles('');
   } catch (e) {
     showError('An error has ocurred while creating the microservice');
     process.exit();
