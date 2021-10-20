@@ -1,10 +1,6 @@
 import fs from 'fs-extra';
 import { showCreate, showUpdate, showError } from '../../utils/logger.util';
-import {
-  executePackage,
-  initPackageJson,
-  installPackage,
-} from '../../utils/npm.util';
+import { initPackageJson, installPackage } from '../../utils/npm.util';
 import {
   apiAdapterJs,
   indexJs,
