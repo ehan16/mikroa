@@ -32,7 +32,8 @@ import {
 
 export async function createMicroservice(
   microserviceName: string,
-  answers: OptionsAnswer
+  answers: OptionsAnswer,
+  dockerPort: number
 ) {
   const path = `/${microserviceName}`;
   const { framework, language, orm } = answers;
@@ -66,7 +67,7 @@ export async function createMicroservice(
       {
         fileName: 'Dockerfile',
         filePath: `${path}`,
-        fileContent: dockerfile(),
+        fileContent: dockerfile(String(dockerPort ?? 3001)),
       },
       {
         fileName: '.dockerignore',
@@ -140,7 +141,8 @@ export async function createMicroservice(
 
     switch (orm) {
       case 'mongoose':
-        await installPackage(path, 'mongoose');
+        await installPackage(path, 'mongoose@^5.13.3');
+
         switch (framework) {
           case 'express':
             await initMongooseExpress(language, path);
@@ -159,6 +161,7 @@ export async function createMicroservice(
       case 'prisma':
         await installPackage(path, 'prisma', '--save-dev');
         await executePackage(path, 'prisma', 'init');
+
         switch (framework) {
           case 'express':
             await initPrismaExpress(language, path);

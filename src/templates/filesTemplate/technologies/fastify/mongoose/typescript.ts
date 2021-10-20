@@ -68,6 +68,6 @@ export function fastifyMongooseExampleTs() {
     });
   };
   
-  module.exports = userRoutes;
+  export default userRoutes;
   `;
 }
