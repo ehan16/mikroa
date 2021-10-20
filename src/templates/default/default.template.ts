@@ -11,6 +11,7 @@ import {
   routerJs,
   serviceExampleJs,
 } from '../filesTemplate/apiGatewayFiles';
+import { tsconfig } from '../filesTemplate/basicSetup';
 
 // eslint-disable-next-line arrow-body-style
 export const directoryExists = (path: string): boolean => {
@@ -181,13 +182,15 @@ export async function generateApiGateway(
 }
 
 export async function initTypeScript(path: string) {
-  await Promise.all([
-    installPackage(path, 'typescript', '-D'),
-    installPackage(path, 'ts-node', '-D'),
-    installPackage(path, '@types/dotenv', '-D'),
-    installPackage(path, '@types/eslint', '-D'),
-    installPackage(path, '@types/prettier', '-D'),
-    installPackage(path, '@types/node', '-D'),
-    executePackage(path, 'tsc', '--init'),
-  ]);
+  await installPackage(path, 'typescript', '-D');
+  await installPackage(path, 'ts-node', '-D');
+  await installPackage(path, '@types/dotenv', '-D');
+  await installPackage(path, '@types/eslint', '-D');
+  await installPackage(path, '@types/prettier', '-D');
+  await installPackage(path, '@types/node', '-D');
+  await installPackage(path, 'tslib');
+  await installPackage(path, '@typescript-eslint/eslint-plugin', '-D');
+  await installPackage(path, '@typescript-eslint/parser', '-D');
+  await installPackage(path, 'eslint-plugin-import@2.23.4', '-D');
+  await createFile(path, 'tsconfig.json', tsconfig());
 }

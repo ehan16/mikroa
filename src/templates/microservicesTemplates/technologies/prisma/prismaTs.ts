@@ -15,6 +15,7 @@ import {
 
 export async function initPrismaTsExpress(path: string) {
   try {
+    await installPackage(path, '@types/express');
     await createFiles([
       {
         fileName: 'app.ts',
@@ -41,9 +42,6 @@ export async function initPrismaTsExpress(path: string) {
 
 export async function initPrismaTsFastify(path: string) {
   try {
-    await installPackage(path, 'fastify');
-    await installPackage(path, 'fastify-plugin');
-
     await createFiles([
       {
         fileName: 'app.ts',

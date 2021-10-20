@@ -40,9 +40,6 @@ export async function initPrismaJsExpress(path: string) {
 
 export async function initPrismaJsFastify(path: string) {
   try {
-    await installPackage(path, 'fastify');
-    await installPackage(path, 'fastify-plugin');
-
     await createFiles([
       {
         fileName: 'app.js',

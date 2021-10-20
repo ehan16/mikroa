@@ -12,6 +12,5 @@ export async function initGit(path: string) {
   } else {
     showSuccess('Git initialized');
     await createFile(path, '.gitignore', gitignore());
-    // await copy('/template/template.gitignore', `${path}/.gitignore`);
   }
 }

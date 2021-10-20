@@ -1,3 +1,5 @@
+// TODO completar esto
+
 export default function packageJson(
   microserviceName: string,
   typescript: boolean = false
@@ -7,7 +9,7 @@ export default function packageJson(
     "name": "${microserviceName}",
     "version": "1.0.0",
     "description": "",
-    ${typescript ? '' : '"main" : "src/server.js",'} 
+    "main" : "src/server.js",
     "scripts": {
      ${
        typescript

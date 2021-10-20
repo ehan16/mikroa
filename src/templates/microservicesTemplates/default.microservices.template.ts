@@ -101,16 +101,23 @@ export async function createMicroservice(
     ]);
 
     // install base dependencies
-    await installPackage(path, 'dotenv', '');
+    await installPackage(path, 'dotenv');
     await installPackage(path, 'prettier', '-D');
     await installPackage(path, 'autoprefixer', '-D');
-    await installPackage(path, 'eslint@^7.32.0', '-D');
-    await installPackage(path, 'eslint-config-avilatek@^1.7.0', '-D');
-    await installPackage(path, 'eslint-config-prettier@^8.3.0', '-D');
+    await installPackage(path, 'eslint@7.32.0', '-D');
+    await installPackage(path, 'eslint-config-avilatek@1.7.0', '-D');
+    // TODO check this part
+    await installPackage(
+      path,
+      'eslint-config-avilatek-typescript@1.7.0',
+      '--legacy-peer-deps'
+    );
+    await installPackage(path, 'eslint-config-prettier@8.3.0', '-D');
+    await installPackage(path, 'eslint-plugin-prettier@3.4.0', '-D');
     await installPackage(path, 'nodemon', '-D');
+    await installPackage(path, 'docker');
 
     // create the base files
-    const extension = language === 'javascript' ? 'js' : 'ts';
     await createFiles([
       {
         fileName: 'config.json',

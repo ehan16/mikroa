@@ -58,6 +58,9 @@ export async function initPrismaExpress(language: string, path: string) {
   }
 }
 export async function initPrismaFastify(language: string, path: string) {
+  await installPackage(path, 'fastify');
+  await installPackage(path, 'fastify-plugin');
+
   if (language === 'typescript') {
     await initPrismaTsFastify(path);
   } else {

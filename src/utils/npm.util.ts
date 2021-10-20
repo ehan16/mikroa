@@ -1,4 +1,5 @@
 import execa from 'execa';
+import { showError, showWarning } from './logger.util';
 
 export async function initPackageJson(path: string) {
   const res = await execa('npm', ['init', '-y'], {
@@ -52,9 +53,6 @@ export async function formatFiles(path: string, typescript: boolean = false) {
     }
   );
   if (res.failed) {
-    console.log(res);
-    console.error(`Failed to execute prettier`);
-  } else {
-    console.log(`Prettier executed correctly`);
+    showWarning('failed to format files');
   }
 }
