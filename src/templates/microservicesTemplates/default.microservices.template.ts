@@ -1,9 +1,5 @@
 import { showError } from '../../utils/logger.util';
-import {
-  executePackage,
-  initPackageJson,
-  installPackage,
-} from '../../utils/npm.util';
+import { executePackage, installPackage } from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
 import {
   createDirectories,
@@ -109,7 +105,6 @@ export async function createMicroservice(
     await installPackage(path, 'autoprefixer', '-D');
     await installPackage(path, 'eslint@7.32.0', '-D');
     await installPackage(path, 'eslint-config-avilatek@1.7.0', '-D');
-    // TODO check this part
     await installPackage(
       path,
       'eslint-config-avilatek-typescript@1.7.0',
