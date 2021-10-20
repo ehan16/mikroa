@@ -10,6 +10,7 @@ import {
   createDirectory,
   createFiles,
   initTypeScript,
+  createFile,
 } from '../default/default.template';
 import {
   initMongooseExpress,
@@ -29,6 +30,7 @@ import {
   prettierignore,
   prettierrc,
 } from '../filesTemplate/basicSetup';
+import packageJson from '../filesTemplate/packageJson';
 
 export async function createMicroservice(
   microserviceName: string,
@@ -40,7 +42,7 @@ export async function createMicroservice(
   try {
     // create the microservice root folder and init the package.json
     await createDirectory(path);
-    await initPackageJson(path);
+    await createFile(path, packageJson(microserviceName, language, orm));
 
     // create all the folders
     await createDirectories([
