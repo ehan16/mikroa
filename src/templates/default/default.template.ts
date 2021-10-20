@@ -170,8 +170,6 @@ export async function generateApiGateway(
         fileContent: serviceExampleJs(),
       },
     ]);
-
-    // Correr prettier
   } catch (err) {
     showError('An error has ocurred while creating the API Gateway');
   }

@@ -91,6 +91,8 @@ export const handler = async (argv: Arguments<Options>) => {
     // 3. Check in the cache which microservices haven't been created yet and filter them out
     showStart('to read the cache');
     let cache = await readJson('cache.json');
+    const cacheLength = Object.keys(cache).length;
+    let dockerPort = 3000 + cacheLength;
 
     const _microservices = microservices.filter(
       (m) => !Object.keys(cache).includes(m.name)
