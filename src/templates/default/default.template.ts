@@ -183,8 +183,7 @@ export async function initTypeScript(path: string) {
   await installPackage(path, '@types/prettier', '-D');
   await installPackage(path, '@types/node', '-D');
   await installPackage(path, 'tslib');
-  await installPackage(path, '@typescript-eslint/eslint-plugin', '-D');
-  await installPackage(path, '@typescript-eslint/parser', '-D');
+  await installPackage(path, '@typescript-eslint/eslint-plugin@4.28.5', '-D');
   await installPackage(path, 'eslint-plugin-import@2.23.4', '-D');
   await createFile(path, 'tsconfig.json', tsconfig());
 }

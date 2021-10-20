@@ -92,7 +92,7 @@ export const handler = async (argv: Arguments<Options>) => {
     showStart('to read the cache');
     let cache = await readJson('cache.json');
     const cacheLength = Object.keys(cache).length;
-    let dockerPort = 3000 + cacheLength;
+    let dockerPort = 3001 + cacheLength;
 
     const _microservices = microservices.filter(
       (m) => !Object.keys(cache).includes(m.name)
@@ -108,7 +108,9 @@ export const handler = async (argv: Arguments<Options>) => {
     // 4. Create the ones that are not in the cache
     for (const { framework, language, name, orm } of _microservices) {
       showGenerate(`${name} microservice`);
-      await createMicroservice(name, { language, orm, framework });
+      await createMicroservice(name, { language, orm, framework }, dockerPort);
+      dockerPort += 1;
+      console.log('Docker port', dockerPort);
 
       // 5. Once it have been created, append the new microservice to the cache
       cache = {
