@@ -44,6 +44,28 @@ export async function executePackage(
   }
 }
 
+export async function executePrisma(type: string, path: string) {
+  let res: any;
+  if (type === 'migrate') {
+    res = await execa('npx', ['prisma', 'migrate dev', '--name init'], {
+      cwd: process.cwd() + path,
+    });
+  } else {
+    res = await execa('prisma', ['generate'], {
+      cwd: process.cwd() + path,
+    });
+  }
+  if (res.failed) {
+    console.error(
+      `Failed to execute ${type === 'migrate' ? 'migrate' : 'generate'}`
+    );
+  } else {
+    console.log(
+      `${type === 'migrate' ? 'migrate' : 'generate'} executed correctly`
+    );
+  }
+}
+
 export async function formatFiles(path: string, typescript: boolean = false) {
   const res = await execa(
     'npx',
