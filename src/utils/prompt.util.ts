@@ -1,5 +1,11 @@
 import inquirer from 'inquirer';
 
+export type OptionsAnswer = {
+  language: string;
+  orm: string;
+  framework: string;
+};
+
 export async function promptForOptions() {
   const questions = [];
 
@@ -7,21 +13,21 @@ export async function promptForOptions() {
     type: 'list',
     name: 'language',
     message: 'Please choose which language would you like to use',
-    choices: ['JavaScript', 'TypeScript'],
+    choices: ['javascript', 'typescript'],
   });
 
   questions.push({
     type: 'list',
     name: 'orm',
     message: 'Please choose which orm to use',
-    choices: ['Mongoose', 'Sequelize', 'Prisma'],
+    choices: ['mongoose', 'prisma'],
   });
 
   questions.push({
     type: 'list',
     name: 'framework',
     message: 'Please choose a backend framework to use',
-    choices: ['Express', 'Fastify', 'Koa.js'],
+    choices: ['express', 'fastify', 'koa.js'],
   });
 
   const answers = await inquirer.prompt(questions);

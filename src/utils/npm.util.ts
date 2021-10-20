@@ -1,4 +1,5 @@
 import execa from 'execa';
+import { showError, showWarning } from './logger.util';
 
 export async function initPackageJson(path: string) {
   const res = await execa('npm', ['init', '-y'], {
@@ -24,5 +25,34 @@ export async function installPackage(
     console.error(`Failed to install ${packageName}`);
   } else {
     console.log(`Installed ${packageName}`);
+  }
+}
+
+export async function executePackage(
+  path: string,
+  // eslint-disable-next-line no-shadow
+  type: string,
+  options = ''
+) {
+  const res = await execa('npx', [type, options], {
+    cwd: process.cwd() + path,
+  });
+  if (res.failed) {
+    console.error(`Failed to execute ${type}`);
+  } else {
+    console.log(`${type} executed correctly`);
+  }
+}
+
+export async function formatFiles(path: string, typescript: boolean = false) {
+  const res = await execa(
+    'npx',
+    ['prettier', '--write', `**/*.{js,json${typescript ? ',ts' : ''}}`],
+    {
+      cwd: process.cwd() + path,
+    }
+  );
+  if (res.failed) {
+    showWarning('failed to format files');
   }
 }
