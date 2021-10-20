@@ -1,4 +1,4 @@
-export function dockerfile() {
+export function dockerfile(port: string = '3001') {
   return `
 # Install dependencies only when needed
 FROM node:16-alpine AS deps
@@ -29,7 +29,7 @@ COPY --from=builder /app/build ./build
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-EXPOSE 3001
+EXPOSE ${port}
 
 CMD ["npm", "start" ]
 
