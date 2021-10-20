@@ -66,7 +66,7 @@ export async function createMicroservice(
       {
         fileName: 'Dockerfile',
         filePath: `${path}`,
-        fileContent: dockerfile(3001),
+        fileContent: dockerfile(),
       },
       {
         fileName: '.dockerignore',
