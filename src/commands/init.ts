@@ -11,6 +11,7 @@ import {
   showWarning,
   showGenerate,
   showError,
+  showCreate,
 } from '../utils/logger.util';
 import { initGit } from '../utils/git.util';
 import {
@@ -77,9 +78,11 @@ export const handler = async (argv: Arguments<Options>) => {
   ]);
 
   // 5. Generate the api gateway
+  showGenerate('API Gateway');
   await generateApiGateway(`/${dirName}`, dirName ?? '');
 
   // 6. format the files
   await installPackage(`/${dirName}`, 'prettier');
   await formatFiles(`/${dirName}`);
+  showCreate('API Gateway');
 };

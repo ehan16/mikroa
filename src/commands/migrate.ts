@@ -9,7 +9,7 @@ export const desc =
 
 export const handler = async (): Promise<void> => {
   try {
-    const message = `Migrating!`;
+    const message = 'migration!';
     showStart(message);
 
     // 1. Read the microservice's config file

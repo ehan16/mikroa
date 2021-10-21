@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
-import { showCreate, showUpdate, showError } from '../../utils/logger.util';
+import { SingleBar } from 'cli-progress';
+import { showError } from '../../utils/logger.util';
 import { initPackageJson, installPackage } from '../../utils/npm.util';
 import {
   apiAdapterJs,
@@ -22,9 +23,7 @@ export function createFile(
 ): void {
   const filepath = `${process.cwd()}${filePath}/${fileName}`;
   fs.writeFile(filepath, fileContent, (error: Error) => {
-    if (!error && !fileAlreadyExists) return showCreate(fileName, filePath);
-    if (!error && fileAlreadyExists) return showUpdate(fileName, filePath);
-    return showError(error);
+    if (error) return showError(error);
   });
 }
 
@@ -40,7 +39,6 @@ export function createFiles(
   });
 }
 
-// creates a new file named `target` in case the file didn't exist
 export function copy(src: string, target: string) {
   fs.copy(process.cwd() + src, process.cwd() + target, (err: Error) => {
     if (err) return showError(err);
@@ -52,7 +50,6 @@ export async function createDirectory(path: string) {
   try {
     if (!fs.existsSync(dirPath)) {
       await fs.mkdir(dirPath, { recursive: true });
-      console.log(`File created at: ${dirPath}`);
     }
   } catch (err) {
     showError('An error has ocurred while creating the directory');
@@ -81,7 +78,6 @@ export async function readJson(fileName: string) {
   }
 }
 
-// ff the directory or file doesn't exist, it creates it
 export function outputJson(fileName: string, object: unknown) {
   fs.outputJson(`${process.cwd()}/${fileName}`, object, (err: Error) => {
     if (err) showError(err);
@@ -124,14 +120,27 @@ export async function generateApiGateway(
   filePath: string,
   name: string
 ): Promise<void> {
+  const progressBar = new SingleBar({
+    format: `API Gateway | {bar} | {percentage}% | {value}/{total}`,
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+    hideCursor: true,
+  });
+
+  progressBar.start(150, 0);
   const path = `${filePath}/api-gateway`;
+
   try {
     await createDirectory(path);
     await initPackageJson(path);
 
+    progressBar.update(10);
+
     await installPackage(path, 'express', '--save');
     await installPackage(path, 'body-parser', '--save');
     await installPackage(path, 'axios', '--save');
+
+    progressBar.update(54);
 
     await createDirectories([
       {
@@ -147,6 +156,8 @@ export async function generateApiGateway(
         path: `${path}/controllers`,
       },
     ]);
+
+    progressBar.update(87);
 
     await createFiles([
       {
@@ -170,7 +181,11 @@ export async function generateApiGateway(
         fileContent: serviceExampleJs(),
       },
     ]);
+
+    progressBar.update(150);
+    progressBar.stop();
   } catch (err) {
+    progressBar.stop();
     showError('An error has ocurred while creating the API Gateway');
   }
 }
