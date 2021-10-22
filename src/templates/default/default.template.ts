@@ -75,6 +75,7 @@ export async function readJson(fileName: string) {
     return object;
   } catch (err) {
     showError('The JSON file could not be read');
+    process.exit(1);
   }
 }
 

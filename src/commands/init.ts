@@ -12,6 +12,7 @@ import {
   showGenerate,
   showError,
   showCreate,
+  showSuccess,
 } from '../utils/logger.util';
 import { initGit } from '../utils/git.util';
 import {
@@ -85,4 +86,6 @@ export const handler = async (argv: Arguments<Options>) => {
   await installPackage(`/${dirName}`, 'prettier');
   await formatFiles(`/${dirName}`);
   showCreate('API Gateway');
+
+  showSuccess('The project has been successfully created');
 };
