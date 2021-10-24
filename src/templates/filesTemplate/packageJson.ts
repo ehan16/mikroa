@@ -31,7 +31,7 @@ export default function packageJson(
         orm === 'prisma'
           ? `
     "p:migrate:deploy": "npx prisma migrate deploy",
-    "p:generate": "prisma generate",
+    "p:generate": "npx prisma generate",
     "p:prisma": "npx prisma",
     "p:init": "npx prisma init",
     "p:migrate": "npx prisma migrate dev --name init",

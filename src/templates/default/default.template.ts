@@ -10,16 +10,10 @@ import {
 } from '../filesTemplate/apiGatewayFiles';
 import { tsconfig } from '../filesTemplate/basicSetup';
 
-// eslint-disable-next-line arrow-body-style
-export const directoryExists = (path: string): boolean => {
-  return fs.existsSync(process.cwd() + path);
-};
-
 export function createFile(
   filePath: string,
   fileName: string,
-  fileContent: string = '',
-  fileAlreadyExists = false
+  fileContent: string = ''
 ): void {
   const filepath = `${process.cwd()}${filePath}/${fileName}`;
   fs.writeFile(filepath, fileContent, (error: Error) => {
@@ -39,10 +33,9 @@ export function createFiles(
   });
 }
 
-export function copy(src: string, target: string) {
-  fs.copy(process.cwd() + src, process.cwd() + target, (err: Error) => {
-    if (err) return showError(err);
-  });
+export function directoryExist(path: string) {
+  const dirPath = `${process.cwd()}/${path}`;
+  return fs.existsSync(dirPath);
 }
 
 export async function createDirectory(path: string) {
@@ -59,13 +52,6 @@ export async function createDirectory(path: string) {
 export function createDirectories(directories: { path: string }[]) {
   directories?.forEach(async (directory) => {
     await createDirectory(directory?.path);
-  });
-}
-
-export function removeDirectory(path: string) {
-  const dirPath = process.cwd() + path;
-  fs.remove(dirPath, (err: Error) => {
-    if (err) return showError(`${path} couldn't be deleted, try again`);
   });
 }
 

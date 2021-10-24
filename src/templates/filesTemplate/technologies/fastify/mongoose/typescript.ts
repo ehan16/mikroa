@@ -24,7 +24,7 @@ export function fastifyMongooseServerTs() {
   import dotenv from 'dotenv';
   import app from './app';
 
-  dotenv.config({ path: './src/variables.env' });
+  dotenv.config({ path: './.env' });
 
 async function main() {
   mongoose

@@ -83,8 +83,8 @@ export async function createMicroservice(
         fileContent: dockerignore(),
       },
       {
-        fileName: 'variables.env',
-        filePath: `${path}/src`,
+        fileName: '.env',
+        filePath: `${path}`,
         fileContent: env(),
       },
       {
@@ -181,6 +181,7 @@ export async function createMicroservice(
         break;
       case 'prisma':
         await installPackage(path, 'prisma', '--save-dev');
+        await installPackage(path, '@prisma/client', '--save-dev');
         await executePackage(path, 'prisma', 'init');
 
         switch (framework) {

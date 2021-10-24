@@ -1,7 +1,7 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
 import {
-  directoryExists,
+  directoryExist,
   createDirectory,
   createFile,
   generateApiGateway,
@@ -63,7 +63,7 @@ export const handler = async (argv: Arguments<Options>) => {
   const answers = await inquirer.prompt(questions);
 
   if (answers.git) {
-    if (directoryExists(`/${dirName}/.git`)) {
+    if (directoryExist(`/${dirName}/.git`)) {
       showWarning('the git repository already exists');
     } else {
       showGenerate('git file');

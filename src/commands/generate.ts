@@ -36,6 +36,13 @@ export const handler = async (argv: Arguments<Options>) => {
 
   showTitle();
 
+  const multibar = new MultiBar({
+    format: ' {bar} | {microserviceName} | {value}/{total} ',
+    hideCursor: true,
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+  });
+
   try {
     const configFile = await readJson('config.json');
 
@@ -109,12 +116,6 @@ export const handler = async (argv: Arguments<Options>) => {
 
     // 4. Create the ones that are not in the cache
     showGenerate('microservices');
-    const multibar = new MultiBar({
-      format: ' {bar} | {microserviceName} | {value}/{total} ',
-      hideCursor: true,
-      barCompleteChar: '\u2588',
-      barIncompleteChar: '\u2591',
-    });
 
     // multibar.bars[0].update(20);
 
@@ -155,6 +156,7 @@ export const handler = async (argv: Arguments<Options>) => {
     multibar.stop();
     showSuccess('The microservices have been successfully created');
   } catch (e) {
+    multibar.stop();
     showError('An error has ocurred while creating the microservice');
     process.exit();
   }

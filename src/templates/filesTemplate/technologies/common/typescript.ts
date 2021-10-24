@@ -1,12 +1,11 @@
 export function mongooseServerTs() {
   return `
-    /* eslint-disable import/newline-after-import */
-    /* eslint-disable import/first */
     import dotenv from 'dotenv';
-    dotenv.config({ path: './src/variables.env' });
     import mongoose from 'mongoose';
     import app from './app';
     
+    dotenv.config({ path: './src/variables.env' });
+
     async function main() {
     mongoose
       .connect(String(process.env.DATABASE_URL), {
@@ -44,7 +43,7 @@ export function prismaServerTs() {
   import app from './app';
   import prisma from './prisma';
   
-  dotenv.config();
+  dotenv.config({ path: './.env' });
 
   async function start() {
     const PORT = Number(process.env.PORT) || 5000;
