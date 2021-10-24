@@ -14,10 +14,11 @@ export default function packageJson(
         ? `
     "dev": "npm run build:ts && npm run watch",
     "build": "npm run build:ts && npm run lint",
+    "clean": "rimraf ./dist/",
     "serve": "node dist/server.js",
     "watch:node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \\"[{name}]\\" -n \\"TypeScript,Node\\" -c   \\"cyan.bold,green.bold\\" \\"npm run watch:ts\\" \\"npm run watch:node\\"",
-    "build:ts": "tsc -b",
+    "build:ts": "npm run clean && tsc -b",
     "watch:ts": "tsc -w",
     "lint": "npm run build:ts && eslint \\"**/*.{js,ts}\\" --quiet --fix",
     `

@@ -117,6 +117,7 @@ export async function createMicroservice(
 
     bar.update(100);
 
+    await installPackage(path, 'rimraf', '-D');
     await installPackage(path, 'autoprefixer', '-D');
     await installPackage(path, 'eslint@7.32.0', '-D');
     await installPackage(path, 'eslint-config-avilatek@1.7.0', '-D');
