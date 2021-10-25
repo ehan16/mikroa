@@ -5,30 +5,34 @@ import {
   readJson,
   directoryExist,
 } from '../templates/default/default.template';
-import { showError, showStart, showWarning } from '../utils/logger.util';
+import {
+  showError,
+  showStart,
+  showSuccess,
+  showWarning,
+} from '../utils/logger.util';
 
 export const command = 'build';
-export const desc =
-  'Build a Mikroa project by generating the Docker containers';
+export const desc = 'Build a Mikroa project by generating the Docker images';
 
 export const builder: CommandBuilder = {};
 
 export const handler = async () => {
-  showStart('to generate Docker containers');
+  showStart('to build Docker images');
 
   const progressBar = new SingleBar({
-    format: `Build | {bar} | {percentage}% | {value}/{total}`,
+    format: `{microservice} | {bar} | {percentage}%`,
     barCompleteChar: '\u2588',
     barIncompleteChar: '\u2591',
     hideCursor: true,
   });
 
-  progressBar.start(50, 0);
+  // progressBar.start(50, 0);
 
   try {
     // 1. Read the configuration file to extract current microservices
     const configFile = await readJson('config.json');
-    progressBar.update(10);
+    // progressBar.update(10);
 
     // 2. Iterate over the microservices
     for (const [name, config] of Object.entries(configFile)) {
@@ -44,26 +48,36 @@ export const handler = async () => {
       }
 
       if (directoryExist(name)) {
+        showStart(`building ${name} image`);
+        progressBar.start(100, 60, { microservice: name });
         // 3. Execute the command in charge of compiling the code
         const res = await execa('docker', ['build', '.', '-t', `${name}`], {
           cwd: `${process.cwd()}/${name}`,
         });
 
+        // [host port]:[container port]
+        // -d is detach mode
+        // -p is publish
+        // docker run -d -p 3000:3000 <container-name>
+
+        progressBar.update(100);
+        progressBar.stop();
         if (res.failed) {
           showWarning(`failed to generate ${name} Docker container`);
+        } else {
+          showSuccess(`${name} image builded successfully`);
         }
       }
 
-      progressBar.increment(40 / Object.entries(configFile).length);
+      // progressBar.increment(40 / Object.entries(configFile).length);
     }
 
-    progressBar.update(50);
+    // progressBar.update(50);
+    // progressBar.stop();
+    showSuccess('Build was successful');
   } catch (err) {
-    console.error(err);
-    showError(
-      'an error has ocurred while building, please check the Dockerfile, path or dependencies'
-    );
-  } finally {
-    progressBar.stop();
+    // progressBar.stop();
+    showError((err as any).message);
+    process.exit(1);
   }
 };

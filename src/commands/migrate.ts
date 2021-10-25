@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SingleBar } from 'cli-progress';
 import {
   readJson,
   directoryExist,
 } from '../templates/default/default.template';
-import { showError, showStart } from '../utils/logger.util';
+import { showError, showStart, showSuccess } from '../utils/logger.util';
 import { executePrisma } from '../utils/npm.util';
 
 export const command = 'migrate';
@@ -12,22 +11,12 @@ export const desc =
   'Read the configuration file and migrate all the models to the database';
 
 export const handler = async (): Promise<void> => {
-  const progressBar = new SingleBar({
-    format: `Migration | {bar} | {percentage}% | {value}/{total}`,
-    barCompleteChar: '\u2588',
-    barIncompleteChar: '\u2591',
-    hideCursor: true,
-  });
-
   try {
-    const message = 'migration!';
+    const message = 'migrations';
     showStart(message);
-
-    progressBar.start(50, 0);
 
     // 1. Read the microservice's config file
     const configFile = await readJson('config.json');
-    progressBar.update(10);
 
     // 2. Execute the migrate command
     for (const [name, config] of Object.entries(configFile)) {
@@ -43,20 +32,17 @@ export const handler = async (): Promise<void> => {
       }
 
       if (orm === 'prisma' && directoryExist(name)) {
-        // showStart(`executing migration in ${name}`);
+        showStart(`executing migration in ${name}`);
         await executePrisma('migrate', `/${name}`);
+        showStart(`starting generation in ${name}`);
         await executePrisma('generate', `/${name}`);
-        // showSuccess(`${name} migration executed successfully`);
+        showSuccess(`${name} migration executed successfully`);
       }
-
-      progressBar.increment(40 / Object.entries(configFile).length);
     }
 
-    progressBar.update(50);
+    showSuccess('Migrations were successfully completed');
   } catch (err) {
     showError((err as any).message);
     process.exit(1);
-  } finally {
-    progressBar.stop();
   }
 };

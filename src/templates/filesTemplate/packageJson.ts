@@ -26,6 +26,7 @@ export default function packageJson(
     "dev": "npm run watch",
     "serve": "node src/server.js",
     "watch": "nodemon src/server.js",
+    "build": "",
     `
     }
       ${
