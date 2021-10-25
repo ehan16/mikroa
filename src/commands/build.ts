@@ -56,15 +56,10 @@ export const handler = async () => {
           }
         );
 
-        // [host port]:[container port]
-        // ? ports subject to change
-        const resRun = await execa(
-          'docker',
-          ['run', '-d', '-p', `3000`, `${name}`],
-          {
-            cwd: `${process.cwd()}/${name}`,
-          }
-        );
+        // [host port]:[container port] in case it has -p flag
+        const resRun = await execa('docker', ['run', '-d', `${name}`], {
+          cwd: `${process.cwd()}/${name}`,
+        });
 
         progressBar.update(100);
         progressBar.stop();
