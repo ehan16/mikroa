@@ -1,7 +1,7 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 import inquirer from 'inquirer';
 import {
-  directoryExists,
+  directoryExist,
   createDirectory,
   createFile,
   generateApiGateway,
@@ -11,6 +11,8 @@ import {
   showWarning,
   showGenerate,
   showError,
+  showCreate,
+  showSuccess,
 } from '../utils/logger.util';
 import { initGit } from '../utils/git.util';
 import {
@@ -61,7 +63,7 @@ export const handler = async (argv: Arguments<Options>) => {
   const answers = await inquirer.prompt(questions);
 
   if (answers.git) {
-    if (directoryExists(`/${dirName}/.git`)) {
+    if (directoryExist(`/${dirName}/.git`)) {
       showWarning('the git repository already exists');
     } else {
       showGenerate('git file');
@@ -77,9 +79,13 @@ export const handler = async (argv: Arguments<Options>) => {
   ]);
 
   // 5. Generate the api gateway
+  showGenerate('API Gateway');
   await generateApiGateway(`/${dirName}`, dirName ?? '');
 
   // 6. format the files
   await installPackage(`/${dirName}`, 'prettier');
   await formatFiles(`/${dirName}`);
+  showCreate('API Gateway');
+
+  showSuccess('The project has been successfully created');
 };

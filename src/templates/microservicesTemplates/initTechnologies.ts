@@ -51,6 +51,8 @@ export async function initMongooseKoa(language: string, path: string) {
   }
 }
 export async function initPrismaExpress(language: string, path: string) {
+  await installPackage(path, 'express');
+
   if (language === 'typescript') {
     await initPrismaTsExpress(path);
   } else {

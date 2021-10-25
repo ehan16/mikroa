@@ -56,7 +56,7 @@ export function prismaServerJs() {
   const dotenv = require('dotenv');
   const app = require('./app');
 
-dotenv.config();
+dotenv.config({ path: './.env' });
 
 async function start() {
   const PORT = Number(process.env.PORT) || 5000;

@@ -10,7 +10,7 @@
     "start": "npm run build && node build/index.js",
     "clean": "rimraf ./build/",
     "build": "npm run clean && tsc",
-    "test": "jasmine",
+    "test": "jest",
     "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\"",
     "publish-package": "npm run build && npm publish"
   },
@@ -32,9 +32,12 @@
     "access": "public"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@types/cli-progress": "^3.9.2",
     "@types/figlet": "^1.5.4",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^8.1.2",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.10.1",
     "@types/yargs": "^17.0.3",
     "autoprefixer": "^10.3.6",
@@ -42,12 +45,14 @@
     "eslint-config-avilatek": "^1.7.0",
     "eslint-config-avilatek-typescript": "^1.7.0",
     "eslint-config-prettier": "^8.3.0",
-    "jasmine": "^3.9.0",
+    "jest": "^27.3.1",
+    "jest-watch-typeahead": "^1.0.0",
     "prettier": "^2.4.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "clui": "^0.3.6",
+    "cli-progress": "^3.9.1",
     "esm": "^3.2.25",
     "execa": "^5.1.1",
     "figlet": "^1.5.2",

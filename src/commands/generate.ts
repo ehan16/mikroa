@@ -1,10 +1,12 @@
 import type { Arguments, CommandBuilder } from 'yargs';
+import { MultiBar } from 'cli-progress';
 import {
   showError,
   showGenerate,
   showTitle,
   showStart,
   showWarning,
+  showSuccess,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
 import { readJson, outputJson } from '../templates/default/default.template';
@@ -33,6 +35,13 @@ export const handler = async (argv: Arguments<Options>) => {
   const microservices = [];
 
   showTitle();
+
+  const multibar = new MultiBar({
+    format: ' {bar} | {microserviceName} | {value}/{total} ',
+    hideCursor: true,
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+  });
 
   try {
     const configFile = await readJson('config.json');
@@ -100,17 +109,27 @@ export const handler = async (argv: Arguments<Options>) => {
 
     if (_microservices?.length === 0) {
       showWarning(
-        'there is no new microservices to generate or you passed an already created microservice'
+        'there is no new microservices to generate or an already created microservice was passed'
       );
       process.exit();
     }
 
     // 4. Create the ones that are not in the cache
+    showGenerate('microservices');
+
+    // multibar.bars[0].update(20);
+
     for (const { framework, language, name, orm } of _microservices) {
-      showGenerate(`${name} microservice`);
-      await createMicroservice(name, { language, orm, framework }, dockerPort);
+      const bar = multibar.create(300, 0, { microserviceName: name });
+      await createMicroservice(
+        name,
+        { language, orm, framework },
+        dockerPort,
+        bar
+      );
       dockerPort += 1;
-      console.log('Docker port', dockerPort);
+
+      bar.update(289);
 
       // 5. Once it have been created, append the new microservice to the cache
       cache = {
@@ -122,8 +141,11 @@ export const handler = async (argv: Arguments<Options>) => {
         },
       };
 
+      bar.update(296);
+
       // 6. format all the files
       await formatFiles(`/${name}`, language === 'typescript');
+      bar.update(300);
     }
 
     // 7. Write the new cache file
@@ -131,7 +153,10 @@ export const handler = async (argv: Arguments<Options>) => {
 
     // 8. Format
     await formatFiles('');
+    multibar.stop();
+    showSuccess('The microservices have been successfully created');
   } catch (e) {
+    multibar.stop();
     showError('An error has ocurred while creating the microservice');
     process.exit();
   }

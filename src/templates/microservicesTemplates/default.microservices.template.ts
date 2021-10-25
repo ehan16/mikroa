@@ -1,3 +1,4 @@
+import { SingleBar } from 'cli-progress';
 import { showError } from '../../utils/logger.util';
 import { executePackage, installPackage } from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
@@ -31,14 +32,21 @@ import packageJson from '../filesTemplate/packageJson';
 export async function createMicroservice(
   microserviceName: string,
   answers: OptionsAnswer,
-  dockerPort: number
+  dockerPort: number,
+  bar: SingleBar
 ) {
   const path = `/${microserviceName}`;
   const { framework, language, orm } = answers;
   try {
     // create the microservice root folder and init the package.json
     await createDirectory(path);
-    await createFile(path, packageJson(microserviceName, language, orm));
+    await createFile(
+      path,
+      'package.json',
+      packageJson(microserviceName, language, orm)
+    );
+
+    bar.update(10);
 
     // create all the folders
     await createDirectories([
@@ -55,6 +63,8 @@ export async function createMicroservice(
         path: `${path}/src/routes`,
       },
     ]);
+
+    bar.update(34);
 
     await createFiles([
       {
@@ -73,8 +83,8 @@ export async function createMicroservice(
         fileContent: dockerignore(),
       },
       {
-        fileName: 'variables.env',
-        filePath: `${path}/src`,
+        fileName: '.env',
+        filePath: `${path}`,
         fileContent: env(),
       },
       {
@@ -99,9 +109,15 @@ export async function createMicroservice(
       },
     ]);
 
+    bar.update(70);
+
     // install base dependencies
     await installPackage(path, 'dotenv');
     await installPackage(path, 'prettier', '-D');
+
+    bar.update(100);
+
+    await installPackage(path, 'rimraf', '-D');
     await installPackage(path, 'autoprefixer', '-D');
     await installPackage(path, 'eslint@7.32.0', '-D');
     await installPackage(path, 'eslint-config-avilatek@1.7.0', '-D');
@@ -110,10 +126,15 @@ export async function createMicroservice(
       'eslint-config-avilatek-typescript@1.7.0',
       '--legacy-peer-deps'
     );
+
+    bar.update(139);
+
     await installPackage(path, 'eslint-config-prettier@8.3.0', '-D');
     await installPackage(path, 'eslint-plugin-prettier@3.4.0', '-D');
     await installPackage(path, 'nodemon', '-D');
     await installPackage(path, 'docker');
+
+    bar.update(170);
 
     // create the base files
     await createFiles([
@@ -123,6 +144,8 @@ export async function createMicroservice(
         fileContent: '{}',
       },
     ]);
+
+    bar.update(176);
 
     // install all the dependencies and create files according to the provided answers
     switch (language) {
@@ -135,6 +158,8 @@ export async function createMicroservice(
         showError('the selected language is not an option');
         process.exit();
     }
+
+    bar.update(194);
 
     switch (orm) {
       case 'mongoose':
@@ -157,6 +182,7 @@ export async function createMicroservice(
         break;
       case 'prisma':
         await installPackage(path, 'prisma', '--save-dev');
+        await installPackage(path, '@prisma/client', '--save-dev');
         await executePackage(path, 'prisma', 'init');
 
         switch (framework) {

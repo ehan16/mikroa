@@ -6,9 +6,7 @@ export async function initPackageJson(path: string) {
     cwd: process.cwd() + path,
   });
   if (res.failed) {
-    console.error('Failed to generate package.json');
-  } else {
-    console.log('Created package.json');
+    showError('failed to generate package.json');
   }
 }
 
@@ -22,9 +20,7 @@ export async function installPackage(
     cwd: process.cwd() + path,
   });
   if (res.failed) {
-    console.error(`Failed to install ${packageName}`);
-  } else {
-    console.log(`Installed ${packageName}`);
+    showError(`failed to install ${packageName}`);
   }
 }
 
@@ -38,30 +34,26 @@ export async function executePackage(
     cwd: process.cwd() + path,
   });
   if (res.failed) {
-    console.error(`Failed to execute ${type}`);
-  } else {
-    console.log(`${type} executed correctly`);
+    showError(`failed to execute ${type}`);
   }
 }
 
 export async function executePrisma(type: string, path: string) {
   let res: any;
   if (type === 'migrate') {
-    res = await execa('npx', ['prisma', 'migrate dev', '--name init'], {
+    res = await execa('npx', ['prisma', 'migrate', 'dev', '--name', 'init'], {
       cwd: process.cwd() + path,
     });
   } else {
-    res = await execa('prisma', ['generate'], {
+    res = await execa('npx', ['prisma', 'generate'], {
       cwd: process.cwd() + path,
     });
   }
   if (res.failed) {
-    console.error(
-      `Failed to execute ${type === 'migrate' ? 'migrate' : 'generate'}`
-    );
-  } else {
-    console.log(
-      `${type === 'migrate' ? 'migrate' : 'generate'} executed correctly`
+    showError(
+      `failed to execute ${
+        type === 'migrate' ? 'migrate' : 'generate'
+      } on path: ${process.cwd()}/${path}`
     );
   }
 }
