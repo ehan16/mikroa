@@ -27,12 +27,9 @@ export const handler = async () => {
     hideCursor: true,
   });
 
-  // progressBar.start(50, 0);
-
   try {
     // 1. Read the configuration file to extract current microservices
     const configFile = await readJson('config.json');
-    // progressBar.update(10);
 
     // 2. Iterate over the microservices
     for (const [name, config] of Object.entries(configFile)) {
@@ -51,32 +48,35 @@ export const handler = async () => {
         showStart(`building ${name} image`);
         progressBar.start(100, 60, { microservice: name });
         // 3. Execute the command in charge of compiling the code
-        const res = await execa('docker', ['build', '.', '-t', `${name}`], {
-          cwd: `${process.cwd()}/${name}`,
-        });
+        const resBuild = await execa(
+          'docker',
+          ['build', '.', '-t', `${name}`],
+          {
+            cwd: `${process.cwd()}/${name}`,
+          }
+        );
 
         // [host port]:[container port]
-        // -d is detach mode
-        // -p is publish
-        // docker run -d -p 3000:3000 <container-name>
+        // ? ports subject to change
+        const resRun = await execa(
+          'docker',
+          ['run', '-d', '-p', `3000`, `${name}`],
+          {
+            cwd: `${process.cwd()}/${name}`,
+          }
+        );
 
         progressBar.update(100);
         progressBar.stop();
-        if (res.failed) {
+        if (resBuild.failed || resRun) {
           showWarning(`failed to generate ${name} Docker container`);
         } else {
           showSuccess(`${name} image builded successfully`);
         }
       }
-
-      // progressBar.increment(40 / Object.entries(configFile).length);
     }
-
-    // progressBar.update(50);
-    // progressBar.stop();
     showSuccess('Build was successful');
   } catch (err) {
-    // progressBar.stop();
     showError((err as any).message);
     process.exit(1);
   }
