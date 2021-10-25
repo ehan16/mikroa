@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { SingleBar } from 'cli-progress';
 import {
   readJson,
   directoryExist,
@@ -14,6 +15,13 @@ export const handler = async (): Promise<void> => {
   try {
     const message = 'migrations';
     showStart(message);
+
+    const progressBar = new SingleBar({
+      format: `{microservice} | {bar} | {percentage}%`,
+      barCompleteChar: '\u2588',
+      barIncompleteChar: '\u2591',
+      hideCursor: true,
+    });
 
     // 1. Read the microservice's config file
     const configFile = await readJson('config.json');
@@ -32,10 +40,13 @@ export const handler = async (): Promise<void> => {
       }
 
       if (orm === 'prisma' && directoryExist(name)) {
-        showStart(`executing migration in ${name}`);
+        showStart(`execute migration in ${name}`);
+        progressBar.start(100, 30, { microservice: name });
         await executePrisma('migrate', `/${name}`);
-        showStart(`starting generation in ${name}`);
+        progressBar.update(60);
         await executePrisma('generate', `/${name}`);
+        progressBar.update(100);
+        progressBar.stop();
         showSuccess(`${name} migration executed successfully`);
       }
     }
