@@ -63,7 +63,7 @@ export const handler = async () => {
 
         progressBar.update(100);
         progressBar.stop();
-        if (resBuild.failed || resRun) {
+        if (resBuild.failed || resRun.failed) {
           showWarning(`failed to generate ${name} Docker container`);
         } else {
           showSuccess(`${name} image builded successfully`);
