@@ -7,8 +7,14 @@ import {
   indexJs,
   routerJs,
   serviceExampleJs,
+  initPackage,
 } from '../filesTemplate/apiGatewayFiles';
-import { tsconfig } from '../filesTemplate/basicSetup';
+import {
+  tsconfig,
+  env,
+  dockerfile,
+  dockerignore,
+} from '../filesTemplate/basicSetup';
 
 export function createFile(
   filePath: string,
@@ -119,13 +125,16 @@ export async function generateApiGateway(
 
   try {
     await createDirectory(path);
-    await initPackageJson(path);
+    await createFile(path, 'package.json', initPackage());
 
     progressBar.update(10);
 
     await installPackage(path, 'express', '--save');
     await installPackage(path, 'body-parser', '--save');
     await installPackage(path, 'axios', '--save');
+    await installPackage(path, 'dotenv', '--save');
+    await installPackage(path, 'nodemon', '-D');
+    await installPackage(path, 'docker');
 
     progressBar.update(54);
 
@@ -166,6 +175,26 @@ export async function generateApiGateway(
         fileName: 'serviceExample.js',
         filePath: `${path}/routers`,
         fileContent: serviceExampleJs(),
+      },
+      {
+        fileName: '.env',
+        filePath: path,
+        fileContent: env(),
+      },
+      {
+        fileName: '.dockerignore',
+        filePath: path,
+        fileContent: dockerignore(),
+      },
+      {
+        fileName: 'Dockerfile',
+        filePath: path,
+        fileContent: dockerfile('3000'),
+      },
+      {
+        fileName: '.dockerignore',
+        filePath: path,
+        fileContent: dockerignore(),
       },
     ]);
 

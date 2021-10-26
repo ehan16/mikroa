@@ -87,7 +87,9 @@ Cada microservicio debe seguir la siguiente estructura:
 
 ### `build`
 
-Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mikroa, se crean los contenedores respectivos de cada microservicio según el `.Dockerfile` correspondiente. En caso de poseer requerimientos extras, se recomienda modificar dicho archivo para adaptarse a sus necesidades
+Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mikroa, se crean las imágenes de los contenedores respectivos de cada microservicio según el `.Dockerfile` correspondiente. En caso de poseer requerimientos extras, se recomienda modificar dicho archivo para adaptarse a sus necesidades.
+
+Por otro lado, se genera el archivo `docker-compose.yml` para el posterior despliegue de los contenedores.
 
 ```shell
   mikroa build
