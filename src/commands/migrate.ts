@@ -44,9 +44,11 @@ export const handler = async (): Promise<void> => {
         progressBar.start(100, 30, { microservice: name });
         await executePrisma('migrate', `/${name}`);
         progressBar.update(60);
-        await executePrisma('generate', `/${name}`);
+        const generateRes = await executePrisma('generate', `/${name}`);
         progressBar.update(100);
         progressBar.stop();
+
+        console.log(generateRes || '');
         showSuccess(`${name} migration executed successfully`);
       }
     }

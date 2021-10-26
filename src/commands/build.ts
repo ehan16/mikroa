@@ -66,6 +66,7 @@ export const handler = async () => {
         if (resBuild.failed || resRun.failed) {
           showWarning(`failed to generate ${name} Docker container`);
         } else {
+          console.log(`${name} container ID: ${resRun.stdout}`);
           showSuccess(`${name} container started successfully`);
         }
       }

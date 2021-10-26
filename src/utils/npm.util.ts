@@ -39,7 +39,7 @@ export async function executePackage(
 }
 
 export async function executePrisma(type: string, path: string) {
-  let res: any;
+  let res: execa.ExecaReturnValue<string>;
   if (type === 'migrate') {
     res = await execa('npm', ['run', 'p:migrate:deploy'], {
       cwd: process.cwd() + path,
@@ -51,6 +51,7 @@ export async function executePrisma(type: string, path: string) {
   }
 
   if (res.failed) {
+    showError(res.stderr);
     showError(
       `failed to execute ${
         type === 'migrate' ? 'migrate' : 'generate'
@@ -59,6 +60,8 @@ export async function executePrisma(type: string, path: string) {
     showWarning(
       'Please check that p:migrate:deploy and p:generate scripts exist in package.json'
     );
+  } else {
+    return res.stdout;
   }
 }
 
