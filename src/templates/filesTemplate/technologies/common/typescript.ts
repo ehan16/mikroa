@@ -4,7 +4,7 @@ export function mongooseServerTs() {
     import mongoose from 'mongoose';
     import app from './app';
     
-    dotenv.config({ path: './src/variables.env' });
+    dotenv.config({ path: './.env' });
 
     async function main() {
     mongoose
