@@ -39,7 +39,7 @@ export async function executePackage(
 }
 
 export async function executePrisma(type: string, path: string) {
-  let res: any;
+  let res: execa.ExecaReturnValue<string>;
   if (type === 'migrate') {
     res = await execa('npx', ['prisma', 'migrate', 'dev', '--name', 'init'], {
       cwd: process.cwd() + path,
@@ -50,11 +50,14 @@ export async function executePrisma(type: string, path: string) {
     });
   }
   if (res.failed) {
+    showError(res.stderr);
     showError(
       `failed to execute ${
         type === 'migrate' ? 'migrate' : 'generate'
       } on path: ${process.cwd()}/${path}`
     );
+  } else {
+    return res.stdout;
   }
 }
 

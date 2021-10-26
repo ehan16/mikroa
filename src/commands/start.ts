@@ -15,23 +15,23 @@ type Options = {
   name: string | undefined;
 };
 
-export const command = 'start';
-export const desc = 'Start running all the microservices';
+export const command = 'start [microservice]';
+export const desc = 'Start running the microservices';
 
 export const builder: CommandBuilder<Options, Options> = (yargs) =>
   yargs.options({
-    name: { type: 'string' },
+    microservice: { type: 'string' },
   });
 
 export const handler = async (argv: Arguments<Options>) => {
-  const { name: microserviceName } = argv;
-  const message = `Starting all microservices!`;
+  const { microservice: microserviceName } = argv;
+  const message = `Starting microservices!`;
   console.log(message);
   try {
     // 1. Check if a microservice name was provided
     if (microserviceName) {
       // 2. If a microservice was provided execute the command in charge of compiling the code
-      if (directoryExist(microserviceName)) {
+      if (directoryExist(String(microserviceName))) {
         showStart(`starting ${microserviceName} execution`);
         const res = await execa('npm', ['run', 'dev'], {
           cwd: `${process.cwd()}/${microserviceName}`,
@@ -40,8 +40,10 @@ export const handler = async (argv: Arguments<Options>) => {
           showWarning(
             `failed to run ${microserviceName}, please check if the microservice name provided is correct`
           );
+          showError(res.stderr);
         } else {
           showSuccess(`${microserviceName} executed successfully`);
+          console.log(res.stdout);
         }
       }
     } else {
@@ -72,16 +74,19 @@ export const handler = async (argv: Arguments<Options>) => {
             });
             if (build.failed) {
               showWarning(`failed to run ${name}`);
+              showError(build.stderr);
             }
           }
+
           const res = await execa('npm', ['run', 'serve'], {
             cwd: `${process.cwd()}/${name}`,
           });
-          if (res.failed) {
-            showWarning(`failed to run ${name}`);
-          } else {
-            showSuccess(`${name} executed successfully`);
-          }
+
+          // if (res.failed) {
+          //   showWarning(`failed to run ${name}`);
+          // } else {
+          //   showSuccess(`${name} executed successfully`);
+          // }
         }
       }
 
