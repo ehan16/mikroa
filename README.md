@@ -108,7 +108,25 @@ El comando `mikroa migrate` se encarga de realizar la correspondiente migración
 En la carpeta `root` del proyecto, el comando `mikroa start` ejecuta todos los microservicios del proyecto Mikroa
 
 ```shell
-  mikroa start
+  mikroa start [microservice-name]
+```
+
+| Argument          | Description                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| microservice-name | El nombre del microservicio, el cual corresponde con el nombre de la carpeta. |
+
+#### Examples
+
+- Iniciar la ejecución de un único microservicio llamado `my-microservice`, el CLI identificará el servicio y ejecutará el comando respectivo:
+
+```shell
+mikroa start my-microservice
+```
+
+- Si omite el argumento, el CLI leerá el archivo de configuración ubicado en el `root` para iterar sobre todos los microservicios e iniciar su ejecución:
+
+```shell
+mikroa start
 ```
 
 ## Licencia
