@@ -95,11 +95,13 @@ Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mik
 
 ### `migrate`
 
-El comando `mikroa migrate` se encarga de leer todos los modelos que se encuentran en el archivo de configuración de cada microservicio, conocido como `config.json`, para su posterior migración a la base de datos
+El comando `mikroa migrate` se encarga de realizar la correspondiente migración de modelos a la base de datos según el ORM u ODM seleccionado por el usuario.
 
 ```shell
   mikroa migrate
 ```
+
+> Nota: En el caso de decidir utilizar Prisma con MongoDB, se deben realizar los cambios correspondientes para que dicho ORM funcione correctamente con la base de datos
 
 ### `start`
 
