@@ -42,9 +42,9 @@ export const handler = async (): Promise<void> => {
       if (orm === 'prisma' && directoryExist(name)) {
         showStart(`execute migration in ${name}`);
         progressBar.start(100, 30, { microservice: name });
-        await executePrisma('migrate', `/${name}`);
+        // await executePrisma('migrate', `/${name}`);
         progressBar.update(60);
-        await executePrisma('generate', `/${name}`);
+        // await executePrisma('generate', `/${name}`);
         progressBar.update(100);
         progressBar.stop();
         showSuccess(`${name} migration executed successfully`);
