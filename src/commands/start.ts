@@ -78,9 +78,13 @@ export const handler = async (argv: Arguments<Options>) => {
             }
           }
 
-          const res = await execa('npm', ['run', 'serve'], {
+          execa('npm', ['run', 'start'], {
             cwd: `${process.cwd()}/${name}`,
-          });
+          })
+            .then((res) => {
+              console.log(`${res?.stdout || ''} on ${name}`);
+            })
+            .catch((err) => showError(`${err?.stderr || ''} on ${name}`));
 
           // if (res.failed) {
           //   showWarning(`failed to run ${name}`);

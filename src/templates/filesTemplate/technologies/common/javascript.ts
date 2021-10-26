@@ -9,7 +9,7 @@ export function mongooseServerJs() {
     
     async function main() {
       mongoose
-        .connect(String(process.env.DATABASE), {
+        .connect(String(process.env.DATABASE_URL), {
           useNewUrlParser: true,
           useUnifiedTopology: true,
           useFindAndModify: false,
