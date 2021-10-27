@@ -13,7 +13,7 @@ export default function packageJson(
     ${
       language === 'typescript'
         ? `
-    "dev": "npm run build:ts && concurrently --kill-others \"npm run watch\"",
+    "dev": "npm run build:ts && npm run watch",
     "build": "npm run build:ts && npm run lint",
     "clean": "rimraf ./dist/",
     "serve": "node dist/server.js",
