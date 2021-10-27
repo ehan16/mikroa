@@ -125,7 +125,7 @@ En la carpeta `root` del proyecto, el comando `mikroa start` ejecuta todos los m
 mikroa start my-microservice
 ```
 
-- Si omite el argumento, el CLI leerá el archivo de configuración ubicado en el `root` para iterar sobre todos los microservicios e iniciar su ejecución:
+- Si omite el argumento, el CLI leerá el archivo de configuración ubicado en el `root` para iterar sobre todos los microservicios e iniciar su ejecución de manera concurrente:
 
 ```shell
 mikroa start

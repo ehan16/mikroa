@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 export default function packageJson(
   microserviceName: string,
   language: string,
