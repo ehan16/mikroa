@@ -23,21 +23,22 @@ export const handler = async () => {
   showStart('to build Docker images');
 
   const dockerCompose = [];
-  dockerCompose.push(`version: "1"
+  dockerCompose.push(`
+version: "1"
 
-  services:
-    api-gateway:
-      build:
-      context: ./api-gateway
-      image: api-gateway
-      container_name: api-gateway
-      env_file: ./api-gateway/.env
-      restart: unless-stopped
-      ports:
-        - '3000:3000'
-      mem_limit: 2g
-      memswap_limit: -1
-      mem_swappiness: 20`);
+services:
+  api-gateway:
+    build:
+    context: ./api-gateway
+    image: api-gateway
+    container_name: api-gateway
+    env_file: ./api-gateway/.env
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    mem_limit: 2g
+    memswap_limit: -1
+    mem_swappiness: 20`);
 
   const progressBar = new SingleBar({
     format: `{microservice} | {bar} | {percentage}%`,
@@ -48,7 +49,7 @@ export const handler = async () => {
 
   try {
     // 1. Build api gateway image
-    showStart(`building api-gateway image`);
+    showStart(`to build api-gateway image`);
     const apiBuild = await execa(
       'docker',
       ['build', '.', '-t', 'api-gateway'],
@@ -58,10 +59,9 @@ export const handler = async () => {
     );
 
     if (apiBuild.failed) {
-      showWarning('failed to generate api-gateway Docker container');
+      showWarning('failed to generate api-gateway Docker image');
     } else {
-      console.log(`api-gateway image: \n${apiBuild.stdout}`);
-      showSuccess('api-gateway container started successfully');
+      showSuccess('api-gateway image builded successfully');
     }
 
     // 2. Read the configuration file to extract current microservices
@@ -97,27 +97,26 @@ export const handler = async () => {
         progressBar.update(100);
         progressBar.stop();
         if (resBuild.failed) {
-          showWarning(`failed to generate ${name} Docker container`);
+          showWarning(`failed to generate ${name} Docker image`);
         } else {
           const microserviceCompose = `
-            ${name}:
-              build:
-                context: ./${name}
-              image: ${name}
-              container_name: ${name}
-              env_file: ./${name}/.env
-              depends_on:
-                - 'api-gateway'
-              restart: unless-stopped
-              ports:
-                - '3001:3001'
-              mem_limit: 2g
-              memswap_limit: -1
-              mem_swappiness: 20
+  ${name}:
+    build:
+      context: ./${name}
+    image: ${name}
+    container_name: ${name}
+    env_file: ./${name}/.env
+    depends_on:
+      - 'api-gateway'
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    mem_limit: 2g
+    memswap_limit: -1
+    mem_swappiness: 20
           `;
           dockerCompose.push(microserviceCompose);
-          console.log(`${name} image: \n${resBuild.stdout}`);
-          showSuccess(`${name} container started successfully`);
+          showSuccess(`${name} image builded successfully`);
         }
       }
     }

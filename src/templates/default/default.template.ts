@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import { SingleBar } from 'cli-progress';
 import { showError } from '../../utils/logger.util';
-import { initPackageJson, installPackage } from '../../utils/npm.util';
+import { installPackage } from '../../utils/npm.util';
 import {
   apiAdapterJs,
   indexJs,
@@ -14,6 +14,7 @@ import {
   env,
   dockerfile,
   dockerignore,
+  gitignore,
 } from '../filesTemplate/basicSetup';
 
 export function createFile(
@@ -195,6 +196,11 @@ export async function generateApiGateway(
         fileName: '.dockerignore',
         filePath: path,
         fileContent: dockerignore(),
+      },
+      {
+        fileName: '.gitignore',
+        filePath: path,
+        fileContent: gitignore(),
       },
     ]);
 
