@@ -77,8 +77,7 @@ export const handler = async (argv: Arguments<Options>) => {
               showError(build.stderr);
             }
           }
-
-          const res = await execa('npm', ['run', 'serve'], {
+          const res = await execa('npm', ['run', 'dev'], {
             cwd: `${process.cwd()}/${name}`,
           });
 
@@ -89,7 +88,6 @@ export const handler = async (argv: Arguments<Options>) => {
           // }
         }
       }
-
       showSuccess('All microservices are running!');
     }
   } catch (err) {

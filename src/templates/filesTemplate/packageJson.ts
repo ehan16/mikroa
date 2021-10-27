@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 export default function packageJson(
   microserviceName: string,
   language: string,
@@ -12,7 +13,7 @@ export default function packageJson(
     ${
       language === 'typescript'
         ? `
-    "dev": "npm run build:ts && npm run watch",
+    "dev": "npm run build:ts && concurrently \"npm run watch\"",
     "build": "npm run build:ts && npm run lint",
     "clean": "rimraf ./dist/",
     "serve": "node dist/server.js",
