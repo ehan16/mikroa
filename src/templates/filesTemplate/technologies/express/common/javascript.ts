@@ -10,7 +10,7 @@ export function expressAppJs() {
     app.set('port', Number(process.env.PORT) || 3000);
     app.use('/', routes);
     
-    exports.app = app;
+    module.exports = app;
         `;
 }
 

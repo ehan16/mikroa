@@ -33,6 +33,7 @@ export const handler = async (argv: Arguments<Options>) => {
   const { microservice } = argv;
   const microserviceName = microservice?.toLocaleLowerCase() ?? '';
   const microservices = [];
+  let prismaMicroservice = false;
 
   showTitle();
 
@@ -121,6 +122,8 @@ export const handler = async (argv: Arguments<Options>) => {
 
     for (const { framework, language, name, orm } of _microservices) {
       const bar = multibar.create(300, 0, { microserviceName: name });
+      if (orm === 'prisma') prismaMicroservice = true;
+
       await createMicroservice(
         name,
         { language, orm, framework },
@@ -155,6 +158,12 @@ export const handler = async (argv: Arguments<Options>) => {
     await formatFiles('');
     multibar.stop();
     showSuccess('The microservices have been successfully created');
+
+    if (prismaMicroservice) {
+      showWarning(
+        'For Prisma and MongoDB to work, Prisma Schema and Client have to be modified accordingly'
+      );
+    }
   } catch (e) {
     multibar.stop();
     showError('An error has ocurred while creating the microservice');

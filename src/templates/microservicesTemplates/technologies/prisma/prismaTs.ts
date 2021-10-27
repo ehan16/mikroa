@@ -11,6 +11,7 @@ import {
   prismaServerTs,
   koaAppTs,
   koaRoutesTs,
+  routesIndexTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initPrismaTsExpress(path: string) {
@@ -31,6 +32,11 @@ export async function initPrismaTsExpress(path: string) {
         fileName: `server.ts`,
         filePath: `${path}/src`,
         fileContent: prismaServerTs(),
+      },
+      {
+        fileName: 'index.ts',
+        filePath: `${path}/src/routes`,
+        fileContent: routesIndexTs(),
       },
     ]);
   } catch (err) {

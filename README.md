@@ -87,7 +87,9 @@ Cada microservicio debe seguir la siguiente estructura:
 
 ### `build`
 
-Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mikroa, se crean los contenedores respectivos de cada microservicio según el `.Dockerfile` correspondiente. En caso de poseer requerimientos extras, se recomienda modificar dicho archivo para adaptarse a sus necesidades
+Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mikroa, se crean las imágenes de los contenedores respectivos de cada microservicio según el `.Dockerfile` correspondiente. En caso de poseer requerimientos extras, se recomienda modificar dicho archivo para adaptarse a sus necesidades.
+
+Por otro lado, se genera el archivo `docker-compose.yml` para el posterior despliegue de los contenedores.
 
 ```shell
   mikroa build
@@ -95,18 +97,38 @@ Al ejecutarse el comando `mikroa build` en la carpeta `root` del proyecto de Mik
 
 ### `migrate`
 
-El comando `mikroa migrate` se encarga de leer todos los modelos que se encuentran en el archivo de configuración de cada microservicio, conocido como `config.json`, para su posterior migración a la base de datos
+El comando `mikroa migrate` se encarga de realizar la correspondiente migración de modelos a la base de datos según el ORM u ODM seleccionado por el usuario.
 
 ```shell
   mikroa migrate
 ```
+
+> Nota: En el caso de decidir utilizar Prisma con MongoDB, se deben realizar los cambios correspondientes para que dicho ORM funcione correctamente con la base de datos
 
 ### `start`
 
 En la carpeta `root` del proyecto, el comando `mikroa start` ejecuta todos los microservicios del proyecto Mikroa
 
 ```shell
-  mikroa start
+  mikroa start [microservice-name]
+```
+
+| Argument          | Description                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| microservice-name | El nombre del microservicio, el cual corresponde con el nombre de la carpeta. |
+
+#### Examples
+
+- Iniciar la ejecución de un único microservicio llamado `my-microservice`, el CLI identificará el servicio y ejecutará el comando respectivo:
+
+```shell
+mikroa start my-microservice
+```
+
+- Si omite el argumento, el CLI leerá el archivo de configuración ubicado en el `root` para iterar sobre todos los microservicios e iniciar su ejecución de manera concurrente:
+
+```shell
+mikroa start
 ```
 
 ## Licencia

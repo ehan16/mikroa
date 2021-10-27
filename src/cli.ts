@@ -25,6 +25,7 @@ yargs(hideBin(process.argv))
     "Read root's config file and generate new microservices"
   )
   .example('$0 start', 'Start running all the existing microservices')
+  .example('$0 start `my-microservice`', 'Start `my-microservice`')
   .example('$0 build', 'Generate the corresponding Docker images')
   .example(
     '$0 migrate',

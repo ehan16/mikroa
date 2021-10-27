@@ -5,11 +5,11 @@ export function mongooseServerJs() {
     const dotenv = require('dotenv');
     const app = require('./app');
   
-    dotenv.config({ path: './src/variables.env' });
+    dotenv.config({ path: './.env' });
     
     async function main() {
       mongoose
-        .connect(String(process.env.DATABASE), {
+        .connect(String(process.env.DATABASE_URL), {
           useNewUrlParser: true,
           useUnifiedTopology: true,
           useFindAndModify: false,
