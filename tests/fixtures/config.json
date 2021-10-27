@@ -1,0 +1,12 @@
+{
+  "emj-microservice": {
+    "language": "javascript",
+    "orm": "mongoose",
+    "framework": "express"
+  },
+  "epj-microservice": {
+    "language": "javascript",
+    "orm": "prisma",
+    "framework": "express"
+  }
+}

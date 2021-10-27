@@ -35,9 +35,9 @@ export function createFiles(
 
 export function directoryExist(path: string) {
   const dirPath = `${process.cwd()}/${path}`;
-  if(fs.existsSync(dirPath)) {
-    return true
-  } 
+  if (fs.existsSync(dirPath)) {
+    return true;
+  }
   return false;
 }
 
