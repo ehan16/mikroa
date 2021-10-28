@@ -62,11 +62,16 @@ main();
 
 export function fastifyMongooseExampleTs() {
   return `
-  const userRoutes = (fastify, options, done) => {
-    fastify.get('/', (req, reply) => {
+  const userRoutes = (
+    fastify: {
+      get: (arg0: string, arg1: (req: any, reply: any) => void) => void;
+    },
+    options: any,
+    done: any
+  ) => {
+    fastify.get('/', (req: any, reply: { send: (arg0: string) => void }) => {
       reply.send('Hello Mikroa');
     });
-    done();
   };
   
   export default userRoutes;

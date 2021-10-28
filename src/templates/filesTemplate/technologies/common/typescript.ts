@@ -41,18 +41,14 @@ export function prismaServerTs() {
   return `
   import dotenv from 'dotenv';
   import app from './app';
-  import prisma from './prisma';
+  import { prisma } from './prisma';
   
   dotenv.config({ path: './.env' });
 
   async function start() {
     const PORT = Number(process.env.PORT) || 5000;
   
-    app.listen(PORT, (err) => {
-      if (err) {
-        console.error(\`❌🤬 \${err}\`);
-        process.exit(1);
-      }
+    app.listen(PORT, () => {
       console.log(\`🚀 Server ready at http://localhost:\${PORT}\`);
     });
   }

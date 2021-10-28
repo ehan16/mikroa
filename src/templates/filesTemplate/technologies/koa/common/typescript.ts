@@ -15,11 +15,11 @@ export function koaAppTs() {
 
 export function koaRoutesTs() {
   return `
-      import * as Router from 'koa-router';
+      import Router from 'koa-router';
     
     const router = new Router();
     
-    router.get('/', async function (ctx) {
+    router.get('/', async function (ctx: { body: { message: string } }) {
       ctx.body = { message: 'New Mikroa microservice!' };
     });
     

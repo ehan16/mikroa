@@ -67,6 +67,10 @@ export async function initMongooseTsFastify(path: string) {
 export async function initMongooseTsKoa(path: string) {
   try {
     await installPackage(path, '@types/connect-mongo', '-D');
+    await installPackage(path, '@types/koa', '--save-dev');
+    await installPackage(path, '@types/koa-router', '--save-dev');
+    await installPackage(path, '@types/koa-bodyparser', '--save-dev');
+
     await createFiles([
       {
         fileName: 'app.ts',

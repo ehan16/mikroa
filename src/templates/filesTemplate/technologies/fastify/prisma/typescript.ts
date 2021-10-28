@@ -2,17 +2,13 @@ export function fastifyPrismaAppTs() {
   return `
   import { fastify } from 'fastify';
   import { router } from './routes';
+  import { prisma } from './prisma';
   
   const app = fastify({
     logger: true,
   });
   
   // app.register(router);
-  
-  app.get('/users', async (req, res) => {
-    const users = await prisma.user.findMany()
-    res.send(users)
-  })
   
   export default app;
   `;
@@ -40,7 +36,6 @@ export const router: FastifyPluginCallback = (
 
   fastify.addHook('onRequest', (req, res, next) => {
     console.log('onRequest');
-    req.user = null;
     next();
   });
 
