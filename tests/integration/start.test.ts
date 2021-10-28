@@ -19,7 +19,7 @@ const keys = {
   down: '\x1B\x5B\x42',
   enter: '\x0D',
   space: '\x20',
-  kill: '<EscChar> C',
+  kill: '\x03',
 };
 
 type Options = {
