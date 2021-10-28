@@ -1,6 +1,6 @@
 import { MockSTDIN, stdin } from 'mock-stdin';
 import fs from 'fs-extra';
-import { handler } from '../../src/commands/init';
+import { handler } from '../../src/commands/generate';
 
 // Key codes
 const keys = {
@@ -15,13 +15,16 @@ let io: MockSTDIN | null = null;
 beforeAll(() => (io = stdin()));
 afterAll(() => io?.restore());
 
-jest.setTimeout(50000);
+jest.setTimeout(20000);
 
-test('initialize a microservice project', async () => {
-  const argv = { _: ['init'], $0: 'mikroa', name: 'jest-project' };
+test('generate a new microservice', async () => {
+  const argv = {
+    _: ['generate'],
+    $0: 'mikroa',
+    microservice: 'new-microservice',
+  };
 
   const sendKeystrokes = async () => {
-    io?.send('y');
     io?.send(keys.enter);
   };
 
@@ -29,7 +32,9 @@ test('initialize a microservice project', async () => {
 
   await handler(argv);
 
-  const projectCreated = fs.existsSync(`${process.cwd()}/jest-project`);
+  const microserviceCreated = fs.existsSync(
+    `${process.cwd()}/new-microservice`
+  );
 
-  expect(projectCreated).toBeTruthy();
+  expect(microserviceCreated).toBeTruthy();
 });
