@@ -15,7 +15,7 @@ let io: MockSTDIN | null = null;
 beforeAll(() => (io = stdin()));
 afterAll(() => io?.restore());
 
-jest.setTimeout(20000);
+jest.setTimeout(50000);
 
 describe('Integration test: command init', () => {
   test('initialize a microservice project', async () => {
@@ -30,8 +30,7 @@ describe('Integration test: command init', () => {
 
     await handler(argv);
 
-    const projectCreated = fs.existsSync(`${process.cwd()}/test-project`);
-
+    const projectCreated = fs.existsSync(`${process.cwd()}/jest-project`);
     expect(projectCreated).toBeTruthy();
   });
 });
