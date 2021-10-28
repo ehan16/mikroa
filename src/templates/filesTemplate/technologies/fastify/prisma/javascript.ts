@@ -1,9 +1,9 @@
 export function fastifyPrismaAppJs() {
   return `
-  const fastify = require('fastify')({ logger: true });
+  const fastify = require('fastify');
 const { router } = require('./routes');
 
-const app = fastify();
+const app = fastify({ logger: true });
 
 app.register(router);
 

@@ -66,6 +66,7 @@ export function fastifyMongooseExampleTs() {
     fastify.get('/', (req, reply) => {
       reply.send('Hello Mikroa');
     });
+    done();
   };
   
   export default userRoutes;
