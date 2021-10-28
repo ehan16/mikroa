@@ -70,7 +70,8 @@ export async function readJson(fileName: string) {
 
 export function outputJson(fileName: string, object: unknown) {
   fs.outputJson(`${process.cwd()}/${fileName}`, object, (err: Error) => {
-    if (err) showError(err);
+    if (err)
+      showError(err);
   });
 }
 

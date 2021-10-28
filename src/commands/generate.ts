@@ -9,7 +9,7 @@ import {
   showSuccess,
 } from '../utils/logger.util';
 import { promptForOptions } from '../utils/prompt.util';
-import { readJson, outputJson } from '../templates/default/default.template';
+import { readJson, outputJsonAsync } from '../templates/default/default.template';
 import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.template';
 import { formatFiles } from '../utils/npm.util';
 
@@ -78,7 +78,7 @@ export const handler = async (argv: Arguments<Options>) => {
         },
       };
 
-      await outputJson('config.json', newConfig);
+      await outputJsonAsync('config.json', newConfig);
     } else {
       // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
       showStart('to read the configuration file');
@@ -152,7 +152,7 @@ export const handler = async (argv: Arguments<Options>) => {
     }
 
     // 7. Write the new cache file
-    await outputJson('cache.json', cache);
+    await outputJsonAsync('cache.json', cache);
 
     // 8. Format
     await formatFiles('');
