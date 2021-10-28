@@ -5,6 +5,7 @@ import {
   createFile,
   createFiles,
   directoryExist,
+  outputJsonAsync,
   readJson,
 } from '../../src/templates/default/default.template';
 
@@ -24,8 +25,8 @@ describe('Testing the createFile function', () => {
     createFile('/tests/fixtures', 'fileName', 'This is an update');
 
     expect(mockWriteFile).toHaveBeenCalled();
-    expect(fileExist).toBeTruthy();
     mockWriteFile.mockRestore();
+    expect(fileExist).toBeTruthy();
   });
 });
 
@@ -83,6 +84,35 @@ describe('Testing createDirectory function', () => {
     createDirectory('/path');
     expect(mockMkdir).not.toHaveBeenCalled();
     mockMkdir?.mockRestore();
+  });
+});
+
+// outputJsonAsync function
+describe('Testing outputJson function', () => {
+  const mockOutputJson = jest.spyOn(fs, 'outputJson');
+  const cache = {
+    'microservice-outputJson-test': {
+      language: 'typescript',
+      orm: 'prisma',
+      framework: 'express',
+    },
+  };
+  it('should write over a provided json file', async () => {
+    await outputJsonAsync('tests/fixtures/cache.json', cache);
+    expect(mockOutputJson).toHaveBeenCalled();
+    mockOutputJson.mockRestore();
+  });
+
+  it('should console error when invalid path is provided', async () => {
+    const mockConsole = jest
+      .spyOn(console, 'error')
+      .mockImplementation((message?: any) => {});
+
+    await outputJsonAsync('', cache);
+
+    expect(mockConsole).toHaveBeenCalled();
+    mockConsole.mockRestore();
+    mockOutputJson.mockRestore();
   });
 });
 
