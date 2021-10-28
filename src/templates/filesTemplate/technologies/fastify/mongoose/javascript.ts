@@ -1,9 +1,9 @@
 export function fastifyMongooseAppJs() {
   return `
-  const fastify = require('fastify')({ logger: true });
+  const fastify = require('fastify');
   const users = require('./routes/users');
 
-  const app = fastify();
+  const app = fastify({ logger: true });
   
   app.register(users);
   
@@ -17,6 +17,7 @@ export function fastifyMongooseExampleJs() {
     fastify.get('/', (req, reply) => {
       reply.send('Hello Mikroa');
     });
+    done();
   };
   
   module.exports = userRoutes;
