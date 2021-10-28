@@ -18,19 +18,19 @@ afterAll(() => io?.restore());
 // helper function for timing
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-jest.setTimeout(50000);
+jest.setTimeout(100000);
 
 describe('Integration test: command init', () => {
   test('initialize a microservice project', async () => {
     const argv = { _: ['init'], $0: 'mikroa', name: 'jest-project' };
 
     const sendKeystrokes = async () => {
-      io?.send('y');
-      await delay(5);
+      io?.send('Y');
+      await delay(10);
       io?.send(keys.enter);
     };
 
-    setTimeout(() => sendKeystrokes().then(), 5);
+    setTimeout(() => sendKeystrokes().then(), 30);
 
     await handler(argv);
 
