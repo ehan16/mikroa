@@ -7,7 +7,7 @@ export function fastifyPrismaAppTs() {
     logger: true,
   });
   
-  app.register(router);
+  // app.register(router);
   
   app.get('/users', async (req, res) => {
     const users = await prisma.user.findMany()

@@ -5,7 +5,7 @@ const { router } = require('./routes');
 
 const app = fastify({ logger: true });
 
-app.register(router);
+// app.register(router);
 
 module.exports = app;
   `;
