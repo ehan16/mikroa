@@ -165,28 +165,30 @@ const generate = async (argv: Arguments<Options>) => {
 // helper function for timing
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-test('generate a new microservice', async () => {
-  const argv = {
-    _: ['generate'],
-    $0: 'mikroa',
-    microservice: 'new-microservice',
-  };
+describe('Integration test: command generate', () => {
+  test('generate a new microservice', async () => {
+    const argv = {
+      _: ['generate'],
+      $0: 'mikroa',
+      microservice: 'new-microservice',
+    };
 
-  const sendKeystrokes = async () => {
-    io?.send(keys.enter);
-    await delay(10);
-    io?.send(keys.enter);
-    await delay(10);
-    io?.send(keys.enter);
-  };
+    const sendKeystrokes = async () => {
+      io?.send(keys.enter);
+      await delay(10);
+      io?.send(keys.enter);
+      await delay(10);
+      io?.send(keys.enter);
+    };
 
-  setTimeout(() => sendKeystrokes().then(), 30);
+    setTimeout(() => sendKeystrokes().then(), 30);
 
-  await generate(argv);
+    await generate(argv);
 
-  const microserviceCreated = fs.existsSync(
-    `${process.cwd()}/new-microservice`
-  );
+    const microserviceCreated = fs.existsSync(
+      `${process.cwd()}/new-microservice`
+    );
 
-  expect(microserviceCreated).toBeTruthy();
+    expect(microserviceCreated).toBeTruthy();
+  });
 });

@@ -2,25 +2,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Arguments } from 'yargs';
 import { MockSTDIN, stdin } from 'mock-stdin';
+import concurrently from 'concurrently';
 import execa from 'execa';
 import {
   directoryExist,
   readJson,
 } from '../../src/templates/default/default.template';
-import {
-  showStart,
-  showWarning,
-  showError,
-  showSuccess,
-} from '../../src/utils/logger.util';
-
-const keys = {
-  up: '\x1B\x5B\x41',
-  down: '\x1B\x5B\x42',
-  enter: '\x0D',
-  space: '\x20',
-  kill: '\x03',
-};
+import { showStart, showError, showSuccess } from '../../src/utils/logger.util';
 
 type Options = {
   microservice: string | undefined;
@@ -31,7 +19,7 @@ let io: MockSTDIN | null = null;
 beforeAll(() => (io = stdin()));
 afterAll(() => io?.restore());
 
-jest.setTimeout(30000);
+jest.setTimeout(100000);
 
 const start = async (argv: Arguments<Options>) => {
   const { microservice: microserviceName } = argv;
@@ -54,8 +42,6 @@ const start = async (argv: Arguments<Options>) => {
       const configFile = await readJson('test-project/config.json');
       const npmToRun: string[] = [];
 
-      showStart(`to build the command for execution`);
-
       for (const [name, config] of Object.entries(configFile)) {
         const { language, orm, framework } = config as {
           language: string;
@@ -74,21 +60,26 @@ const start = async (argv: Arguments<Options>) => {
       }
 
       showSuccess(`starting to run all microservices`);
-      const res = await execa(
-        'npx',
-        ['concurrently', '--kill-others', ...npmToRun],
-        {
-          cwd: `${process.cwd()}/test-project`,
+
+      concurrently(npmToRun, {
+        prefix: 'name',
+        killOthers: ['failure', 'success'],
+        restartTries: 3,
+        cwd: `${process.cwd()}/test-project`,
+      }).then(
+        function onSuccess(exitInfo) {
+          // This code is necessary to make sure the parent terminates
+          // when the application is closed successfully.
+          console.log('Success');
+          process.exit();
+        },
+        function onFailure(exitInfo) {
+          // This code is necessary to make sure the parent terminates
+          // when the application is closed because of a failure.
+          console.error('Error');
+          process.exit(1);
         }
       );
-
-      if (res.failed) {
-        showError(
-          `failed to run the microservices, please check if the script <npm run dev> exists or the configurations files are correct`
-        );
-      } else {
-        showSuccess('All microservices are running!');
-      }
     }
   } catch (err) {
     console.error(err);
@@ -98,12 +89,13 @@ const start = async (argv: Arguments<Options>) => {
 };
 
 describe('Integration test: command start', () => {
+  // const mockExit = jest
+  //   .spyOn(process, 'exit')
+  //   .mockImplementation((code?: number) => undefined as never);
+
   const mockConsole = jest
-    .spyOn(console, 'error')
+    .spyOn(console, 'log')
     .mockImplementation((message?: any) => {});
-  const mockExit = jest
-    .spyOn(process, 'exit')
-    .mockImplementation((code?: number) => undefined as never);
 
   test('running all microservices have to be successful', async () => {
     const _argv = {
@@ -111,16 +103,19 @@ describe('Integration test: command start', () => {
       $0: 'mikroa',
     } as Arguments<Options>;
 
-    const sendKeystrokes = async () => {
-      io?.send(keys.kill);
-    };
+    // setTimeout(() => process.exit(0), 60000);
+    // setTimeout(function () {
+    //   console.log('Exiting...');
+    //   // process.kill(process.pid, 'SIGHUP');
+    //   process.exit(0);
+    // }, 10000);
 
-    setTimeout(() => process.kill, 10);
     await start(_argv);
 
-    expect(mockConsole).not.toHaveBeenCalled();
-    // expect(mockExit).toHaveBeenCalled();
+    // expect(mockExit).toBeCalled();
     // mockExit.mockRestore();
+
+    expect(mockConsole).toHaveBeenCalled();
     mockConsole.mockRestore();
   });
 });

@@ -54,6 +54,7 @@
     "jest-watch-typeahead": "^1.0.0",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.7",
     "typescript": "^4.4.3"
   },
   "dependencies": {
@@ -65,9 +66,9 @@
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.5",
     "kleur": "^4.1.4",
+    "mock-stdin": "^1.0.0",
     "ncp": "^2.0.0",
     "simple-git": "^2.46.0",
-    "yargs": "^17.2.1",
-    "mock-stdin": "^1.0.0"
+    "yargs": "^17.2.1"
   }
 }
