@@ -15,6 +15,9 @@ let io: MockSTDIN | null = null;
 beforeAll(() => (io = stdin()));
 afterAll(() => io?.restore());
 
+// helper function for timing
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 jest.setTimeout(50000);
 
 describe('Integration test: command init', () => {
@@ -23,6 +26,7 @@ describe('Integration test: command init', () => {
 
     const sendKeystrokes = async () => {
       io?.send('y');
+      await delay(5);
       io?.send(keys.enter);
     };
 

@@ -66,7 +66,7 @@ services:
         process.exit(1);
       }
 
-      if (directoryExist(name)) {
+      if (directoryExist(`test-project/${name}`)) {
         const resBuild = await execa(
           'docker',
           ['build', '.', '-t', `${name}`],
