@@ -7,6 +7,9 @@
 
 # testing
 /coverage
+/tests/fixtures
+/test-project
+/jest-project
 
 # next.js
 /.next/

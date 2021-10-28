@@ -1,38 +1,43 @@
-import type { Arguments, CommandBuilder } from 'yargs';
+import { MockSTDIN, stdin } from 'mock-stdin';
+import fs from 'fs-extra';
 import { MultiBar } from 'cli-progress';
+import { Arguments } from 'yargs';
+import {
+  outputJsonAsync,
+  readJson,
+} from '../../src/templates/default/default.template';
 import {
   showError,
   showGenerate,
-  showTitle,
   showStart,
-  showWarning,
   showSuccess,
-} from '../utils/logger.util';
-import { promptForOptions } from '../utils/prompt.util';
-import {
-  readJson,
-  outputJsonAsync,
-} from '../templates/default/default.template';
-import { createMicroservice } from '../templates/microservicesTemplates/default.microservices.template';
-import { formatFiles } from '../utils/npm.util';
+  showTitle,
+  showWarning,
+} from '../../src/utils/logger.util';
+import { createMicroservice } from '../../src/templates/microservicesTemplates/default.microservices.template';
+import { formatFiles } from '../../src/utils/npm.util';
+import { promptForOptions } from '../../src/utils/prompt.util';
+
+// Key codes
+const keys = {
+  up: '\x1B\x5B\x41',
+  down: '\x1B\x5B\x42',
+  enter: '\x0D',
+  space: '\x20',
+};
+
+// Mock stdin so we can send messages to the CLI
+let io: MockSTDIN | null = null;
+beforeAll(() => (io = stdin()));
+afterAll(() => io?.restore());
+
+jest.setTimeout(1000000);
 
 type Options = {
   microservice: string | undefined;
 };
 
-export const command = 'generate [microservice]';
-export const desc = 'Create a new microservice';
-export const aliases: string[] = ['gen'];
-
-export const builder: CommandBuilder<Options, Options> = (yargs) =>
-  yargs.options({
-    microservice: {
-      type: 'string',
-      describe: 'Generate a new microservice [microservice]',
-    },
-  });
-
-export const handler = async (argv: Arguments<Options>) => {
+const generate = async (argv: Arguments<Options>) => {
   const { microservice } = argv;
   const microserviceName = microservice?.toLocaleLowerCase() ?? '';
   const microservices = [];
@@ -48,7 +53,7 @@ export const handler = async (argv: Arguments<Options>) => {
   });
 
   try {
-    const configFile = await readJson('config.json');
+    const configFile = await readJson('test-project/config.json');
 
     // 1. Check if microservice name was provided
     if (microserviceName) {
@@ -82,28 +87,10 @@ export const handler = async (argv: Arguments<Options>) => {
       };
 
       await outputJsonAsync('config.json', newConfig);
-    } else {
-      // 2. If not, then read root's config file with all the microservices config, push the object into the microservices array
-      showStart('to read the configuration file');
-      for (const [name, config] of Object.entries(configFile)) {
-        const { language, orm, framework } = config as {
-          language: string;
-          orm: string;
-          framework: string;
-        };
-
-        microservices.push({
-          name,
-          language,
-          orm,
-          framework,
-        });
-      }
     }
-
     // 3. Check in the cache which microservices haven't been created yet and filter them out
     showStart('to read the cache');
-    let cache = await readJson('cache.json');
+    let cache = await readJson('test-project/cache.json');
     const cacheLength = Object.keys(cache).length;
     let dockerPort = 3001 + cacheLength;
 
@@ -115,7 +102,7 @@ export const handler = async (argv: Arguments<Options>) => {
       showWarning(
         'there is no new microservices to generate or an already created microservice was passed'
       );
-      process.exit();
+      process.exit(1);
     }
 
     // 4. Create the ones that are not in the cache
@@ -155,10 +142,10 @@ export const handler = async (argv: Arguments<Options>) => {
     }
 
     // 7. Write the new cache file
-    await outputJsonAsync('cache.json', cache);
+    await outputJsonAsync('test-project/cache.json', cache);
 
     // 8. Format
-    await formatFiles('');
+    await formatFiles('/new-microservice');
     multibar.stop();
     showSuccess('The microservices have been successfully created');
 
@@ -169,7 +156,39 @@ export const handler = async (argv: Arguments<Options>) => {
     }
   } catch (e) {
     multibar.stop();
+    console.log(e);
     showError('An error has ocurred while creating the microservice');
-    process.exit();
+    process.exit(1);
   }
 };
+
+// helper function for timing
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+describe('Integration test: command generate', () => {
+  test('generate a new microservice', async () => {
+    const argv = {
+      _: ['generate'],
+      $0: 'mikroa',
+      microservice: 'new-microservice',
+    };
+
+    const sendKeystrokes = async () => {
+      io?.send(keys.enter);
+      await delay(10);
+      io?.send(keys.enter);
+      await delay(10);
+      io?.send(keys.enter);
+    };
+
+    setTimeout(() => sendKeystrokes().then(), 30);
+
+    await generate(argv);
+
+    const microserviceCreated = fs.existsSync(
+      `${process.cwd()}/new-microservice`
+    );
+
+    expect(microserviceCreated).toBeTruthy();
+  });
+});

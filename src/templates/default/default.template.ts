@@ -42,7 +42,10 @@ export function createFiles(
 
 export function directoryExist(path: string) {
   const dirPath = `${process.cwd()}/${path}`;
-  return fs.existsSync(dirPath);
+  if (fs.existsSync(dirPath)) {
+    return true;
+  }
+  return false;
 }
 
 export async function createDirectory(path: string) {
