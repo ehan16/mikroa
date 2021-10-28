@@ -2,7 +2,6 @@ import { MockSTDIN, stdin } from 'mock-stdin';
 import fs from 'fs-extra';
 import { MultiBar } from 'cli-progress';
 import { Arguments } from 'yargs';
-import { handler } from '../../src/commands/generate';
 import {
   outputJsonAsync,
   readJson,
