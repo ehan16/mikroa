@@ -26,6 +26,8 @@ test('generate a new microservice', async () => {
 
   const sendKeystrokes = async () => {
     io?.send(keys.enter);
+    io?.send(keys.enter);
+    io?.send(keys.enter);
   };
 
   setTimeout(() => sendKeystrokes().then(), 5);
