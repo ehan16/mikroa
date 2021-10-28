@@ -19,7 +19,7 @@ describe('Testing the createFile function', () => {
 
   it('should overwrite an already existing file', () => {
     const mockWriteFile = jest.spyOn(fs, 'writeFile');
-    const fileExist = fs.existsSync(`${process.cwd()}/__mocks__/fileName`);
+    const fileExist = fs.existsSync(`${process.cwd()}/tests/fixtures/fileName`);
 
     createFile('/tests/fixtures', 'fileName', 'This is an update');
 
