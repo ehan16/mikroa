@@ -1,10 +1,34 @@
+export function initPackage() {
+  return `
+  {
+    "name": "api-gateway",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dev": "npm run watch",
+      "serve": "node index.js",
+      "watch": "nodemon index.js",
+      "start": "npm run serve",
+      "format": "prettier --write \\"**/*.{js,json}\\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
+  `;
+}
+
 // index.js content
 export function indexJs(name: string) {
   return `
     const express = require('express');
-    const app = express();
-    const router = require('./routers/router');
+    const dotenv = require('dotenv');
     const bodyParser = require('body-parser');
+    const router = require('./routers/router');
+
+    dotenv.config({ path: './.env' });
+    const app = express();
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));

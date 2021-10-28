@@ -84,6 +84,7 @@ export const handler = async (argv: Arguments<Options>) => {
 
   // 6. format the files
   await installPackage(`/${dirName}`, 'prettier');
+  await installPackage(`/${dirName}`, 'concurrently');
   await formatFiles(`/${dirName}`);
   showCreate('API Gateway');
 

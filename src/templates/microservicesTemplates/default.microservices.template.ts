@@ -133,6 +133,7 @@ export async function createMicroservice(
     await installPackage(path, 'eslint-plugin-prettier@3.4.0', '-D');
     await installPackage(path, 'nodemon', '-D');
     await installPackage(path, 'docker');
+    await installPackage(path, 'concurrently', '--save');
 
     bar.update(170);
 

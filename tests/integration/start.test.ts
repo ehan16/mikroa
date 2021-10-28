@@ -37,23 +37,24 @@ const start = async (argv: Arguments<Options>) => {
   const { microservice: microserviceName } = argv;
   try {
     if (microserviceName) {
-      if (directoryExist(`test-project/${String(microserviceName)}`)) {
+      if (directoryExist(String(microserviceName))) {
         showStart(`starting ${microserviceName} execution`);
         const res = await execa('npm', ['run', 'dev'], {
           cwd: `${process.cwd()}/test-project/${microserviceName}`,
         });
         if (res.failed) {
-          showWarning(
-            `failed to run ${microserviceName}, please check if the microservice name provided is correct`
+          showError(
+            `failed to run ${microserviceName}, please check if the microservice name provided is correct and the script <npm run dev> exists`
           );
-          showError(res.stderr);
         } else {
           showSuccess(`${microserviceName} executed successfully`);
-          console.log(res.stdout);
         }
       }
     } else {
       const configFile = await readJson('test-project/config.json');
+      const npmToRun: string[] = [];
+
+      showStart(`to build the command for execution`);
 
       for (const [name, config] of Object.entries(configFile)) {
         const { language, orm, framework } = config as {
@@ -68,31 +69,31 @@ const start = async (argv: Arguments<Options>) => {
         }
 
         if (directoryExist(name)) {
-          showStart(`starting ${name} execution`);
-          if (language === 'typescript') {
-            const build = await execa('npm', ['run', 'build'], {
-              cwd: `${process.cwd()}/test-project/${name}`,
-            });
-            if (build.failed) {
-              showWarning(`failed to run ${name}`);
-              showError(build.stderr);
-            }
-          }
-
-          execa('npm', ['run', 'start'], {
-            cwd: `${process.cwd()}/test-project/${name}`,
-          })
-            .then((res) => {
-              console.log(`${res?.stdout || ''} on ${name}`);
-            })
-            .catch((err) => showError(`${err?.stderr || ''} on ${name}`));
+          npmToRun.push(`"npm run dev --prefix ./${name}"`);
         }
       }
-      showSuccess('All microservices are running!');
+
+      showSuccess(`starting to run all microservices`);
+      const res = await execa(
+        'npx',
+        ['concurrently', '--kill-others', ...npmToRun],
+        {
+          cwd: `${process.cwd()}/test-project`,
+        }
+      );
+
+      if (res.failed) {
+        showError(
+          `failed to run the microservices, please check if the script <npm run dev> exists or the configurations files are correct`
+        );
+      } else {
+        showSuccess('All microservices are running!');
+      }
     }
   } catch (err) {
     console.error(err);
     showError((err as any).message);
+    process.exit(1);
   }
 };
 
@@ -101,7 +102,7 @@ describe('Integration test: command start', () => {
     .spyOn(console, 'error')
     .mockImplementation((message?: any) => {});
 
-  test('running all microservices', async () => {
+  test('running all microservices have to be successful', async () => {
     const _argv = {
       _: ['start'],
       $0: 'mikroa',

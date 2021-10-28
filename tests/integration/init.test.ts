@@ -17,19 +17,21 @@ afterAll(() => io?.restore());
 
 jest.setTimeout(20000);
 
-test('initialize a microservice project', async () => {
-  const argv = { _: ['init'], $0: 'mikroa', name: 'jest-project' };
+describe('Integration test: command init', () => {
+  test('initialize a microservice project', async () => {
+    const argv = { _: ['init'], $0: 'mikroa', name: 'jest-project' };
 
-  const sendKeystrokes = async () => {
-    io?.send('y');
-    io?.send(keys.enter);
-  };
+    const sendKeystrokes = async () => {
+      io?.send('y');
+      io?.send(keys.enter);
+    };
 
-  setTimeout(() => sendKeystrokes().then(), 5);
+    setTimeout(() => sendKeystrokes().then(), 5);
 
-  await handler(argv);
+    await handler(argv);
 
-  const projectCreated = fs.existsSync(`${process.cwd()}/test-project`);
+    const projectCreated = fs.existsSync(`${process.cwd()}/test-project`);
 
-  expect(projectCreated).toBeTruthy();
+    expect(projectCreated).toBeTruthy();
+  });
 });

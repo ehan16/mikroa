@@ -4,9 +4,11 @@ import { SingleBar } from 'cli-progress';
 import {
   readJson,
   directoryExist,
+  createFile,
 } from '../templates/default/default.template';
 import {
   showError,
+  showGenerate,
   showStart,
   showSuccess,
   showWarning,
@@ -20,6 +22,24 @@ export const builder: CommandBuilder = {};
 export const handler = async () => {
   showStart('to build Docker images');
 
+  const dockerCompose = [];
+  dockerCompose.push(`
+version: "1"
+
+services:
+  api-gateway:
+    build:
+    context: ./api-gateway
+    image: api-gateway
+    container_name: api-gateway
+    env_file: ./api-gateway/.env
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    mem_limit: 2g
+    memswap_limit: -1
+    mem_swappiness: 20`);
+
   const progressBar = new SingleBar({
     format: `{microservice} | {bar} | {percentage}%`,
     barCompleteChar: '\u2588',
@@ -28,10 +48,26 @@ export const handler = async () => {
   });
 
   try {
-    // 1. Read the configuration file to extract current microservices
+    // 1. Build api gateway image
+    showStart(`to build api-gateway image`);
+    const apiBuild = await execa(
+      'docker',
+      ['build', '.', '-t', 'api-gateway'],
+      {
+        cwd: `${process.cwd()}/api-gateway`,
+      }
+    );
+
+    if (apiBuild.failed) {
+      showWarning('failed to generate api-gateway Docker image');
+    } else {
+      showSuccess('api-gateway image builded successfully');
+    }
+
+    // 2. Read the configuration file to extract current microservices
     const configFile = await readJson('config.json');
 
-    // 2. Iterate over the microservices
+    // 3. Iterate over the microservices
     for (const [name, config] of Object.entries(configFile)) {
       const { language, orm, framework } = config as {
         language: string;
@@ -47,7 +83,7 @@ export const handler = async () => {
       if (directoryExist(name)) {
         showStart(`building ${name} image`);
         progressBar.start(100, 60, { microservice: name });
-        // 3. Execute the command in charge of compiling the code
+        // 4. Execute the command in charge of compiling the code
         const resBuild = await execa(
           'docker',
           ['build', '.', '-t', `${name}`],
@@ -56,22 +92,39 @@ export const handler = async () => {
           }
         );
 
-        // [host port]:[container port] in case it has -p flag
-        const resRun = await execa('docker', ['run', '-d', `${name}`], {
-          cwd: `${process.cwd()}/${name}`,
-        });
+        // 5. Add the new microservice to the docker-compose
 
         progressBar.update(100);
         progressBar.stop();
-        if (resBuild.failed || resRun.failed) {
-          showWarning(`failed to generate ${name} Docker container`);
+        if (resBuild.failed) {
+          showWarning(`failed to generate ${name} Docker image`);
         } else {
-          console.log(`${name} container ID: ${resRun.stdout}`);
-          showSuccess(`${name} container started successfully`);
+          const microserviceCompose = `
+  ${name}:
+    build:
+      context: ./${name}
+    image: ${name}
+    container_name: ${name}
+    env_file: ./${name}/.env
+    depends_on:
+      - 'api-gateway'
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    mem_limit: 2g
+    memswap_limit: -1
+    mem_swappiness: 20
+          `;
+          dockerCompose.push(microserviceCompose);
+          showSuccess(`${name} image builded successfully`);
         }
       }
     }
-    showSuccess('Build was successful');
+
+    // 6. Create docker-compose
+    showGenerate('docker-compose');
+    await createFile('', 'docker-compose.yml', dockerCompose.join('\n'));
+    showSuccess('Build was successful and docker-composer has been generated');
   } catch (err) {
     showError((err as any).message);
     process.exit(1);
