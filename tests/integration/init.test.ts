@@ -19,7 +19,7 @@ jest.setTimeout(50000);
 
 describe('Integration test: command init', () => {
   test('initialize a microservice project', async () => {
-    const argv = { _: ['init'], $0: 'mikroa', name: 'jest-project' };
+    const argv = { _: ['init'], $0: 'mikroa', name: 'test-project' };
 
     const sendKeystrokes = async () => {
       io?.send('y');
@@ -30,7 +30,7 @@ describe('Integration test: command init', () => {
 
     await handler(argv);
 
-    const projectCreated = fs.existsSync(`${process.cwd()}/jest-project`);
+    const projectCreated = fs.existsSync(`${process.cwd()}/test-project`);
     expect(projectCreated).toBeTruthy();
   });
 });
