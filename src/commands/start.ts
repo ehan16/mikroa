@@ -12,7 +12,7 @@ import {
 } from '../utils/logger.util';
 
 type Options = {
-  name: string | undefined;
+  microservice: string | undefined;
 };
 
 export const command = 'start [microservice]';

@@ -10,7 +10,7 @@
     "start": "npm run build && node build/index.js",
     "clean": "rimraf ./build/",
     "build": "npm run clean && tsc",
-    "test": "jest",
+    "test": "jest --silent",
     "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\"",
     "publish-package": "npm run build && npm publish"
   },
@@ -51,7 +51,6 @@
     "eslint-config-prettier": "^8.3.0",
     "jest": "^27.3.1",
     "jest-watch-typeahead": "^1.0.0",
-    "mock-stdin": "^1.0.0",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
@@ -67,6 +66,7 @@
     "kleur": "^4.1.4",
     "ncp": "^2.0.0",
     "simple-git": "^2.46.0",
-    "yargs": "^17.2.1"
+    "yargs": "^17.2.1",
+    "mock-stdin": "^1.0.0"
   }
 }
