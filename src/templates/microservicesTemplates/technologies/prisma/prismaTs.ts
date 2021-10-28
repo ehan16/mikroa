@@ -12,6 +12,7 @@ import {
   koaAppTs,
   koaRoutesTs,
   routesIndexTs,
+  prismaKoaPrismaTs,
 } from '../../../filesTemplate/technologies';
 
 export async function initPrismaTsExpress(path: string) {
@@ -81,6 +82,10 @@ export async function initPrismaTsFastify(path: string) {
 }
 
 export async function initPrismaTsKoa(path: string) {
+  await installPackage(path, '@types/koa', '--save-dev');
+  await installPackage(path, '@types/koa-router', '--save-dev');
+  await installPackage(path, '@types/koa-bodyparser', '--save-dev');
+
   try {
     await createFiles([
       {
@@ -97,6 +102,11 @@ export async function initPrismaTsKoa(path: string) {
         fileName: 'index.ts',
         filePath: `${path}/src/routes`,
         fileContent: koaRoutesTs(),
+      },
+      {
+        fileName: `prisma.ts`,
+        filePath: `${path}/src`,
+        fileContent: prismaKoaPrismaTs(),
       },
     ]);
   } catch (err) {
