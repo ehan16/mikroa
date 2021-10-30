@@ -6,21 +6,34 @@ export async function initPackageJson(path: string) {
     cwd: process.cwd() + path,
   });
   if (res.failed) {
-    showError('failed to generate package.json');
+    showWarning('failed to generate package.json');
   }
 }
 
+// npm install --save --package-lock-only --no-package-lock <package>
 export async function installPackage(
   path: string,
   packageName: string,
-  // eslint-disable-next-line no-shadow
-  options = ''
+  install: boolean = true,
+  options: string[] = []
 ) {
-  const res = await execa('npm', ['install', packageName, options], {
-    cwd: process.cwd() + path,
-  });
+  const res = await execa(
+    'npm',
+    [
+      'install',
+      '--save',
+      '--legacy-peer-deps',
+      install ? '' : '--package-lock-only',
+      install ? '' : '--no-package-lock',
+      packageName,
+      ...options,
+    ],
+    {
+      cwd: process.cwd() + path,
+    }
+  );
   if (res.failed) {
-    showError(`failed to install ${packageName}`);
+    showWarning(`failed to install ${packageName}`);
   }
 }
 
@@ -34,7 +47,7 @@ export async function executePackage(
     cwd: process.cwd() + path,
   });
   if (res.failed) {
-    showError(`failed to execute ${type}`);
+    showWarning(`failed to execute ${type}`);
   }
 }
 

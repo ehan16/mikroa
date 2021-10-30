@@ -1,5 +1,5 @@
 import { SingleBar } from 'cli-progress';
-import { showError } from '../../utils/logger.util';
+import { showError, showWarning } from '../../utils/logger.util';
 import { executePackage, installPackage } from '../../utils/npm.util';
 import { OptionsAnswer } from '../../utils/prompt.util';
 import {
@@ -33,10 +33,12 @@ export async function createMicroservice(
   microserviceName: string,
   answers: OptionsAnswer,
   dockerPort: number,
-  bar: SingleBar
+  bar: SingleBar,
+  dependencies: boolean = true
 ) {
   const path = `/${microserviceName}`;
   const { framework, language, orm } = answers;
+
   try {
     // create the microservice root folder and init the package.json
     await createDirectory(path);
@@ -95,7 +97,7 @@ export async function createMicroservice(
       {
         fileName: '.eslintrc.js',
         filePath: `${path}`,
-        fileContent: eslintrcjs(),
+        fileContent: eslintrcjs(language),
       },
       {
         fileName: '.prettierrc',
@@ -112,28 +114,29 @@ export async function createMicroservice(
     bar.update(70);
 
     // install base dependencies
-    await installPackage(path, 'dotenv');
-    await installPackage(path, 'prettier', '-D');
+    await installPackage(path, 'dotenv', dependencies);
+    await installPackage(path, 'prettier@^2.4.1', dependencies, ['-D']);
 
     bar.update(100);
 
-    await installPackage(path, 'rimraf', '-D');
-    await installPackage(path, 'autoprefixer', '-D');
-    await installPackage(path, 'eslint@7.32.0', '-D');
-    await installPackage(path, 'eslint-config-avilatek@1.7.0', '-D');
-    await installPackage(
-      path,
-      'eslint-config-avilatek-typescript@1.7.0',
-      '--legacy-peer-deps'
-    );
+    await installPackage(path, 'rimraf', dependencies, ['-D']);
+    await installPackage(path, 'autoprefixer', dependencies, ['-D']);
+    await installPackage(path, 'eslint@^7.5.0', dependencies, ['-D']);
+    await installPackage(path, 'eslint-config-avilatek@^1.7.0', dependencies, [
+      '-D',
+    ]);
 
     bar.update(139);
 
-    await installPackage(path, 'eslint-config-prettier@8.3.0', '-D');
-    await installPackage(path, 'eslint-plugin-prettier@3.4.0', '-D');
-    await installPackage(path, 'nodemon', '-D');
-    await installPackage(path, 'docker');
-    await installPackage(path, 'concurrently', '--save');
+    await installPackage(path, 'eslint-config-prettier@^8.3.0', dependencies, [
+      '-D',
+    ]);
+    await installPackage(path, 'eslint-plugin-prettier@^4.0.0', dependencies, [
+      '-D',
+    ]);
+    await installPackage(path, 'nodemon', dependencies, ['-D']);
+    await installPackage(path, 'docker', dependencies);
+    await installPackage(path, 'concurrently', dependencies);
 
     bar.update(170);
 
@@ -151,62 +154,62 @@ export async function createMicroservice(
     // install all the dependencies and create files according to the provided answers
     switch (language) {
       case 'typescript':
-        await initTypeScript(path);
+        await initTypeScript(path, dependencies);
         break;
       case 'javascript':
         break;
       default:
         showError('the selected language is not an option');
-        process.exit();
+        process.exit(1);
     }
 
     bar.update(194);
 
     switch (orm) {
       case 'mongoose':
-        await installPackage(path, 'mongoose@^5.13.3');
+        await installPackage(path, 'mongoose@^5.13.3', dependencies);
 
         switch (framework) {
           case 'express':
-            await initMongooseExpress(language, path);
+            await initMongooseExpress(language, path, dependencies);
             break;
           case 'fastify':
-            await initMongooseFastify(language, path);
+            await initMongooseFastify(language, path, dependencies);
             break;
           case 'koa.js':
-            await initMongooseKoa(language, path);
+            await initMongooseKoa(language, path, dependencies);
             break;
           default:
             showError('the selected orm is not an option');
-            process.exit();
+            process.exit(1);
         }
         break;
       case 'prisma':
-        await installPackage(path, 'prisma', '--save-dev');
-        await installPackage(path, '@prisma/client', '--save-dev');
+        await installPackage(path, 'prisma', dependencies, ['-D']);
+        await installPackage(path, '@prisma/client', dependencies, ['-D']);
         await executePackage(path, 'prisma', 'init');
 
         switch (framework) {
           case 'express':
-            await initPrismaExpress(language, path);
+            await initPrismaExpress(language, path, dependencies);
             break;
           case 'fastify':
-            await initPrismaFastify(language, path);
+            await initPrismaFastify(language, path, dependencies);
             break;
           case 'koa.js':
-            await initPrismaKoa(language, path);
+            await initPrismaKoa(language, path, dependencies);
             break;
           default:
             showError('the selected orm is not an option');
-            process.exit();
+            process.exit(1);
         }
         break;
       default:
         showError('the selected orm is not an option');
-        process.exit();
+        process.exit(1);
     }
   } catch (err) {
     console.error(err);
-    showError('An error has ocurred while creating the microservice');
+    showWarning('An error has ocurred while creating the microservice');
   }
 }

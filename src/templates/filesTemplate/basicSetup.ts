@@ -108,10 +108,10 @@ coverage/*
   `;
 }
 
-export function eslintrcjs() {
+export function eslintrcjs(language: string = 'javascript') {
   return `
 module.exports = {
-  extends: ['avilatek-typescript'],
+  extends: ['avilatek${language === 'javascript' ? '' : '-typescript'}'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-use-before-define': 'off',

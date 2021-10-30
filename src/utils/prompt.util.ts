@@ -33,3 +33,17 @@ export async function promptForOptions() {
   const answers = await inquirer.prompt(questions);
   return answers;
 }
+
+export async function promptForDependencies() {
+  const questions = [];
+
+  questions.push({
+    type: 'confirm',
+    name: 'dependencies',
+    message: 'Install all the dependencies?',
+    default: true,
+  });
+
+  const answers = await inquirer.prompt(questions);
+  return answers as { dependencies: boolean };
+}

@@ -11,10 +11,10 @@ import {
   routesIndexTs,
 } from '../../../filesTemplate/technologies';
 
-export async function initMongooseTsExpress(path: string) {
+export async function initMongooseTsExpress(path: string, install: boolean) {
   try {
-    await installPackage(path, '@types/express');
-    await installPackage(path, '@types/connect-mongo', '-D');
+    await installPackage(path, '@types/express', install);
+    await installPackage(path, '@types/connect-mongo', install, ['-D']);
     await createFiles([
       {
         fileName: 'app.ts',
@@ -39,9 +39,9 @@ export async function initMongooseTsExpress(path: string) {
   }
 }
 
-export async function initMongooseTsFastify(path: string) {
+export async function initMongooseTsFastify(path: string, install: boolean) {
   try {
-    await installPackage(path, '@types/connect-mongo', '-D');
+    await installPackage(path, '@types/connect-mongo', install, ['-D']);
     await createFiles([
       {
         fileName: 'app.ts',
@@ -64,12 +64,12 @@ export async function initMongooseTsFastify(path: string) {
   }
 }
 
-export async function initMongooseTsKoa(path: string) {
+export async function initMongooseTsKoa(path: string, install: boolean) {
   try {
-    await installPackage(path, '@types/connect-mongo', '-D');
-    await installPackage(path, '@types/koa', '--save-dev');
-    await installPackage(path, '@types/koa-router', '--save-dev');
-    await installPackage(path, '@types/koa-bodyparser', '--save-dev');
+    await installPackage(path, '@types/connect-mongo', install, ['-D']);
+    await installPackage(path, '@types/koa', install, ['-D']);
+    await installPackage(path, '@types/koa-router', install, ['-D']);
+    await installPackage(path, '@types/koa-bodyparser', install, ['-D']);
 
     await createFiles([
       {
