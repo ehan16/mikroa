@@ -3,8 +3,15 @@ type ObjectProperty = {
     | string
     | number
     | boolean
-    | { [key: string]: string | number | boolean };
+    | { [key: string]: string | number | boolean }
+    | { [key: string]: string | number | boolean }[];
 };
+
+// Possibles properties
+// type: no string
+// default: string | number | boolean
+// ref: string
+// trim: boolean
 
 export function mongooseJsModel(
   name: string,
