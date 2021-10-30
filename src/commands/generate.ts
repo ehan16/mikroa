@@ -8,7 +8,7 @@ import {
   showWarning,
   showSuccess,
 } from '../utils/logger.util';
-import { promptForOptions } from '../utils/prompt.util';
+import { promptForDependencies, promptForOptions } from '../utils/prompt.util';
 import {
   readJson,
   outputJsonAsync,
@@ -49,6 +49,7 @@ export const handler = async (argv: Arguments<Options>) => {
 
   try {
     const configFile = await readJson('config.json');
+    const { dependencies } = await promptForDependencies();
 
     // 1. Check if microservice name was provided
     if (microserviceName) {
@@ -93,10 +94,10 @@ export const handler = async (argv: Arguments<Options>) => {
         };
 
         microservices.push({
-          name,
-          language,
-          orm,
-          framework,
+          name: name.toLowerCase(),
+          language: language.toLowerCase(),
+          orm: orm.toLowerCase(),
+          framework: framework.toLowerCase(),
         });
       }
     }
@@ -131,7 +132,8 @@ export const handler = async (argv: Arguments<Options>) => {
         name,
         { language, orm, framework },
         dockerPort,
-        bar
+        bar,
+        dependencies
       );
       dockerPort += 1;
 
@@ -170,6 +172,5 @@ export const handler = async (argv: Arguments<Options>) => {
   } catch (e) {
     multibar.stop();
     showError('An error has ocurred while creating the microservice');
-    process.exit();
   }
 };

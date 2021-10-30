@@ -133,11 +133,11 @@ export async function generateApiGateway(
 
     progressBar.update(10);
 
-    await installPackage(path, 'express', '--save');
-    await installPackage(path, 'body-parser', '--save');
-    await installPackage(path, 'axios', '--save');
-    await installPackage(path, 'dotenv', '--save');
-    await installPackage(path, 'nodemon', '-D');
+    await installPackage(path, 'express');
+    await installPackage(path, 'body-parser');
+    await installPackage(path, 'axios');
+    await installPackage(path, 'dotenv');
+    await installPackage(path, 'nodemon', true, ['-D']);
     await installPackage(path, 'docker');
 
     progressBar.update(54);
@@ -215,15 +215,29 @@ export async function generateApiGateway(
   }
 }
 
-export async function initTypeScript(path: string) {
-  await installPackage(path, 'typescript', '-D');
-  await installPackage(path, 'ts-node', '-D');
-  await installPackage(path, '@types/dotenv', '-D');
-  await installPackage(path, '@types/eslint', '-D');
-  await installPackage(path, '@types/prettier', '-D');
-  await installPackage(path, '@types/node', '-D');
-  await installPackage(path, 'tslib');
-  await installPackage(path, '@typescript-eslint/eslint-plugin@4.28.5', '-D');
-  await installPackage(path, 'eslint-plugin-import@2.23.4', '-D');
+export async function initTypeScript(path: string, install: boolean) {
+  await installPackage(path, 'typescript', install, ['-D']);
+  await installPackage(path, 'ts-node', install, ['-D']);
+  await installPackage(path, '@types/dotenv', install, ['-D']);
+  await installPackage(path, '@types/eslint', install, ['-D']);
+  await installPackage(path, '@types/prettier', install, ['-D']);
+  await installPackage(path, '@types/node', install, ['-D']);
+  await installPackage(path, 'tslib', install);
+  await installPackage(
+    path,
+    '@typescript-eslint/eslint-plugin@^5.1.0',
+    install,
+    ['-D']
+  );
+  await installPackage(path, '@typescript-eslint/parser@^5.1.0', install, [
+    '-D',
+  ]);
+  await installPackage(path, 'eslint-plugin-import@^2.25.2', install, ['-D']);
+  await installPackage(
+    path,
+    'eslint-config-avilatek-typescript@^1.7.0',
+    install,
+    ['-D']
+  );
   await createFile(path, 'tsconfig.json', tsconfig());
 }

@@ -15,9 +15,9 @@ import {
   prismaKoaPrismaTs,
 } from '../../../filesTemplate/technologies';
 
-export async function initPrismaTsExpress(path: string) {
+export async function initPrismaTsExpress(path: string, install: boolean) {
   try {
-    await installPackage(path, '@types/express');
+    await installPackage(path, '@types/express', install);
     await createFiles([
       {
         fileName: 'app.ts',
@@ -81,10 +81,10 @@ export async function initPrismaTsFastify(path: string) {
   }
 }
 
-export async function initPrismaTsKoa(path: string) {
-  await installPackage(path, '@types/koa', '--save-dev');
-  await installPackage(path, '@types/koa-router', '--save-dev');
-  await installPackage(path, '@types/koa-bodyparser', '--save-dev');
+export async function initPrismaTsKoa(path: string, install: boolean) {
+  await installPackage(path, '@types/koa', install, ['-D']);
+  await installPackage(path, '@types/koa-router', install, ['-D']);
+  await installPackage(path, '@types/koa-bodyparser', install, ['-D']);
 
   try {
     await createFiles([
