@@ -50,7 +50,7 @@ export const handler = async (): Promise<void> => {
       if (directoryExist(name)) {
         showStart(`to execute migrations in ${name}`);
 
-        if (orm === 'prisma') {
+        if (orm.toLocaleLowerCase() === 'prisma') {
           progressBar.start(100, 0, { microservice: name });
           // iterate models here
 
@@ -61,8 +61,9 @@ export const handler = async (): Promise<void> => {
 
           progressBar.update(100);
           progressBar.stop();
-        } else {
-          // mongoose
+        }
+
+        if (orm.toLocaleLowerCase() === 'mongoose') {
           for (const [model, attributes] of Object.entries(modelsConfig)) {
             let modelFile = '';
             progressBar.start(100, 30, { microservice: name });
