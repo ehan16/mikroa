@@ -41,7 +41,7 @@ mikroa init my-project
 
 ### `generate`
 
-Se debe ejectutar en el carpeta `root` del proyecto para poder crear nuevos microservicios
+Se debe ejecutar en el carpeta `root` del proyecto para poder crear nuevos microservicios
 
 ```shell
   mikroa generate [microservice-name]
