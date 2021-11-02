@@ -103,6 +103,33 @@ El comando `mikroa migrate` se encarga de realizar la correspondiente migración
   mikroa migrate
 ```
 
+#### Examples
+
+- En el caso de haber seleccionado el ODM `mongoose`, debe especificar en el archivo `config.json` del microservicio los modelos a crear, cada uno debe seguir la siguiente estructura para poder generar el archivo de cada modelo:
+
+```json:title=config.json
+{
+  "User": {
+    "name": "String",
+    "email": {
+      "type": "String",
+      "required": true,
+    },
+    "age": {
+      "type": "Number",
+      "default": 0,
+    },
+    "address": [
+      {
+        "type": "String",
+      },
+    ]
+  }
+}
+```
+
+- En el caso de haber seleccionado el ORM `prisma`, los modelos deben ser especificados directamente en el archivo `schema.prisma`, siguiendo la sintaxis de Prisma. Posteriormente, Mikroa se hará cargo de realizar las migraciones correspondientes a la base de datos seleccionada
+
 > Nota: En el caso de decidir utilizar Prisma con MongoDB, se deben realizar los cambios correspondientes para que dicho ORM funcione correctamente con la base de datos
 
 ### `start`
@@ -113,8 +140,8 @@ En la carpeta `root` del proyecto, el comando `mikroa start` ejecuta todos los m
   mikroa start [microservice-name]
 ```
 
-| Argument          | Description                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------- |
+| Argument          | Description                                                                   |
+| ----------------- | ----------------------------------------------------------------------------- |
 | microservice-name | El nombre del microservicio, el cual corresponde con el nombre de la carpeta. |
 
 #### Examples
