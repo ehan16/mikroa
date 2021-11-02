@@ -128,15 +128,7 @@ El comando `mikroa migrate` se encarga de realizar la correspondiente migración
 }
 ```
 
-- En el caso de haber seleccionado el ORM `prisma`, debe especificar en el archivo `config.json` del microservicio los modelos a crear, cada uno debe seguir la siguiente estructura
-
-```json:title=config.json
-{
-  "User": {
-    "name": "String",
-  }
-}
-```
+- En el caso de haber seleccionado el ORM `prisma`, los modelos deben ser especificados directamente en el archivo `schema.prisma`, siguiendo la sintaxis de Prisma. Posteriormente, Mikroa se hará cargo de realizar las migraciones correspondientes a la base de datos seleccionada
 
 > Nota: En el caso de decidir utilizar Prisma con MongoDB, se deben realizar los cambios correspondientes para que dicho ORM funcione correctamente con la base de datos
 

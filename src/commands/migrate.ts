@@ -6,7 +6,7 @@ import {
   createFile,
 } from '../templates/default/default.template';
 import { showError, showStart, showSuccess } from '../utils/logger.util';
-import { executePrisma } from '../utils/npm.util';
+import { executePrisma, formatFiles } from '../utils/npm.util';
 import {
   mongooseJsModel,
   mongooseTsModel,
@@ -18,16 +18,16 @@ export const desc =
   'Read the configuration file and migrate all the models to the database';
 
 export const handler = async (): Promise<void> => {
+  const progressBar = new SingleBar({
+    format: `{microservice} | {bar} | {percentage}%`,
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+    hideCursor: true,
+  });
+
   try {
     const message = 'migrations';
     showStart(message);
-
-    const progressBar = new SingleBar({
-      format: `{microservice} | {bar} | {percentage}%`,
-      barCompleteChar: '\u2588',
-      barIncompleteChar: '\u2591',
-      hideCursor: true,
-    });
 
     // 1. Read the microservice's config file
     const configFile = await readJson('config.json');
@@ -45,9 +45,10 @@ export const handler = async (): Promise<void> => {
         process.exit(1);
       }
 
-      const modelsConfig = await readJson(`${name}/config.json`);
-
       if (directoryExist(name)) {
+        const modelsConfig = await readJson(`${name}/config.json`);
+        const extension = language === 'javascript' ? 'js' : 'ts';
+
         showStart(`to execute migrations in ${name}`);
 
         if (orm.toLocaleLowerCase() === 'prisma') {
@@ -84,17 +85,30 @@ export const handler = async (): Promise<void> => {
               );
             }
             progressBar.update(90);
-            createFile(`/${name}/src/models`, model, modelFile);
+
+            if (!directoryExist(`${name}/src/models/${model}.${extension}`)) {
+              createFile(
+                `/${name}/src/models`,
+                `${model}.${extension}`,
+                modelFile
+              );
+            }
+
             progressBar.update(100);
             progressBar.stop();
           }
+
+          await formatFiles(`/${name}`, language === 'typescript');
         }
+
+        showSuccess(`${name} migration executed successfully`);
       }
-      showSuccess(`${name} migration executed successfully`);
     }
 
     showSuccess('Migrations were successfully completed');
   } catch (err) {
+    progressBar.stop();
+    console.log('\n');
     showError((err as any).message);
     process.exit(1);
   }

@@ -70,7 +70,7 @@ export async function readJson(fileName: string) {
     const object = await fs.readJson(`${process.cwd()}/${fileName}`);
     return object;
   } catch (err) {
-    showError('The JSON file could not be read');
+    showError(`${fileName} file could not be read`);
     process.exit(1);
   }
 }
