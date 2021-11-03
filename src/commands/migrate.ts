@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Arguments, CommandBuilder } from 'yargs';
 import { SingleBar } from 'cli-progress';
 import {
   readJson,
@@ -13,11 +13,24 @@ import {
   ObjectAttribute,
 } from '../templates/filesTemplate/models';
 
+type Options = {
+  development: boolean | undefined;
+};
+
 export const command = 'migrate';
 export const desc =
   'Read the configuration file and migrate all the models to the database';
 
-export const handler = async (): Promise<void> => {
+export const builder: CommandBuilder<Options, Options> = (yargs) =>
+  yargs.option('development', {
+    alias: 'd',
+    type: 'boolean',
+    description: 'Run migrations for development',
+  });
+
+export const handler = async (argv: Arguments<Options>): Promise<void> => {
+  const { development } = argv;
+
   const progressBar = new SingleBar({
     format: `{microservice} | {bar} | {percentage}%`,
     barCompleteChar: '\u2588',
@@ -52,11 +65,8 @@ export const handler = async (): Promise<void> => {
         showStart(`to execute migrations in ${name}`);
 
         if (orm.toLocaleLowerCase() === 'prisma') {
-          progressBar.start(100, 0, { microservice: name });
-          // iterate models here
-
-          progressBar.update(78);
-          await executePrisma('migrate', `/${name}`);
+          progressBar.start(100, 78, { microservice: name });
+          await executePrisma('migrate', `/${name}`, development);
           progressBar.update(82);
           await executePrisma('generate', `/${name}`);
 

@@ -51,30 +51,52 @@ export async function executePackage(
   }
 }
 
-export async function executePrisma(type: string, path: string) {
-  let res: execa.ExecaReturnValue<string>;
+export async function executePrisma(
+  type: string,
+  path: string,
+  development: boolean = false
+) {
   if (type === 'migrate') {
-    res = await execa('npm', ['run', 'p:migrate:deploy'], {
-      cwd: process.cwd() + path,
-    });
-  } else {
-    res = await execa('npm', ['run', 'p:generate'], {
-      cwd: process.cwd() + path,
-    });
-  }
+    if (development) {
+      const devRes = await execa('npm', ['run', 'p:migrate'], {
+        cwd: process.cwd() + path,
+      });
 
-  if (res.failed) {
-    showError(res.stderr);
-    showError(
-      `failed to execute ${
-        type === 'migrate' ? 'migrate' : 'generate'
-      } on path: ${process.cwd()}/${path}`
-    );
-    showWarning(
-      'Please check that p:migrate:deploy and p:generate scripts exist in package.json'
-    );
+      if (devRes.failed) {
+        showError(devRes.stderr);
+        showError(
+          `failed to execute migrate on path: ${process.cwd()}/${path}`
+        );
+        showWarning(
+          'Please check that p:migrate script exists in package.json'
+        );
+      }
+    } else {
+      const deployRes = await execa('npm', ['run', 'p:migrate:deploy'], {
+        cwd: process.cwd() + path,
+      });
+
+      if (deployRes.failed) {
+        showError(deployRes.stderr);
+        showError(
+          `failed to execute migrate on path: ${process.cwd()}/${path}`
+        );
+        showWarning(
+          'Please check that p:migrate:deploy script exists in package.json'
+        );
+      }
+    }
   } else {
-    return res.stdout;
+    const generateRes = await execa('npm', ['run', 'p:generate'], {
+      cwd: process.cwd() + path,
+    });
+
+    if (generateRes.failed) {
+      showError(`failed to execute generate on path: ${process.cwd()}/${path}`);
+      showWarning(
+        'Please check that p:generate scripts exists in package.json'
+      );
+    }
   }
 }
 
