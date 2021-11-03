@@ -63,7 +63,6 @@ export async function executePrisma(
       });
 
       if (devRes.failed) {
-        showError(devRes.stderr);
         showError(
           `failed to execute migrate on path: ${process.cwd()}/${path}`
         );
