@@ -103,6 +103,10 @@ El comando `mikroa migrate` se encarga de realizar la correspondiente migración
   mikroa migrate
 ```
 
+| Option           | Description                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| development [-d] | En caso de colocar el flag `--development` o `-d`, se realizarán las migraciones para un entorno de `development`. |
+
 #### Examples
 
 - En el caso de haber seleccionado el ODM `mongoose`, debe especificar en el archivo `config.json` del microservicio los modelos a crear, cada uno debe seguir la siguiente estructura para poder generar el archivo de cada modelo:

@@ -20,7 +20,7 @@ export const showWarning = (message: string | Error): void => {
 };
 
 export const showSuccess = (message: string): void => {
-  console.log(`${newLine}${green('SUCCESS: 🚀 ') + message}${newLine}`);
+  console.log(`${green('SUCCESS: 🚀 ') + message}${newLine}`);
 };
 
 export const showInfo = (message: string): void => {
