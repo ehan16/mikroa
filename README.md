@@ -2,7 +2,9 @@
 
 # Mikroa - CLI
 
-Mikroa es una interfaz de línea de comando, conocida como CLI por sus siglas en inglés, realizada como trabajo de grado por [Erika Han](https://github.com/ehan16) y [Reichel Larez](https://github.com/Alexa1904) bajo la tutoría de [José Roberto Quevedo Gabizón](https://github.com/Zoomelectrico) para optar por el título de Ingeniero de Sistemas en la Universidad Metropolitana.
+Mikroa es una interfaz de línea de comando, conocida como CLI por sus siglas en inglés, la cual se encarga de automatizar la creación de proyectos que implementen la arquitectura basada en microservicios. Esto incluye desde la creación de los archivos y carpetas bases hasta la correcta configuración inicial requerida para comenzar el desarrollo de una aplicación. Además, busca automatizar y agilizar otros procesos como la creación de contenedores Docker, la migración de datos y la ejecución concurrente de los microservicios.
+
+Esta herramienta fue realizada como trabajo de grado por [Erika Han](https://github.com/ehan16) y [Reichel Larez](https://github.com/Alexa1904) bajo la tutoría de [José Roberto Quevedo Gabizón](https://github.com/Zoomelectrico) para optar por el título de Ingeniero de Sistemas en la Universidad Metropolitana.
 
 ## Tabla de contenidos
 
